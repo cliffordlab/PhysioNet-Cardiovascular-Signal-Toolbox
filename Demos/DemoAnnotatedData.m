@@ -139,7 +139,7 @@ for i_patient = 1:numsub
             resFilename,HRVparams.output.format, HRVparams.writedata);
         
     catch
-        if isnumeric(subjectids(i_patient))
+        if isnumeric(subjectIDs(i_patient))
             current_filename = ['error_' num2str(subjectIDs(i_patient))];
         else
             current_filename = ['error_' subjectIDs(i_patient)];

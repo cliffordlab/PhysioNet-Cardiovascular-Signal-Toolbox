@@ -41,9 +41,9 @@ function [ids,fullfilenames] = GenerateListOfFilesTBA(ext,datadir,recursive)
 
 if strcmp(computer,'GLNXA64')
     if recursive
-    	[~, sysout] = system(['ls ' fullfile(pwd, '*/*.',ext)]);
+    	[~, sysout] = system(['ls ' datadir filesep '*.',ext]);
     else
-        [~, sysout] = system(['ls *.',ext]);
+        [~, sysout] = system(['ls ' datadir filesep '*.',ext]);
         % ANV modified this line to work in linux for MIT NSR files on box
         % May need to revisit
     end
@@ -67,7 +67,7 @@ for i = 1:length(fullfilenames)
     try
         if strcmp(computer,'GLNXA64')
             filename = dir(allfiles{i});
-            fullfilenames{i} = [filename.folder '/' allfiles{i}];
+            fullfilenames{i} = [allfiles{i}];
             
             filename = filename.name;
             filename = strrep(filename, ['.' ext], '');

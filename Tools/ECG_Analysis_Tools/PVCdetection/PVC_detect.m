@@ -113,7 +113,7 @@ if remflag==1  % now do remainder of signal
     s_start= floor(t_hours) * Fs *60 *60 + 1;
     s_end= siginfo(1).LengthSamples-1;
     % removed Fs from rdsamp return to avoid Fs reading by mistake
-    [tm,signal] = rdsamp([path '/' record], [1], s_end, s_start); % ANV added '/'
+    [tm,signal] = rdsamp([path filesep record], [1], s_end, s_start); % ANV added '/', GDP replaced '/' with filesep 
 
     %signal=signal(:,1);
     signal(find(isnan(signal)))=0;
@@ -151,7 +151,7 @@ annType(find(pvc_outputs==1))='V';
 num=zeros(length(qrs_times),1);
 
 if wrann_text==0
-    wrann_path([path '/'],record,'pvc_d',qrs_times,annType,'0',0,num); % ANV added '/'
+    wrann_path([path filesep],record,'pvc_d',qrs_times,annType,'0',0,num); % ANV added '/' , GDP replaced '/' with filesep 
 else
     wrann_by_text(Fs,record,'pvc_d',qrs_times,annType,'0',0,num);
 end

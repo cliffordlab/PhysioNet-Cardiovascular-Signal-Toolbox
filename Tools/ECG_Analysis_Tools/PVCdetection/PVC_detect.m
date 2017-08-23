@@ -1,10 +1,13 @@
 function PVC_detect(path,record,FS,wrann_text,th)
 % input: path - path of record
 %        record - WFDB record name
-%        FS - sampling freqency of record, may be overwritten by WFDB functions
-%        wrann_text - write annotation by a text file for long data (if wrann failed)
-%        th - threshold for QRS detection (default: 0.1), if too many missing
-%             beats, decrease th; if too many extra beats, increase th
+%        FS - sampling freqency of record, may be overwritten by WFDB 
+%           functions
+%        wrann_text - write annotation by a text file for long data 
+%           (if wrann failed)
+%        th - threshold for QRS detection (default: 0.1), if too many
+%           missing beats, decrease th; if too many extra beats, 
+%           increase th
 % version: 7v
 %
 % Emailed from Qiao Li to Adriana Vest on May 30th 2017
@@ -29,11 +32,17 @@ if nargin<3
 end
 
 % Create parallel pool 
-%poolobj = parpool;   
+%poolobj = parpool;   % ANV commented out
 
 display('Read data ...');
 
-[siginfo,Fs]=wfdbdesc([path '/' record]); % ANV added '/'
+[siginfo,Fs] = wfdbdesc([path record]);
+
+% ANV: added the following for records that do not have a header file:
+if isempty(siginfo)
+    [tm, signal] = rdsamp([path record], [1]); 
+    siginfo(1).LengthSamples = length();
+end
 
 if isempty(Fs)
     Fs=FS;

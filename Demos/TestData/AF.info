@@ -1,0 +1,10 @@
+Source: record ltafdb/74  Start: [20:33:33.000 18/07/2003]
+val has 2 rows (signals) and 38400 columns (samples/signal)
+Duration:  5:00
+Sampling frequency: 128 Hz  Sampling interval: 0.0078125 sec
+Row	Signal	Gain	Base	Units
+1	ECG	0	0	mV
+2	ECG	0	0	mV
+
+To convert from raw units to the physical units shown
+above, subtract 'base' and divide by 'gain'.

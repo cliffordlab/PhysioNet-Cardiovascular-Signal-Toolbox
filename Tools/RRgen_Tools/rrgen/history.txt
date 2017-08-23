@@ -1,0 +1,42 @@
+rrgen.c is always the latest version of rrgen: 
+http://www.physionet.org/challenge/2002/generators/rrgen-201.c
+from the Physionet challenge:
+http://www.physionet.org/challenge/2002/
+
+all c-files are compiled with gcc -Wall rrgen.c -lm 
+
+rrgen.tar.gz contains all the files in this directory
+gzip -d rrgen.tar.gz
+tar -xvf rrgen.tar
+will extract them in a unix environment. Winzip should work too.
+
+rrgenV1.c is the original  rrgen-201.c entry.
+usage: rrgenV1 seed [tmax]
+The seed for the random number generator must be specified, but tmax can be omitted (and therefore takes the default value of 24hours = (24*60*60 seconds)
+
+rrgenV2.c is rrgen-201.c with two added flags to switch the ectopy off (0) and on (1) 
+usage: rrgenV2 seed [tmax] noEctopics? noNoise?
+The flag default values are 
+
+rrgenV3.c is rrgenV2.c with the flags changed to floating point probabilities of the occurrence of ectopy. 		     
+usage: rrgenV3 seed [tmax] P(ectopy) P(noise)
+Defaults are :
+P(ectopy), Pe = 0.0003;    /* Probability of ectopy ~ 1 per hr */
+P(noise),  Pn = 0.0048;    /* Probability of noise ~ 16 per hr */
+P(noise) in sleep is Pn/12, P(ectopy) in sleep is unchanged. 
+
+Note that because the flags are now probabilities ....
+rrgenV3 seed [tmax] 0 0 
+is the same as 
+rrgenV3 seed [tmax] 1 1 
+
+Matlab wrappers
+---------------
+Matlab routines to run the above executables are also provided.
+Copy the C amd m-file version number are interested in to 
+rrgen.c and rrgen.m ... then compile the executable (or copy the
+one provided to rrgen [or rrgen.exe under windows]).
+Type help rrgen at the matlab prompt, or run as per C with a return
+argument for the data. 
+
+G Clifford 13th Nov 2003 gari@physionet.org

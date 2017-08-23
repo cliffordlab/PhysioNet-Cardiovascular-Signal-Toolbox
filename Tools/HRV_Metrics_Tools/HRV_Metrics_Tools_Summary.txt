@@ -1,0 +1,75 @@
+0. Preprocessing of RR intervals (RRIntervalPreprocess.m)
+
+This function preprocesses RR interval data in preparation for running HRV analyses. 
+Noise and non-normal beats are removed from the RR interval data and replaced with
+interpolated data using a interpolation method of choice.
+
+Output         ||                               ||
+================================================================================
+NNinterp3      ||     interp1.m                 ||  After oise and non-normal beats 
+tinterp3       ||     interp1.m                 ||  are removed data are interpoleted 
+flagged_beats  ||                               ||  using "interp1.m" Matlab fucntion
+
+_________________________________________________________________________________________________________________________________________________________
+
+1. Time Domain Metrics   ( EvalTimeDomainHRVstats)
+
+HRV Metric      ||     Function used            ||      Note
+                ||    for computation           ||  
+==================================================================================
+NNmean          ||     mean.m                   || (Matlab function)           
+NNmedian        ||     median.m                 || (Matlab function)           
+NNmode          ||     mode.m                   || (Matlab function)           
+NNvariance      ||     var.m                    || (Matlab function)           
+NNskew          ||     skewness.m               || (Matlab function)           
+NNkurt          ||     kurtosis.m               || (Matlab function)           
+NNiqr           ||     iqr.m                    || (Matlab function)          
+SDNN            ||     std.m                    || (Matlab function)         --  Standard deviation of NN intervals         
+RMSSD           ||     runrmssd.m               || Adapted from Kaplan Tools --  Square root of the mean of the sum of the squares of the differences 
+pnn50           ||     pnna.m                   || Adapted from Kaplan Tools --  Finds the fraction of consecutive beats that differ by more 50 msec
+btsdet          ||     length.m                 || (Matlab function)           
+
+_________________________________________________________________________________________________________________________________________________________
+
+2. Frequency Domain Metrics  ( EvalFrequencyDomainHRVstats.m)
+
+HRV Metric      ||     Function used            ||      Note
+                ||    for computation           ||  
+==================================================================================
+ulf             ||    CalcLfHfParams.m**        || need Power Spectral Density (PSD) as input, it is computed 
+vlf             ||    CalcLfHfParams.m          || using "pwelch.m" or "pburg.m "Matlab function *
+lf              ||    CalcLfHfParams.m          || 
+hf              ||    CalcLfHfParams.m          || or Lomb-Scargle normalized periodogram using 
+lfhf            ||    CalcLfHfParams.m          || provided CalcLomb.m function which is quivalent
+ttlpwr          ||    CalcLfHfParams.m          || to Matlab plomb.m
+                                                ||
+                                                || or double sided spectrum using FFT
+
+
+* we are including in the toolbox the functions "pwelch_hrv_toolbox.m" "and pburg_hrv_toolbox.m" (same as Matlab )but in the code we still call
+the orginal Matlab function 
+
+** this function name has been chaged, originally was "lfhfplot.m"
+
+_________________________________________________________________________________________________________________________________________________________
+
+
+4. Acceleration and Deceleration Metrics (prsa.m)
+
+
+HRV Metric      ||     Function used            ||      Note
+                ||    for computation           ||  
+==================================================================================
+ac_results      ||    prsa.m                    || This function was originall written by 
+dc_results      ||    prsa.m                    || L.Campana and G.D.Clifford modyfied by 
+                                                   A.Vest to be used in HRV toolbox
+
+
+5. Calculates SDANN and SDNNindex (ClalcSDANN.m)
+
+HRV Metric      ||     Function used            ||      Note
+                ||    for computation           ||  
+==================================================================================
+SDANN           ||    std.m                     || Standard deviation of the averages of values
+SDNNI           ||    mean.m                    || Mean of the standard deviations of all values
+

@@ -55,10 +55,10 @@ end
 switch project_name   
     
     % Define new project name and parameters
-    case 'myProjectName1'          % Update with your project name
+    case 'myProjectName1'                                % Update with your project name
         HRVparams.readdata = 'MIT_Arrhythmia';           % Specify data input folder\dir
         HRVparams.writedata = 'Output_MIT_Arrhythmia';   % Specify data output folder
-        HRVparams.Fs = 333;                % Spacify sampling frequency
+        HRVparams.Fs = Nan;                % Spacify sampling frequency
         HRVparams.datatype = '';           % Spacify Data type
         HRVparams.ext = 'dat';             % Spacify file extension (e.g., 'mat','qrs')
         HRVparams.input_data_format = 'input_waveform';  % Spacify input_RR_intervals OR input_waveform

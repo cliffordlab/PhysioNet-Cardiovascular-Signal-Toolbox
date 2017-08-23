@@ -2,6 +2,7 @@
 %
 %	OVERVIEW:
 %       Main "Validated Open-Source Integrated Matlab" VOSIM Toolbox script
+%       It can be used  for the anlysis of MIT-B
 %
 %   INPUT:
 %       Configured to accept RR intervals as well as raw data as input file

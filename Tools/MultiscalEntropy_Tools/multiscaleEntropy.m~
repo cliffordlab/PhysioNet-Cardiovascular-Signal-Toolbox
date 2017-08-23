@@ -1,6 +1,6 @@
 function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 
-% mse = ComputeMultiscaleEntropy(data, m, r, max_tau, entropy_script)
+% mse = CmultiscaleEntropy(data, m, r, max_tau, entropy_script)
 %
 % Overview
 %	Calculates multiscale entropy on a vector of input data.
@@ -10,6 +10,7 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 %   m           - pattern length; int
 %   r           - radius of similarity (% of std); double
 %   maxTau      - maximum number of coarse-grainings; int
+%   entropyType - type of entropy to calculate
 %
 % Output
 %   mse          - vector of [max_tau, 1] doubles
@@ -18,6 +19,8 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 %   data = rand(1e4, 1); % generate random data
 %   m = 2; % template length
 %   r = 0.2; % radius of similarity
+%   entropyType = 'sampen'; % sample entropy, but can also choose 'fuzzy', 
+%   and this can be modularly extended for other entropy types
 %   maxTau = 4; % calculate sample entropy over four coarse grainings
 %   mse = multiscaleEntropy(data, m, r, maxTau, entropyType);
 % 
@@ -44,9 +47,14 @@ mse = NaN(maxTau, 1);
 % Loop through each timescale
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
-        
-    mse(i_tau) = fastSampen(data, m, r);
-
+    
+    % Calculate entropy
+    if strcmp(entropyType, 'sampen')
+        mse(i_tau) = fastSampen(data, m, r);
+    elseif strcmp(entropyType, 'debug')
+        mse(i_tau) = NaN;
+    end
+    
     % Coarse-grain data (default: halving method)
     data = coarsegrain(data);
     

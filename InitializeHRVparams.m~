@@ -56,13 +56,13 @@ end
 switch project_name   
     
     % Define new project name and parameters
-    case 'myProjectName1'                  % Update with your project name
-        HRVparams.readdata = '';           % Specify data input folder\dir
-        HRVparams.writedata = '';          % Specify data output folder
+    case 'myProjectName1'                                % Update with your project name
+        HRVparams.readdata = 'MIT_Arrhythmia';           % Specify data input folder\dir
+        HRVparams.writedata = 'Output_MIT_Arrhythmia';   % Specify data output folder
         HRVparams.Fs = Nan;                % Spacify sampling frequency
         HRVparams.datatype = '';           % Spacify Data type
-        HRVparams.ext = '';                % Spacify file extension (e.g., 'mat','qrs')
-        HRVparams.input_data_format = '';  % Spacify input_RR_intervals OR input_waveform
+        HRVparams.ext = 'dat';             % Spacify file extension (e.g., 'mat','qrs')
+        HRVparams.input_data_format = 'input_waveform';  % Spacify input_RR_intervals OR input_waveform
         
     % Existing demo projects
     case 'demo'                    % Parameters for demo using qrs data
@@ -74,7 +74,7 @@ switch project_name
         HRVparams.Fs = 125;
         % RRGEN Optionn, these parameters are passed to rrgen.m only for 
         %demo pourposes 
-        HRVparams.demo.length = 2*60*60;   % Length of demo RR intervals in seconds
+        HRVparams.demo.length = 24*60*60;  % Length of demo RR intervals in seconds
         HRVparams.demo.pe = 0.0003;        % Probability of ectopy ~ 1 per hr 
         HRVparams.demo.pn = 0.0048;        % Probability of noise ~ 16 per hr 
         HRVparams.demo.seed = 1;           % Seed for RRGEN
@@ -89,7 +89,7 @@ switch project_name
     
     case 'mitarr'             % Parameters for demo using raw ECG data
         HRVparams.readdata = 'MIT-Arrhythmia';
-        HRVparams.writedata = 'OutputMIT_Arrhythmia';
+        HRVparams.writedata = ['OutputData' filesep 'MIT_Arrhythmia'];
         HRVparams.Fs = 360;
         HRVparams.ext = 'dat';
         HRVparams.input_data_format = 'input_waveform';
@@ -307,10 +307,10 @@ HRVparams.debug = 0;
 
 %% 16. Multiscale Entropy Settings
 
-HRVparams.RadiusOfSimilarity = 0.2;         % Radius of similarity (% of std)
-HRVparams.MSEpatternLength = 2;             % Pattern length
-HRVparams.maxCoarseGrainings = 4;          % Maximum number of coarse-grainings
-%
+HRVparams.m = 
+HRVparams.r = 
+HRVparams.maxTau
+HRVparams.entropyType
 
 
 end

@@ -35,7 +35,7 @@ clear;
 clc;
 %% 1. Initizialization file sets up glopal variables and parameters 
 %    (i.e., thresholds, window setitngs, noise limits and specral analysis)
-HRVparams = InitializeHRVparams('myProjectName1');
+HRVparams = InitializeHRVparams('mitarr');
 
 %% 2. Look for all the current project files to be processed 
 % Crate a list of all file to be analyze (% filesTBA: files to be analyzed) 

@@ -74,7 +74,7 @@ switch project_name
         HRVparams.Fs = 125;
         % RRGEN Optionn, these parameters are passed to rrgen.m only for 
         %demo pourposes 
-        HRVparams.demo.length = 2*60*60;   % Length of demo RR intervals in seconds
+        HRVparams.demo.length = 5*60*60;   % Length of demo RR intervals in seconds
         HRVparams.demo.pe = 0.0003;        % Probability of ectopy ~ 1 per hr 
         HRVparams.demo.pn = 0.0048;        % Probability of noise ~ 16 per hr 
         HRVparams.demo.seed = 1;           % Seed for RRGEN
@@ -307,9 +307,9 @@ HRVparams.debug = 0;
 
 %% 16. Multiscale Entropy Settings
 
-HRVparams.RadiusOfSimilarity = 0.2;         % Radius of similarity (% of std)
+HRVparams.RadiusOfSimilarity = 0.15;         % Radius of similarity (% of std)
 HRVparams.MSEpatternLength = 2;             % Pattern length
-HRVparams.maxCoarseGrainings = 4;          % Maximum number of coarse-grainings
+HRVparams.maxCoarseGrainings = 14;          % Maximum number of coarse-grainings
 %
 
 

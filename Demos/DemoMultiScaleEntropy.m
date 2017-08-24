@@ -31,7 +31,7 @@ if ~exist(HRVparams.writedata, 'dir')
 end
 addpath(HRVparams.writedata)
 
-%% 1. Generate Data
+%% 1. Generate Data using RRgen
 
 rr = rrgen(HRVparams.demo.length,HRVparams.demo.pe,HRVparams.demo.pn,HRVparams.demo.seed);
 t = cumsum(rr);
@@ -42,19 +42,22 @@ t = cumsum(rr);
 
 %% 3. Calculate the Multiscale Entropy
 
-disp('Computing MSE...this may take a few minutes...')
+fprintf('Computing MSE...this may take a few minutes...\n')
+fprintf('Parameters used to calculate SempEntropy: m=%i r=%.2f \n', HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity);
 mse = ComputeMultiscaleEntropy(NN,HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity, HRVparams.maxCoarseGrainings);
-disp('MSE completed!')
+fprintf('MSE completed!\n')
 plot(mse)
+xlabel('Scale Factor');
+ylabel('SampEn');
 
 %% 4. Save Results
 
 
-results = [mse];
+results = mse;
 col_titles = {'MSE'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput('MSE_RRgenDemoData',[],results,col_titles, [], HRVparams, tNN, NN);
+resFilename = GenerateHRVresultsOutput('MSE_RRgenDemoData',[],results,col_titles, 'MSE', HRVparams, tNN, NN);
 
 
 %clearvars NN tNN t rr sqi ac dc ulf vlf lf hf lfhf ttlpwr methods fdflag NNmean NNmedian NNmode NNvariance NNskew NNkurt SDNN NNiqr RMSSD pnn50;

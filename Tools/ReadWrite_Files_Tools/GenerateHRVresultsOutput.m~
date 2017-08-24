@@ -83,9 +83,9 @@ if strcmp(type,'AF')
             % Return nothing.
     end
 
-% 08-24-2017 -- MSE type added by GDP to generate output for Multiscle entropy 
+% Added by GDP to 
 elseif strcmp(type, 'MSE')                        
-    filename = ['MSE_results_' sub_id];
+        filename = ['AF_results_' sub_id];
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename and directory
         fullfilename = [HRVparams.writedata filesep filename '.csv'];
@@ -115,7 +115,12 @@ elseif strcmp(type, 'MSE')
 	else
             % Return nothing.
     end
-      
+    
+    
+    
+    
+    
+    
 else
     if ~isempty(HRVparams.output.num_win) 
         x = size(results);

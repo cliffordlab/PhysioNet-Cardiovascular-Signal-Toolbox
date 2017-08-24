@@ -1,4 +1,4 @@
-function Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations)
+function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations)
 %  ====================== VOSIM Toolbox Main Script ======================
 %
 %   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -13,12 +13,18 @@ function Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations)
 %       InputFormat - String that specifiy if the input vector is: 
 %                     'RRinetrvals' for RR interval data 
 %                     'ECGWaveform' for ECG waveform 
-%                     'PPG'
 %       HRVparams   - struct of settings for hrv_toolbox analysis
 %
 %       subjectID   - (optional) string to identify current subject
 %       annotations - (optional) annotations of the RR data at each point
 %                     indicating the quality of the beat 
+%
+%   OUTPUT
+%       results - HRV time and frequency domain metrics as well as AC and
+%                 DC
+%       SDANN   - standard deviation of the averages of values
+%       SDNNI   - mean of the standard deviations of all values
+%       mse     - Multiscale Entropy computed using SampleEntropy
 %
 %       NOTE: before running this script review and modifiy the parameters
 %             in "initialize_HRVparams.m" file accordingly with the specific

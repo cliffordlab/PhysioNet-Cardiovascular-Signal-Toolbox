@@ -169,14 +169,8 @@ if HRVparams.gen_figs
 	
 end
 
-%% 4. Cross Wavelet Transform
-% % Generates graphs:
-% xecg = [time(:) signal(:,1)];
-% yabp = [time(:) signal(:,3)];
-% labels = {'ECG' 'ABP'};
-% HRV_WTCdemo(xecg,yabp,labels);
 
-%% 5. Preprocess RR Data - Using HRV Toolbox
+%% 4. Preprocess RR Data - Using HRV Toolbox
 
 rr = diff(jqrs_ann./HRVparams.Fs);
 t = jqrs_ann(1:end-1)./HRVparams.Fs;
@@ -184,27 +178,26 @@ t = jqrs_ann(1:end-1)./HRVparams.Fs;
 % Remove noise, Remove ectopy, Don't detrend (yet)
 [NN, tNN, ~] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
 
-%% 6. Calculate Windows
+%% 5. Calculate Windows
 windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 
-%% 7. Calculate AF Features
+%% 6. Calculate AF Features
 
 afresults = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
 
-%% 9. Calculate time domain HRV metrics - Using HRV Toolbox
+%% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 fbeats = zeros(length(NN),1);
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
     RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = ...
     EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);
 
-%% 10. Frequency domain HRV metrics (LF HF TotPow)
+%% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
-%%% TO DO: Remove necessity of creating phantom beats with lomb 
 
 [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
    EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,windows_all);
 
-%% 11. PRSA
+%% 9. PRSA
 try
     [ac,dc,~] = prsa(NN, tNN, [], windows_all, HRVparams);
 catch
@@ -212,10 +205,10 @@ catch
     dc = NaN;
 end
 
-%% 12. SDANN and SDNNi
+%% 10. SDANN and SDNNi
 [SDANN, SDNNI] = ClalcSDANN(windows_all, tNN, NN(:),HRVparams); 
 
-%% 13. Export HRV Metrics as CSV File
+%% 11. Export HRV Metrics as CSV File
 %Uncomment the following lines for All Results
 results = [windows_all(:), ac(:),dc(:),...
     ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...

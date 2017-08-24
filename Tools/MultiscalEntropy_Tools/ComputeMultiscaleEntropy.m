@@ -31,8 +31,8 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 %
 % 
 % 08-23-2017 Modyfied by Giulia Da Poian for the VOSIM HRV Toolbox 
-% Remove the possibility to use different types of entropy, keep only
-% fastSampen method
+% Remove the possibility to use different types of entropy, only
+% fastSampen method in this version
 %
 % This software may be modified and distributed under the terms
 % of the BSD license. See the LICENSE file in this repo for details.

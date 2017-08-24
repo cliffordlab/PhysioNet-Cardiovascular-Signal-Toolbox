@@ -1,4 +1,4 @@
-function Main_VOSIM(InputSig,t,InputFormat,ProjectName,subjectID,annotations,sqi)
+function Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations)
 %  ====================== VOSIM Toolbox Main Script ======================
 %
 %   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -12,17 +12,13 @@ function Main_VOSIM(InputSig,t,InputFormat,ProjectName,subjectID,annotations,sqi
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
 %                     'RRinetrvals' for RR interval data 
-%                     'Waveform' for ECG waveform 
-%       ProjectName - Name of current project used to initialize the
-%                     parameters
+%                     'ECGWaveform' for ECG waveform 
+%                     'PPG'
+%       HRVparams   - struct of settings for hrv_toolbox analysis
+%
 %       subjectID   - (optional) string to identify current subject
 %       annotations - (optional) annotations of the RR data at each point
 %                     indicating the quality of the beat 
-%       sqi         - (optional) Signal Quality Index Requires a matrix with
-%                     at least two columns. Column 1 should be timestamps
-%                     of each sqi measure, and Column 2 should be SQI on a
-%                     scale from 1 to 100. Additional columns can be 
-%                     included with additional sqi at the same timestamps                      
 %
 %       NOTE: before running this script review and modifiy the parameters
 %             in "initialize_HRVparams.m" file accordingly with the specific
@@ -60,25 +56,22 @@ end
 if nargin < 5
     subjectID = '0000';
     annotations = [];
-    sqi = [];
 end
 if nargin < 6
     annotations = [];
-    sqi = [];
-end
-if nargin < 7
-    sqi = [];
 end
 
 
-try
-    HRVparams = InitializeHRVparams(ProjectName);
-    
-    if strcmp(InputFormat, 'Wavefrom')
+
+try    
+    if strcmp(InputFormat, 'Waveform')
         % Convert ECG waveform in rr intervals
-        [t, rr] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+        [t, rr, sqi] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+        avgLeadSQI = mean(sqi);
+        GenerateHRVresultsOutput(subjectID,[],avgLeadSQI,'SQI','SQI',HRVparams,[],[]);    
     else
-        rr = InputSig;      
+        rr = InputSig; 
+        sqi = [];
     end
 
     % Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
@@ -101,9 +94,9 @@ try
             end
             RRAnalysisWindows(idx_af) = NaN;
         end
-        fprintf('AF analysis completed for patient %s', subjectID);
+        fprintf('AF analysis completed for patient %s \n', subjectID);
     catch
-        fprintf('AF analysis failed for patient %s', subjectID);
+        fprintf('AF analysis failed for patient %s \n', subjectID);
     end
     
     %% 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
@@ -139,7 +132,7 @@ try
     % Save results
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRAnalysisWindows,results,col_titles, [],HRVparams, tNN, NN);
     
-    fprintf('HRV metrics for patien %s saved in %s %s\n', subjectID, HRVparams.writedata, ResultsFileName);
+    fprintf('HRV metrics for patien %s saved in the output folder in %s \n', subjectID, ResultsFileName);
     
     %% 5. SDANN and SDNNi
     [SDANN, SDNNI] = ClalcSDANN(RRAnalysisWindows, tNN, NN(:),HRVparams); 
@@ -147,16 +140,25 @@ try
     
     
     %% 6. Multiscale Entropy
+    try
+        mse = ComputeMultiscaleEntropy(NN,HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity, HRVparams.maxCoarseGrainings);  
+        % Save Results for MSE
+        results = mse;
+        col_titles = {'MSE'};
+        % Generates Output - Never comment out
+        GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
+    catch
+        fprintf('MSE failed for patient %s \n', subjectID);
+    end
 
-    mse = ComputeMultiscaleEntropy(NN,HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity, HRVparams.maxCoarseGrainings);   
-    % Save Results for MSE
-    resFilename = GenerateHRVresultsOutput('MSE_RRgenDemoData',[],mse,'MSE', 'MSE', HRVparams, tNN, NN);
-    fprintf('MSE completed a file named %s.%s \n has been saved in %s \n', ...
-        resFilename,HRVparams.output.format, HRVparams.writedata);
     
-    fprintf('Analysis completed for patient %s \n',subjectID )
+    fprintf('HRV Analysis completed for patient %s \n',subjectID )
 catch
-    fprintf('Analysis not performed for patient %s', subjectID);
+    
+    results = NaN;
+    col_titles = {'NaN'};
+    GenerateHRVresultsOutput(subjectID,RRAnalysisWindows,results,col_titles, [],HRVparams, tNN, NN);    
+    fprintf('Analysis not performed for patient %s \n', subjectID);
 end
 
 end %== function ================================================================

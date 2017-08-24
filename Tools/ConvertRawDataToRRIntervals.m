@@ -1,5 +1,5 @@
-function [t,rr,sqijs] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
-%   [t,rr,sqi] = ConvertRawDataToRRIntervals(HRVparams)  
+function [t,rr,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
+%   [t,rr,sqijw] = ConvertRawDataToRRIntervals(HRVparams)  
 %
 %	OVERVIEW:
 %       Load raw signal perfom QRS detection & Signal Quality Index SQI
@@ -7,11 +7,12 @@ function [t,rr,sqijs] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subj
 %       (single lead ECG signal)
 %
 %   INPUT:
-%       HRVparam  :
+%       HRVparam : struct of settings for hrv_toolbox analysis
 %
 %   OUTPUT:
-%       rr :  
-%       t  :
+%       rr    :  Vector containing RR interval
+%       t     :  Time indices of the rr interval data (seconds)
+%       sqijw :  Signal Quality Index
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -21,9 +22,7 @@ function [t,rr,sqijs] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subj
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Main script written by Adriana Vest and Giulia Da Poian
-%       Dependent scripts written by various authors 
-%       (see functions for details)       
+%       Function written by Adriana Vest and Giulia Da Poian
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

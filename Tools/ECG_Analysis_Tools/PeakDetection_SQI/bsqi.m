@@ -25,10 +25,6 @@ function [F1, windows_all] = bsqi(ann1,ann2,HRVparams)
 %       more information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin < 3
-    HRVparams = initialize_HRVparams;
-end
-
 windowlength = HRVparams.sqi.windowlength;
 threshold = HRVparams.sqi.threshold;
 margin = HRVparams.sqi.margin;

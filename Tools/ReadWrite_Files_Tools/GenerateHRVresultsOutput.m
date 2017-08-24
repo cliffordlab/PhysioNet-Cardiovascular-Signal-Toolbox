@@ -10,6 +10,7 @@ function filename = GenerateHRVresultsOutput(sub_id,windows_all,results,titles,t
 %               titles       :
 %               type         : 'AF' results of AF detection 
 %                              'MSE' results of Multiscale Entropy
+%                              'SQI' average SQI index for the record
 %                               [] otherwise
 %               HRVparams    : struct of settings for hrv_toolbox analysis
 %               tNN          : the time indices of the rr interval data (seconds)
@@ -99,7 +100,7 @@ elseif strcmp(type, 'MSE')
             % putting variable into format acceptable for csv file
             var_formatted_for_output = variables_vals(:,v);
             fid=fopen(fullfilename,'at');
-            fprintf(fid,'%s,%s,',sub_id,char(variables_names{v}));
+            fprintf(fid,'%s,%s,',sub_id,char(variables_names(v,:)));
             if length(variables_vals) > 1
                 fprintf(fid,'%f,',var_formatted_for_output(1:end-1));
             end
@@ -107,6 +108,34 @@ elseif strcmp(type, 'MSE')
             fprintf(fid,'\n');
             fclose(fid);
         end
+    elseif strcmp(HRVparams.output.format,'mat')
+        % Add .mat extension to filename and directory
+        fullfilename = [HRVparams.writedata filesep filename '.mat'];
+    
+        save(fullfilename, 'results', 'titles');
+	else
+            % Return nothing.
+    end
+    
+% 08-24-2017 -- SQI type added by GDP to generate output for SQI
+elseif strcmp(type, 'SQI')                        
+    filename = ['SQI_results_' sub_id];
+    if strcmp(HRVparams.output.format,'csv')
+        % Add .csv extension to filename and directory
+        fullfilename = [HRVparams.writedata filesep filename '.csv'];
+
+        variables_names = titles;
+        variables_vals = results;
+
+        % Print out all the variables for all
+        % the time windows
+       
+        fid=fopen(fullfilename,'at');
+        fprintf(fid,'%s,%s,',sub_id,char(variables_names));
+        fprintf(fid,'%f',variables_vals);
+        fprintf(fid,'\n');
+        fclose(fid);
+        
     elseif strcmp(HRVparams.output.format,'mat')
         % Add .mat extension to filename and directory
         fullfilename = [HRVparams.writedata filesep filename '.mat'];

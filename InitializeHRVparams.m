@@ -56,13 +56,12 @@ end
 switch project_name   
     
     % Define new project name and parameters
-    case 'myProjectName1'                  % Update with your project name
+    case 'MyProjectName'                   % Update with your project name
         HRVparams.readdata = '';           % Specify data input folder\dir
         HRVparams.writedata = '';          % Specify data output folder
         HRVparams.Fs = Nan;                % Spacify sampling frequency
         HRVparams.datatype = '';           % Spacify Data type
         HRVparams.ext = '';                % Spacify file extension (e.g., 'mat','qrs')
-        HRVparams.input_data_format = '';  % Spacify input_RR_intervals OR input_waveform
         
     % Existing demo projects
     case 'demo'                    % Parameters for demo using qrs data
@@ -70,7 +69,6 @@ switch project_name
         HRVparams.writedata = 'OutputData';
         HRVparams.ext = 'qrs';
         HRVparams.datatype = 'MARS';
-        HRVparams.input_data_format = 'input_RR_intervals';
         HRVparams.Fs = 125;
         % RRGEN Optionn, these parameters are passed to rrgen.m only for 
         %demo pourposes 
@@ -85,15 +83,12 @@ switch project_name
         HRVparams.Fs = 128;
         HRVparams.datatype = 'MARS';
         HRVparams.ext = 'mat';
-        HRVparams.input_data_format = 'input_waveform';
     
     case 'mitarr'             % Parameters for demo using raw ECG data
         HRVparams.readdata = 'MIT-Arrhythmia';
         HRVparams.writedata = 'OutputMIT_Arrhythmia';
         HRVparams.Fs = 360;
-        HRVparams.ext = 'dat';
-        HRVparams.input_data_format = 'input_waveform';
-             
+        HRVparams.ext = 'dat';             
 end
 
 % Check existence of Input\Output data folders and add to search path
@@ -307,9 +302,9 @@ HRVparams.debug = 0;
 
 %% 16. Multiscale Entropy Settings
 
-HRVparams.RadiusOfSimilarity = 0.15;         % Radius of similarity (% of std)
+HRVparams.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
 HRVparams.MSEpatternLength = 2;             % Pattern length
-HRVparams.maxCoarseGrainings = 14;          % Maximum number of coarse-grainings
+HRVparams.maxCoarseGrainings = 12;          % Maximum number of coarse-grainings
 %
 
 

@@ -9,7 +9,7 @@ function filename = GenerateHRVresultsOutput(sub_id,windows_all,results,titles,t
 %               results      :
 %               titles       :
 %               type         : 'AF' results of AF detection 
-%                              'MSE' results of Multoiscale Entropy
+%                              'MSE' results of Multiscale Entropy
 %                               [] otherwise
 %               HRVparams    : struct of settings for hrv_toolbox analysis
 %               tNN          : the time indices of the rr interval data (seconds)

@@ -6,7 +6,7 @@ interpolated data using a interpolation method of choice.
 
 Output         ||                               ||
 ================================================================================
-NNinterp3      ||     interp1.m                 ||  After oise and non-normal beats 
+NNinterp3      ||     interp1.m                 ||  After noise and non-normal beats 
 tinterp3       ||     interp1.m                 ||  are removed data are interpoleted 
 flagged_beats  ||                               ||  using "interp1.m" Matlab fucntion
 
@@ -36,7 +36,7 @@ ________________________________________________________________________________
 HRV Metric      ||     Function used            ||      Note
                 ||    for computation           ||  
 ==================================================================================
-ulf             ||    CalcLfHfParams.m**        || need Power Spectral Density (PSD) as input, it is computed 
+ulf             ||    CalcLfHfParams.m          || need Power Spectral Density (PSD) as input, it is computed 
 vlf             ||    CalcLfHfParams.m          || using "pwelch.m" or "pburg.m "Matlab function *
 lf              ||    CalcLfHfParams.m          || 
 hf              ||    CalcLfHfParams.m          || or Lomb-Scargle normalized periodogram using 
@@ -45,11 +45,7 @@ ttlpwr          ||    CalcLfHfParams.m          || to Matlab plomb.m
                                                 ||
                                                 || or double sided spectrum using FFT
 
-
-* we are including in the toolbox the functions "pwelch_hrv_toolbox.m" "and pburg_hrv_toolbox.m" (same as Matlab )but in the code we still call
-the orginal Matlab function 
-
-** this function name has been chaged, originally was "lfhfplot.m"
+ 
 
 _________________________________________________________________________________________________________________________________________________________
 

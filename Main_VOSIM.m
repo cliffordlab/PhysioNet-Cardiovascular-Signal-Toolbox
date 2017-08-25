@@ -85,7 +85,7 @@ try
     [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, sqi, HRVparams);
     RRAnalysisWindows = CreateWindowRRintervals(tNN, NN, HRVparams);
     
-    %% 1. Atrial Fibrillation Detection
+    % 1. Atrial Fibrillation Detection
     try
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
         RRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest,HRVparams);
@@ -94,18 +94,18 @@ try
         fprintf('AF analysis failed for patient %s \n', subjectID);
     end
     
-    %% 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
+    % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
 
     [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
         RMSSD,pnn50,btsdet,avgsqi,fbeatw] = ...
         EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRAnalysisWindows,fbeats);
 
-    %% 3. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
+    % 3. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
 
      [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag] = ...
          EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRAnalysisWindows);
      
-    %% 4. PRSA
+    % 4. PRSA
     try
         [ac,dc,~] = prsa(NN, tNN, [], RRAnalysisWindows, HRVparams);
     catch
@@ -113,7 +113,7 @@ try
         dc = NaN;
     end
 
-    %% 5.Export HRV Metrics as CSV File
+    % 5.Export HRV Metrics as CSV File
     results = [RRAnalysisWindows(:), ac(:),dc(:),ulf(:),vlf(:),lf(:),hf(:), ...
                lfhf(:),ttlpwr(:),fdflag(:), NNmean(:),NNmedian(:), ...
                NNmode(:),NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),...
@@ -129,12 +129,12 @@ try
     
     fprintf('HRV metrics for file ID %s saved in the output folder in %s \n', subjectID, ResultsFileName);
     
-    %% 5. SDANN and SDNNi
+    % 5. SDANN and SDNNi
     [SDANN, SDNNI] = ClalcSDANN(RRAnalysisWindows, tNN, NN(:),HRVparams); 
 
     
     
-    %% 6. Multiscale Entropy
+    % 6. Multiscale Entropy
     try
         mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
         % Save Results for MSE

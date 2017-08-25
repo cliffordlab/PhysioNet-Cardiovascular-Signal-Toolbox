@@ -283,12 +283,14 @@ HRVparams.debug = 0;
 
 %% 16. Multiscale Entropy Settings
 
-HRVparams.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
-HRVparams.MSEpatternLength = 2;             % Pattern length
-HRVparams.maxCoarseGrainings = 12;          % Maximum number of coarse-grainings
+HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
+HRVparams.MSE.MSEpatternLength = 2;             % Pattern length
+HRVparams.MSE.maxCoarseGrainings = 12;          % Maximum number of coarse-grainings
 %
 
 %% Export Parameter as Latex Table
+% Note that if you change the order of the parameters or add parameters 
+% this might not work
 
 ExportHRVparams2Latex(HRVparams);
 

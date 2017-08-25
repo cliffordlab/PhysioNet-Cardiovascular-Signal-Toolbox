@@ -121,7 +121,6 @@ windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 figure(1);
 graphannot(AFtest, AfAnalysisWindows,.25);  
 
-
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
     RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = ...

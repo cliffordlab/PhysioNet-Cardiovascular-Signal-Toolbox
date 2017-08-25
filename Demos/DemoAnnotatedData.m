@@ -79,7 +79,8 @@ for i_patient = 1:numsub
         %% 4. Calculate AF Features
         
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
-
+        windows_all = RomoveAFsegments(windows_all,AfAnalysisWindows, AFtest,HRVparams);
+        
         %% 5. Calculate time domain HRV metrics - Using HRV Toolbox
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
             RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);

@@ -64,19 +64,15 @@ end
 
 TableNames = T.Properties.VariableNames;
 % Change Names to be in latex format
-TableNames = strrep(TableNames,'_',' ');
+TableNames = strrep(TableNames,'_','$_$');
 
 TableValues = table2cell(T);
 % Change Names to be in latex format
-for idx = 1: length(TableValues)
-    if iscellstr(TableValues(idx))
-        TableValues(idx) = strrep(TableValues(idx),{'\'},{'$\$'});
-        TableValues(idx) = strrep(TableValues(idx),{'_'},{' '});
-    elseif ~ischar(TableValues{1,idx})
-        TableValues{idx} = char(num2str(TableValues{1,idx}));
-    end
+for idx = 1: length(Tablevalues)
+    TableValues = strrep(ischar(TableValues),'_','$_$');
 end
 
 Tab = [TableNames' TableValues'];
+find()
 
-matrix2latex(Tab, [HRVparams.writedata filesep 'ParametersTable' HRVparams.filename '.tex']);
+matrix2latex(Tab, 'aaa');

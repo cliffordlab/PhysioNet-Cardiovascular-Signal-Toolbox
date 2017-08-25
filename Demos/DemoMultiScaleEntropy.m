@@ -51,8 +51,8 @@ t = cumsum(rr);
 %% 3. Calculate the Multiscale Entropy
 
 fprintf('Computing MSE...this may take a few minutes...\n')
-fprintf('Parameters used to calculate SempEntropy: m=%i r=%.2f \n', HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity);
-mse = ComputeMultiscaleEntropy(NN,HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity, HRVparams.maxCoarseGrainings);
+fprintf('Parameters used to calculate SempEntropy: m=%i r=%.2f \n', HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity);
+mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);
 fprintf('MSE completed!\n')
 plot(mse)
 xlabel('Scale Factor');

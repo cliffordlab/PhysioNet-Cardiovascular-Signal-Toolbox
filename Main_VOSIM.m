@@ -87,8 +87,8 @@ try
     
     %% 1. Atrial Fibrillation Detection
     try
-        [AFtest, ~] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
-        RRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows, AFtest);
+        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
+        RRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);
     catch
         fprintf('AF analysis failed for patient %s \n', subjectID);
@@ -136,7 +136,7 @@ try
     
     %% 6. Multiscale Entropy
     try
-        mse = ComputeMultiscaleEntropy(NN,HRVparams.MSEpatternLength, HRVparams.RadiusOfSimilarity, HRVparams.maxCoarseGrainings);  
+        mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
         % Save Results for MSE
         results = mse;
         col_titles = {'MSE'};

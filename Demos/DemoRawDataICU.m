@@ -82,8 +82,8 @@ HRVparams.gen_figs = 1;
 if HRVparams.gen_figs
     % ECG
     figure;
-    %stairs(windows_all,sqijw); hold on;
-    stairs(windows_all,sqijs);
+    %stairs(windowsSqiJW,sqijw); hold on;
+    stairs(windowsSqiJS,sqijs);
     for j = 1:length(jqrs_ann)
         line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','red');
         %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann),1),'o'); hold on;
@@ -186,7 +186,10 @@ windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 %% 6. Calculate AF Features
 
-afresults = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
+[afresults,AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
+windows_all = RomoveAFsegments(windows_all,AfAnalysisWindows, afresults, HRVparams);
+
+
 
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 fbeats = zeros(length(NN),1);

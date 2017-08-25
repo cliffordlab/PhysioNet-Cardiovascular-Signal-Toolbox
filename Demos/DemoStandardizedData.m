@@ -26,6 +26,8 @@
 clear all; clc; close all;
 HRVparams = InitializeHRVparams('demo'); % include the project name
 
+% Check existence of Output data folders and add to search path
+
 HRVparams.writedata = [HRVparams.writedata filesep 'RRgenData'];
 if ~exist(HRVparams.writedata, 'dir')
    mkdir(HRVparams.writedata)

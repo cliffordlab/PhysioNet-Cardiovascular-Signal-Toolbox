@@ -80,13 +80,6 @@ switch project_name
         HRVparams.ext = 'mat';             
 end
 
-% Check existence of Input\Output data folders and add to search path
-
-if  isempty(HRVparams.readdata) || ~exist([pwd filesep HRVparams.readdata], 'dir')    
-    error('Invalid data INPUT folder');    % If folder name is empty
-end
-addpath(HRVparams.readdata)
-
 if  isempty(HRVparams.writedata)    
     % Default data OUTPUT folder name based on project name
     HRVparams.writedata = strcat(project_name,'_Results');  
@@ -294,6 +287,10 @@ HRVparams.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
 HRVparams.MSEpatternLength = 2;             % Pattern length
 HRVparams.maxCoarseGrainings = 12;          % Maximum number of coarse-grainings
 %
+
+%% Export Parameter as Latex Table
+
+ExportHRVparams2Latex(HRVparams);
 
 
 end

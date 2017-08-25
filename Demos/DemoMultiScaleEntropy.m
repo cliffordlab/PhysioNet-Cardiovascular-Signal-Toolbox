@@ -25,6 +25,14 @@
 clear all; clc; close all;
 HRVparams = InitializeHRVparams('demo');   % Initialize settings for demo
 
+% Check existence of Input\Output data folders and add to search path
+
+if  isempty(HRVparams.readdata) || ~exist([pwd filesep HRVparams.readdata], 'dir')    
+    error('Invalid data INPUT folder');    % If folder name is empty
+end
+addpath(HRVparams.readdata)
+
+
 HRVparams.writedata = [HRVparams.writedata filesep 'MultiscaleEntropy'];
 if ~exist(HRVparams.writedata, 'dir')
    mkdir(HRVparams.writedata)

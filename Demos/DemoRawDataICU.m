@@ -53,9 +53,9 @@ load(filesTBA{i_patient});
 [wqrs]=wqrsm(signal(:,1)*2000);
 
 % QRS SQI
-[sqijs,windows_all] = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
+[sqijs,windowsSqiJS] = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
 
-[sqijw,windows_all] = bsqi(jqrs_ann(:),wqrs(:),HRVparams);
+[sqijw,windowsSqiJW] = bsqi(jqrs_ann(:),wqrs(:),HRVparams);
 
 % PPG Detection - qppg
 [ppg_ann] = qppg(signal(:,5),HRVparams.Fs);
@@ -83,11 +83,6 @@ if HRVparams.gen_figs
     clear j
     hold on;
 	plot(time,signal(:,1)); hold on;
-    %plot(sqrs./s.Fs,.79.*ones(length(sqrs),1),'o'); hold on;
-    %plot(wqrs./s.Fs,.81.*ones(length(wqrs),1),'o'); hold on;
-    %plot(windows_all,sqijw,'.','markersize',10); hold on;
-    %plot(windows_all, sqijs,'.','markersize',10); hold on;
-	%legend('ECG','jqrs','sqrs','wqrs','SQI JvW','SQI JvS');
     xlabel('Time (s)'); ylabel('Amplitude (mV)');
     title('ECG')
     

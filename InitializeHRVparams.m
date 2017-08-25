@@ -45,14 +45,9 @@ function HRVparams = InitializeHRVparams(project_name)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%% 
-% Initialize
+%%
 
-if nargin < 1
-    project_name = 'demo';
-end
-
-% Set up input options
+% Set up input options for a specific project
 switch project_name   
     
     % Define new project name and parameters
@@ -70,7 +65,7 @@ switch project_name
         HRVparams.ext = 'qrs';
         HRVparams.datatype = 'MARS';
         HRVparams.Fs = 125;
-        % RRGEN Optionn, these parameters are passed to rrgen.m only for 
+        % RRGEN Option, these parameters are passed to rrgen.m only for 
         %demo pourposes 
         HRVparams.demo.length = 5*60*60;   % Length of demo RR intervals in seconds
         HRVparams.demo.pe = 0.0003;        % Probability of ectopy ~ 1 per hr 
@@ -82,13 +77,7 @@ switch project_name
         HRVparams.writedata = 'OutputData';
         HRVparams.Fs = 128;
         HRVparams.datatype = 'MARS';
-        HRVparams.ext = 'mat';
-    
-    case 'mitarr'             % Parameters for demo using raw ECG data
-        HRVparams.readdata = 'MIT-Arrhythmia';
-        HRVparams.writedata = 'OutputMIT_Arrhythmia';
-        HRVparams.Fs = 360;
-        HRVparams.ext = 'dat';             
+        HRVparams.ext = 'mat';             
 end
 
 % Check existence of Input\Output data folders and add to search path
@@ -235,15 +224,15 @@ HF = [0.15 0.4];                    % Requires at least 7 s window
 
 HRVparams.freq.limits = [ULF; VLF; LF; HF];
 HRVparams.freq.threshold1 = HRVparams.threshold1;	% Threshold for which SQI represents good data
-                                    % (Used only when SQI is provided)
+                                                    % (Used only when SQI is provided)
 HRVparams.freq.threshold2 = 0.05;           % Amount (%) of data that can be rejected before a
-                                    % window is considered too low quality for analysis
-                                    % (Used only when SQI is provided)
+                                            % window is considered too low quality for analysis
+                                            % (Used only when SQI is provided)
 HRVparams.freq.zero_mean = 1;               % Option for subtracting the mean from the input data
 HRVparams.freq.methods = {'lomb'};
 HRVparams.freq.plot_on = 0;
 HRVparams.freq.dataoutput = 2;              % 1 = Print results to .txt file & outputs to return variables
-                                    % Anything else = outputs to return variables only
+                                            % Anything else = outputs to return variables only
 
 % The following settings are for debugging spectral analysis methods
 HRVparams.freq.debug_sine = 0;              % Adds sine wave to tachogram for debugging
@@ -252,19 +241,18 @@ HRVparams.freq.debug_weight = .03;
 
 % Lomb:
 HRVparams.freq.normalize_lomb = 0;	        % 1 = Normalizes Lomb Periodogram, 
-                                    % 0 = Doesn't normalize
+                                            % 0 = Doesn't normalize
 
 % Burg: (not recommended)
 HRVparams.freq.burg_poles = 15;    % Number of coefficients for spectral 
-                                    % estimation using the Burg method 
-                                    % (not recommended)
+                                   % estimation using the Burg method 
+                                   % (not recommended)
 
 % The following settings are only used when the user specifies spectral
 % estimation methods that use resampling
-% s.freq.methods = {'welch_rs','fft_rs'}
 HRVparams.freq.resampling_freq = 7; %Hz 
 HRVparams.freq.resample_interp_method = 'cub';  % 'cub' = cublic spline method (DEFAULT)
-                                        % 'lin' = linear spline method
+                                                % 'lin' = linear spline method
 HRVparams.freq.resampled_burg_poles = 100; 
 
 %% 12. SDANN and SDNNI Analysis Settings

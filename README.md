@@ -73,13 +73,16 @@ System requirements:
     for Matlab.
 
 2) Requires rrgen binary - compilation of rrgenV3.c on your system:
+
         1.  Compile rrgen
             Navigate to rrgen in HRV Toolbox & Compile using gcc
             gcc -Wall rrgenV3.c -lm -o rrgen
                 or
             gcc -Wall -o rrgenV3 rrgenV3.c 
+	    
         2.  Ensure executable is on the system path, or move executable to
             usr/local/bin or similar location on the path
+	    
         3.  Ensure executable is on Matlab's path using the addpath fn
 
 III. Starting Analysis

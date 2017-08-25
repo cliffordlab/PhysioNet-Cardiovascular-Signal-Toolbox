@@ -127,7 +127,7 @@ try
     % Save results
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRAnalysisWindows,results,col_titles, [],HRVparams, tNN, NN);
     
-    fprintf('HRV metrics for patien %s saved in the output folder in %s \n', subjectID, ResultsFileName);
+    fprintf('HRV metrics for file ID %s saved in the output folder in %s \n', subjectID, ResultsFileName);
     
     %% 5. SDANN and SDNNi
     [SDANN, SDNNI] = ClalcSDANN(RRAnalysisWindows, tNN, NN(:),HRVparams); 
@@ -143,17 +143,17 @@ try
         % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     catch
-        fprintf('MSE failed for patient %s \n', subjectID);
+        fprintf('MSE failed for file ID %s \n', subjectID);
     end
 
     
-    fprintf('HRV Analysis completed for patient %s \n',subjectID )
+    fprintf('HRV Analysis completed for file ID %s \n',subjectID )
 catch
     
     results = NaN;
     col_titles = {'NaN'};
     GenerateHRVresultsOutput(subjectID,RRAnalysisWindows,results,col_titles, [],HRVparams, tNN, NN);    
-    fprintf('Analysis not performed for patient %s \n', subjectID);
+    fprintf('Analysis not performed for file ID %s \n', subjectID);
 end
 
 end %== function ================================================================

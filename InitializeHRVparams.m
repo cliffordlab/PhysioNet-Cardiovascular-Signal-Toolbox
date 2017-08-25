@@ -52,11 +52,11 @@ switch project_name
     
     % Define new project name and parameters
     case 'MyProjectName'                   % Update with your project name
-        HRVparams.readdata = '';           % Specify data input folder\dir
-        HRVparams.writedata = '';          % Specify data output folder
+        HRVparams.readdata = '';           % (Optional) Specify data input folder\dir 
+        HRVparams.writedata = '';          % Specify name for data output folder
         HRVparams.Fs = Nan;                % Spacify sampling frequency
-        HRVparams.datatype = '';           % Spacify Data type
-        HRVparams.ext = '';                % Spacify file extension (e.g., 'mat','qrs')
+        HRVparams.datatype = '';           % (Optional) Spacify Data type
+        HRVparams.ext = '';                % (Optional) Spacify file extension (e.g., 'mat','qrs')
         
     % Existing demo projects
     case 'demo'                    % Parameters for demo using qrs data

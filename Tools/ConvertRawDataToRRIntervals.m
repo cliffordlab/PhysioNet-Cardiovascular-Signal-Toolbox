@@ -22,7 +22,7 @@ function [t,rr,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subj
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Function written by Adriana Vest and Giulia Da Poian
+%       Function written by Giulia Da Poian
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
@@ -33,7 +33,6 @@ function [t,rr,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subj
 if nargin < 3
     error('Wrong number of arguments in ConvertRawDataToRRIntervals')
 end
-    
 
 
 if size(ECG_RawData,1)<size(ECG_RawData,2)

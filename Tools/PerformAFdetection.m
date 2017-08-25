@@ -21,7 +21,7 @@ function [afresults, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HR
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Main script written by Adriana Vest and Giulia Da Poian
+%       This script written by Giulia Da Poian
 %       Dependent scripts written by various authors 
 %       (see functions for details)       
 %	COPYRIGHT (C) 2016 

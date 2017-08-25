@@ -87,8 +87,19 @@ try
     
     %% 1. Atrial Fibrillation Detection
     try
-        [AFtest, ~] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
-        RRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows, AFtest);
+        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
+        % Exclude AF Segments
+        idx_afsegs = (find(AFtest == 1));
+        if ~isempty(idx_afsegs)
+            afsegs = AfAnalysisWindows(idx_afsegs);	% afsegs is in seconds
+            for k = 1:length(afsegs)
+                try
+                    idx_af(k) = find(RRAnalysisWindows <= afsegs(k) & HRVparams.increment + RRAnalysisWindows > afsegs(k));
+                catch
+                end
+            end
+            RRAnalysisWindows(idx_af) = NaN;
+        end
         fprintf('AF analysis completed for patient %s \n', subjectID);
     catch
         fprintf('AF analysis failed for patient %s \n', subjectID);

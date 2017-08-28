@@ -3,12 +3,13 @@ function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %   cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams )
 %
 %	OVERVIEW:
-%       Perform Atrial Fibrillation (AF) detection 
+%       Remove windows containing AF segments 
 %
 %   INPUT:
 %       RRAnalysisWindows : string containing the identifier of the subject to be analyze    
 %       AfAnalysisWindows :
 %       AFtest            :
+%       HRVparams         :
 %   OUTPUT:
 %       cleanRRAnalysisWindows :  
 %

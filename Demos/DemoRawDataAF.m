@@ -20,12 +20,12 @@
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all; clc; close all;
+
 HRVparams = InitializeHRVparams('rawdatademo'); % include the project name
-
 % Check existence of Input\Output data folders and add to search path
-
 if  isempty(HRVparams.readdata) || ~exist([pwd filesep HRVparams.readdata], 'dir')    
     error('Invalid data INPUT folder');    % If folder name is empty
 end
@@ -104,7 +104,6 @@ write_ann([AnnotationFolder subjectIDs{i_patient}],HRVparams,'sqijs',sqijs);
 write_ann([AnnotationFolder subjectIDs{i_patient}],HRVparams,'sqijw',sqijw);
 
 
-
 %% 3. Preprocess RR Data - Using HRV Toolbox
 % Remove noise, Remove ectopy, Don't detrend (yet)
 
@@ -117,6 +116,7 @@ t = jqrs_ann(1:end-1)./HRVparams.Fs;
 windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 %% 5. Calculate AF Features
+
 [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);  
 figure(1);
 graphannot(AFtest, AfAnalysisWindows,.25);  

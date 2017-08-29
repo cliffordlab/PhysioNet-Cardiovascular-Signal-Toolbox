@@ -285,7 +285,7 @@ HRVparams.debug = 0;
 
 HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
 HRVparams.MSE.MSEpatternLength = 2;             % Pattern length
-HRVparams.MSE.maxCoarseGrainings = 12;          % Maximum number of coarse-grainings
+HRVparams.MSE.maxCoarseGrainings = 7;           % Maximum number of coarse-grainings
 %
 
 %% Export Parameter as Latex Table

@@ -37,14 +37,23 @@ NN_afcalc = NN .* HRVparams.Fs;
 
 for i = 1:length(AfAnalysisWindows)
     tstart = AfAnalysisWindows(i);
-    if isnan(tstart)
+    if isnan(tstart) 
         features_af = NaN;
         AFtest(i) = NaN;
     else
         idx_af = find(tNN >= tstart & tNN < tstart + HRVparams.af.windowlength);
-        features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
-        AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
+        % The AF_feautures function requires that the input a RR interval
+        % time series has beat number between 12 and 60
+        if length(NN_afcalc(idx_af)) < 12 || length(NN_afcalc(idx_af)) >60
+            features_af = NaN;
+            AFtest(i) = NaN;  
+        else
+            features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
+            AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
+        end
     end
+    clc
+    
 end
 
 

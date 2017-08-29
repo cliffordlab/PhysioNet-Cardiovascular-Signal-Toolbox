@@ -87,12 +87,11 @@ try
     RRAnalysisWindows = CreateWindowRRintervals(tNN, NN, HRVparams);
     
     % 1. Atrial Fibrillation Detection
-    try
+    if HRVparams.af.on == 1
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
+        % Remove RRAnalysisWindows contating AF segments
         RRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);
-    catch
-        fprintf('AF analysis failed for patient %s \n', subjectID);
     end
     
     % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        

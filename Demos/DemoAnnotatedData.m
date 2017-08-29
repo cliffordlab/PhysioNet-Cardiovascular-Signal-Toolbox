@@ -1,7 +1,5 @@
 %	OVERVIEW:
 %       Main HRV Toolbox script
-%   INPUT:
-%       Currently configured to accept GE MARS "Twins" data
 %   OUTPUT:
 %       HRV Metrics
 %

@@ -6,12 +6,19 @@ function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %       Remove windows containing AF segments 
 %
 %   INPUT:
-%       RRAnalysisWindows : string containing the identifier of the subject to be analyze    
-%       AfAnalysisWindows :
-%       AFtest            :
-%       HRVparams         :
+%       RRAnalysisWindows : vector containing windows indexes corresponding 
+%                           to RR interval segmentation for HRV analysis    
+%       AfAnalysisWindows : vector containing windows indexes corresponding 
+%                           to RR interval segmentation for AF analysis
+%       AFtest            : vector containing flags (1) for AF windows and 
+%                           (0) for non-AF segemnts 
+%       HRVparams         : 
 %   OUTPUT:
-%       cleanRRAnalysisWindows :  
+%       cleanRRAnalysisWindows : vector containing windows indexes corresponding 
+%                                to RR interval segmentation for HRV analysis
+%                                where windows containing AF are identified
+%                                by a NaN index and therfore exluded during
+%                                analysis
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox

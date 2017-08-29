@@ -6,12 +6,15 @@ function [afresults, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HR
 %
 %   INPUT:
 %       subjectID : string containing the identifier of the subject to be analyze      
-%       tNN       :
-%       NN        :
-%       HRVparam  :
+%       tNN       : a single row of time indices of the rr interval 
+%                   data (seconds)
+%       NN        : a single row of NN (normal normal) interval
+%                   data in seconds
+%       HRVparam  : struct of settings for hrv_toolbox analysis
 %
 %   OUTPUT:
-%       afresults :  
+%       afresults : a single row containing a flag (1) when AF is
+%                   dettected in a window and 0 if no AF 
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox

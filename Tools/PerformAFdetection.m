@@ -39,7 +39,7 @@ AfAnalysisWindows = CreateWindowRRintervals(tNN,NN,HRVparams,'af');
 NN_afcalc = NN .* HRVparams.Fs;
 
 for i = 1:length(AfAnalysisWindows)
-    tstart = AfAnalysisWindows(i);
+    tstart = features(i);
     if isnan(tstart) 
         features_af = NaN;
         AFtest(i) = NaN;
@@ -47,9 +47,7 @@ for i = 1:length(AfAnalysisWindows)
         idx_af = find(tNN >= tstart & tNN < tstart + HRVparams.af.windowlength);
         features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
         AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
-    end
-    clc
-    
+    end    
 end
 
 

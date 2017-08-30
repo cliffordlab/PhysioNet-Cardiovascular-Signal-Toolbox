@@ -39,14 +39,19 @@ AfAnalysisWindows = CreateWindowRRintervals(tNN,NN,HRVparams,'af');
 NN_afcalc = NN .* HRVparams.Fs;
 
 for i = 1:length(AfAnalysisWindows)
-    tstart = features(i);
+    tstart = AfAnalysisWindows(i);
     if isnan(tstart) 
         features_af = NaN;
         AFtest(i) = NaN;
     else
         idx_af = find(tNN >= tstart & tNN < tstart + HRVparams.af.windowlength);
-        features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
-        AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
+        % When the RR interval time series is < 8 cannot extract feautures
+        if length(NN_afcalc(idx_af)) < 8 
+            features_af = NaN;
+        else
+            features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
+            AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
+        end
     end    
 end
 

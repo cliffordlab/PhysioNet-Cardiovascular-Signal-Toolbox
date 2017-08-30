@@ -123,9 +123,9 @@ HRVparams.numsegs = 5;          % number of segments to collect with lowest HR
 %% 4. Quality Threshold Settings
 HRVparams.threshold1 = 0;       % Threshold for which SQI represents good data
 HRVparams.threshold2 = .20;     % Amount (%) of data that can be rejected before a
-                        % window is considered too low quality for analysis
+                                % window is considered too low quality for analysis
 HRVparams.win_tol = .15;        % maximum percentage of data allowable to be missing
-                        %  from a window .15 = 15%
+                                % from a window .15 = 15%
 %% 5. Debug Settings
 
 HRVparams.rawsig = 0;           % Load raw signal if it is available for debugging
@@ -148,15 +148,15 @@ end
 
 % Format settings for HRV Outputs
 HRVparams.output.format = 'csv';        % 'csv' - creates csv file for output
-                                % 'mat' - creates .mat file for output
+                                        % 'mat' - creates .mat file for output
 HRVparams.output.separate = 0;          % 1 = separate files for each subject
-                                % 0 = all results in one file
+                                        % 0 = all results in one file
 HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
-                                % leave blank if all windows should be returned
+                                        % leave blank if all windows should be returned
 
-                                % Format settings for annotations generated
+                                        % Format settings for annotations generated
 HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file generated
-                                % 'csv'     = ASCII CSV file generated
+                                        % 'csv'     = ASCII CSV file generated
                             
 
 %% 8. Time of Process and Filename to Save Data
@@ -170,12 +170,12 @@ HRVparams.filename = [project_name '_' HRVparams.time];
 %% 9. Preprocess Settings
 
 HRVparams.preprocess.figures = HRVparams.gen_figs;      % Figures on = 1, Figures off = 0
-HRVparams.preprocess.gaplimit = 4;              % seconds; maximum believable gap 
-                                        % in rr intervals
+HRVparams.preprocess.gaplimit = 4;                      % seconds; maximum believable gap 
+                                                        % in rr intervals
 HRVparams.preprocess.per_limit = 0.2;           % Percent limit of change from one 
-                                        % interval to the next
+                                                % interval to the next
 HRVparams.preprocess.forward_gap = 3;	        % Maximum tolerable gap at beginning  
-                                        % of timeseries in seconds
+                                                % of timeseries in seconds
 HRVparams.preprocess.method_outliers = 'pchip';   % Method of dealing with outliers
                                         % 'cub' = replace outlier points 
                                         %  with cubic spline method
@@ -200,13 +200,13 @@ HRVparams.preprocess.minlength = 30;             % (seconds) The minimum length 
 
 HRVparams.timedomain.threshold1 = HRVparams.threshold1;  % Threshold for which SQI represents good data
 HRVparams.timedomain.threshold2 = 0.20;          % Amount (%) of data that can be rejected before a
-                                         % window is considered too low quality for analysis
+                                                 % window is considered too low quality for analysis
 HRVparams.timedomain.dataoutput = 0;             % 1 = Print results to .txt file
-                                         % Anything else = utputs to return variables only
-                                         % returned variables
+                                                 % Anything else = utputs to return variables only
+                                                 % returned variables
 HRVparams.timedomain.alpha = 0.050;              % In seconds
-HRVparams.timedomain.win_tol = HRVparams.win_tol;        % Maximum percentage of data allowable 
-                                         % to be missing from a window
+HRVparams.timedomain.win_tol = HRVparams.win_tol;    % Maximum percentage of data allowable 
+                                                     % to be missing from a window
 
 %% 11. Frequency Domain Analysis Settings
 

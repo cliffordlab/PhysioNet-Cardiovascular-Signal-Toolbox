@@ -159,13 +159,9 @@ HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file gen
                                         % 'csv'     = ASCII CSV file generated
                             
 
-%% 8. Time of Process and Filename to Save Data
-
-HRVparams.time = datestr(now);                  % Setup time for filename of output
-HRVparams.time = strrep(HRVparams.time,'-','');
-HRVparams.time = strrep(HRVparams.time,' ','');
-HRVparams.time = strrep(HRVparams.time,':','');
-HRVparams.filename = [project_name '_' HRVparams.time];
+%% 8. Filename to Save Data
+HRVparams.time = datestr(now, 'yyyymmdd');      % Setup time for filename of output
+HRVparams.filename = [HRVparams.time '_' project_name];
 
 %% 9. Preprocess Settings
 

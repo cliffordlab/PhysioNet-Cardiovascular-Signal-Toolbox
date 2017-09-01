@@ -1,4 +1,4 @@
-function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams)
+function cleanRRAnalysisWindows = RomoveAFsegments1(tNN,NN,AfAnalysisWindows, AFtest, HRVparams)
 
 %   cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams )
 %
@@ -6,8 +6,8 @@ function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %       Remove windows containing AF segments 
 %
 %   INPUT:
-%       RRAnalysisWindows : vector containing windows indexes corresponding 
-%                           to RR interval segmentation for HRV analysis    
+%       tNN               : 
+%       NN                :
 %       AfAnalysisWindows : vector containing windows indexes corresponding 
 %                           to RR interval segmentation for AF analysis
 %       AFtest            : vector containing flags (1) for AF windows and 
@@ -28,7 +28,7 @@ function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       This script written by Giulia Da Poian
+%       Script written by Giulia Da Poian
 %       Dependent scripts written by various authors 
 %       (see functions for details)       
 %	COPYRIGHT (C) 2016 
@@ -38,19 +38,30 @@ function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %       more information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-cleanRRAnalysisWindows = RRAnalysisWindows;
+
+
+
 
 % Exclude AF Segments
-afsegs = AfAnalysisWindows(AFtest == 1); % afsegs is in seconds
-idx_af = [];
+idx_afsegs = AfAnalysisWindows(AFtest == 1);
+cleanRRAnalysisWindows = [];
 
-if ~isempty(afsegs)
-    for k = 1:length(afsegs)
-        try
-            idx_af = [idx_af find(RRAnalysisWindows <= afsegs(k) & HRVparams.windowlength + RRAnalysisWindows > afsegs(k))];
-        catch
+if ~isempty(idx_afsegs) 
+    
+    for kk = 1:length(idx_afsegs)
+        if kk==1
+            tstart = 0;
+            tstop = idx_afsegs(kk);
+        else
+            tstart = idx_afsegs(kk-1)+HRVparams.af.increment;
+            tstop = idx_afsegs(kk);
+        end   
+        
+        tmp_NN = NN(tNN>=tstart & tNN <= tstop);
+        tmp_tNN = tNN(tNN>=tstart & tNN <= tstop)-tstart;
+        if ~isempty(tmp_NN) 
+           cleanRRAnalysisWindows = [cleanRRAnalysisWindows CreateWindowRRintervals(tmp_tNN, tmp_NN, HRVparams)];
         end
+        
     end
-    cleanRRAnalysisWindows(idx_af) = NaN;   
 end
-

@@ -42,15 +42,13 @@ cleanRRAnalysisWindows = RRAnalysisWindows;
 
 % Exclude AF Segments
 afsegs = AfAnalysisWindows(AFtest == 1); % afsegs is in seconds
-idx_af = [];
 
 if ~isempty(afsegs)
     for k = 1:length(afsegs)
         try
-            idx_af = [idx_af find(RRAnalysisWindows <= afsegs(k) & HRVparams.windowlength + RRAnalysisWindows > afsegs(k))];
+            [idx_af = find(RRAnalysisWindows <= afsegs(k) & HRVparams.windowlength + RRAnalysisWindows > afsegs(k));
         catch
         end
     end
-    cleanRRAnalysisWindows(idx_af) = NaN;   
+    cleanRRAnalysisWindows(idx_af) = NaN;
 end
-

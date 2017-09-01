@@ -61,9 +61,9 @@ HRVparams.Fs = 128;
 [wqrs]=wqrsm(signal(:,1)*2000);
 
 % QRS SQI
-[sqijs,windows_all] = bsqi(jqrs_ann,sqrs,HRVparams);  
+[sqijs,RRwindowStartIndices] = bsqi(jqrs_ann,sqrs,HRVparams);  
 
-[sqijw,windows_all] = bsqi(jqrs_ann,wqrs,HRVparams);
+[sqijw,RRwindowStartIndices] = bsqi(jqrs_ann,wqrs,HRVparams);
 
 HRVparams.gen_figs = 1;
 if HRVparams.gen_figs
@@ -73,13 +73,13 @@ if HRVparams.gen_figs
     %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann)),'o'); hold on;
     %plot(sqrs./s.Fs,.79.*ones(length(sqrs)),'o'); hold on;
     %plot(wqrs./s.Fs,.81.*ones(length(wqrs)),'o'); hold on;
-    %plot(windows_all,sqijw,'.','markersize',10); hold on;
-    stairs(windows_all,sqijw);
+    %plot(RRwindowStartIndices,sqijw,'.','markersize',10); hold on;
+    stairs(RRwindowStartIndices,sqijw);
     for j = 1:length(jqrs_ann)
         line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','red');
         %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann),1),'o'); hold on;
     end
-    %plot(windows_all, sqijs,'.','markersize',10); hold on;
+    %plot(RRwindowStartIndices, sqijs,'.','markersize',10); hold on;
 	legend('ECG','jqrs','sqrs','wqrs','SQI JvW','SQI JvS');
     xlabel('Time (s)'); ylabel('Amplitude (mV)');
     title('ECG')
@@ -113,29 +113,29 @@ t = jqrs_ann(1:end-1)./HRVparams.Fs;
 [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
 
 %% 4. Calculate Windows
-windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
+RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 %% 5. Calculate AF Features
 
-[AFtest, AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);  
+[AFtest, AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);  
 figure(1);
-graphannot(AFtest, AfAnalysisWindows,.25);  
+graphannot(AFtest, AFwindowsStartIndices,.25);  
 
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-    RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = ...
-    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);
+    RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
+    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
 
 %% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
 %%% TO DO: Remove necessity of creating phantom beats with lomb 
 
 [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,windows_all);
+   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
 
 %% 9. PRSA
 try
-    [ac,dc,~] = prsa(NN, tNN, [], windows_all, HRVparams);
+    [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
 catch
     ac = NaN; 
     dc = NaN;
@@ -143,11 +143,11 @@ catch
 end
 
 %% 10. SDANN and SDNNi
-[SDANN, SDNNI] = ClalcSDANN(windows_all, tNN, NN(:),HRVparams);
+[SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
 %% 12. Export HRV Metrics as CSV File
 %Uncomment the following lines for All Results
-results = [windows_all(:), ac(:),dc(:),...
+results = [RRwindowStartIndices(:), ac(:),dc(:),...
     ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
     NNmean(:),NNmedian(:),NNmode(:),...
     NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fbeatw(:)];
@@ -161,7 +161,7 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
 %col_titles = {'NN Mean','NNmedian'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput(subjectIDs{i_patient},windows_all,results,col_titles, [],HRVparams, tNN, NN);
+resFilename = GenerateHRVresultsOutput(subjectIDs{i_patient},RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
 
 fprintf('A file named %s.%s \n has been saved in %s \n', ...
     resFilename,HRVparams.output.format, HRVparams.writedata);

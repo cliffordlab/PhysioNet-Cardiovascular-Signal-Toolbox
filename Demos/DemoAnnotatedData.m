@@ -59,7 +59,7 @@ for i_patient = 1:numsub
     
         %% 1. Import Patient Data
         % HRVparams = initialize_HRVparams('demo'); % enable this when using parfor loops
-        windows_all = [];
+        RRwindowStartIndices = [];
         tNN = [];
         NN = [];
         [samples, t, rr, ~, ~, annotations, HRVparams.Fs, ~, ~] = read_qrs(filesTBA{i_patient},HRVparams.datatype);
@@ -72,27 +72,27 @@ for i_patient = 1:numsub
         [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, [], HRVparams);
 
         %% 3. Calculate Windows
-        windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);   
+        RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);   
 
         %% 4. Calculate AF Features
         
-        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
-        windows_all = RomoveAFsegments(windows_all,AfAnalysisWindows, AFtest,HRVparams);
+        [AFtest, AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
+        RRwindowStartIndices = RomoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, AFtest,HRVparams);
         
         %% 5. Calculate time domain HRV metrics - Using HRV Toolbox
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-            RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);
+            RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
 
         %% 6. Frequency domain HRV metrics (LF HF TotPow)
         %       All Inputs in Seconds
         %%% TO DO: Remove necessity of creating phantom beats with lomb 
 
         [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-            EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,windows_all);
+            EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
 
         %% 7. PRSA
         try
-            [ac,dc,~] = prsa(NN, tNN, [], windows_all, HRVparams);
+            [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
         catch
             ac = NaN; 
             dc = NaN;
@@ -100,7 +100,7 @@ for i_patient = 1:numsub
         end
 
         %% 8. SDANN and SDNNi
-        [SDANN, SDNNI] = ClalcSDANN(windows_all, tNN, NN(:),HRVparams);
+        [SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
         %% 9. Compare to YALE & Joe Mietus's HRV Toolbox
         % J M Toolbox Results
@@ -123,7 +123,7 @@ for i_patient = 1:numsub
   
         %% 10. Save Results
         % Uncomment the following lines for All Results
-        results = [windows_all(:),ac(:),dc(:),...
+        results = [RRwindowStartIndices(:),ac(:),dc(:),...
             ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
             NNmean(:),NNmedian(:),NNmode(:),...
             NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fbeatw(:)];
@@ -137,7 +137,7 @@ for i_patient = 1:numsub
         %col_titles = {'NN Mean'};
 
         % Generates Output - Never comment out
-        resFilename = GenerateHRVresultsOutput(subjectIDs(i_patient),windows_all,results,col_titles, [], HRVparams, tNN, NN);
+        resFilename = GenerateHRVresultsOutput(subjectIDs(i_patient),RRwindowStartIndices,results,col_titles, [], HRVparams, tNN, NN);
 
         fprintf('Completing subject %5s \n', ...
             subjectIDs{i_patient});
@@ -157,7 +157,7 @@ for i_patient = 1:numsub
         results = NaN;
         col_titles = {'NaN'};
         fprintf('Error on subject %s \n', char(subjectIDs(i_patient)));
-        GenerateHRVresultsOutput(subjectIDs(i_patient),windows_all,results,col_titles,[],HRVparams,tNN,NN);
+        GenerateHRVresultsOutput(subjectIDs(i_patient),RRwindowStartIndices,results,col_titles,[],HRVparams,tNN,NN);
         %clearvars NN tNN t rr sqi ac dc ulf vlf lf hf lfhf ttlpwr methods fdflag NNmean NNmedian NNmode NNvariance NNskew NNkurt SDNN NNiqr RMSSD pnn50;
     end
     

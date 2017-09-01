@@ -45,13 +45,13 @@ t = cumsum(rr);
 [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
 
 %% 3. Calculate Windows
-windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
+RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 
 %% 4. Calculate time domain HRV metrics - Using HRV Toolbox
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-    RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = ...
-    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);
+    RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
+    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
 
 %% 6. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
@@ -59,11 +59,11 @@ windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 %%% TO DO: Only should return these metrics for 5 min segments
 
 [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,windows_all);
+   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
 
 %% 7. PRSA
 try
-    [ac,dc,~] = prsa(NN, tNN, [], windows_all, HRVparams);
+    [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
 catch
     ac = NaN;
     dc = NaN;
@@ -71,11 +71,11 @@ catch
 end
 
 %% 8. SDANN and SDNNi
-[SDANN, SDNNI] = ClalcSDANN(windows_all, tNN, NN(:),HRVparams);
+[SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
 %% 10. Save Results
 % Uncomment the following lines for All Results
-results = [windows_all(:),ac(:),dc(:),...
+results = [RRwindowStartIndices(:),ac(:),dc(:),...
     ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
     NNmean(:),NNmedian(:),NNmode(:),...
     NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),...
@@ -89,7 +89,7 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
 % col_titles = {'NN Mean','NNmedian'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput('demo',windows_all,results,col_titles, [],HRVparams, tNN, NN);
+resFilename = GenerateHRVresultsOutput('demo',RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
 
 
 fprintf('A file named %s.%s \n has been saved in %s \n', ...

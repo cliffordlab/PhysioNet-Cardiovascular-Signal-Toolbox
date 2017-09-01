@@ -2,8 +2,8 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %
 % windowRRintervals = CreateWindowRRintervals(NN, tNN, settings, options)
 %   
-%   OVERVIEW:   This function returns the starting time (in seconds) of 
-%               each window to be analyzed.
+%   OVERVIEW:   This function returns the starting index in seconds of each
+%               windows to be analyzed.
 %
 %   INPUT:      tNN       : a single row of time indices of the rr interval 
 %                           data (seconds)
@@ -12,10 +12,7 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %               HRVparams : struct of settings for hrv_toolbox analysis
 %               option    : 'normal', 'af', 'sqi'
 %               
-%   OUTPUT:     windowRRintervals : array containing the starting time 
-%                                   (in seconds) of each window to be
-%                                   analyzed
-%                                   
+%   OUTPUT:     windowRRintervals : array contatinitiale  seconds 
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox

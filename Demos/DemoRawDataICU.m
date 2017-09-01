@@ -182,41 +182,41 @@ t = jqrs_ann(1:end-1)./HRVparams.Fs;
 [NN, tNN, ~] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
 
 %% 5. Calculate Windows
-windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
+RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 %% 6. Calculate AF Features
 
-[afresults,AfAnalysisWindows] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
-windows_all = RomoveAFsegments(windows_all,AfAnalysisWindows, afresults, HRVparams);
+[afresults,AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
+RRwindowStartIndices = RomoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, afresults, HRVparams);
 
 
 
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 fbeats = zeros(length(NN),1);
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-    RMSSD,pnn50,btsdet,avgsqi,fbeatw, windows_all] = ...
-    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,windows_all,fbeats);
+    RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
+    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
 
 %% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
 
 [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,windows_all);
+   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
 
 %% 9. PRSA
 try
-    [ac,dc,~] = prsa(NN, tNN, [], windows_all, HRVparams);
+    [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
 catch
     ac = NaN; 
     dc = NaN;
 end
 
 %% 10. SDANN and SDNNi
-[SDANN, SDNNI] = ClalcSDANN(windows_all, tNN, NN(:),HRVparams); 
+[SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
 
 %% 11. Export HRV Metrics as CSV File
 %Uncomment the following lines for All Results
-results = [windows_all(:), ac(:),dc(:),...
+results = [RRwindowStartIndices(:), ac(:),dc(:),...
     ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
     NNmean(:),NNmedian(:),NNmode(:),...
     NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fbeatw(:)];
@@ -230,7 +230,7 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
 %col_titles = {'NN Mean','NNmedian'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput(subjectIDs(i_patient),windows_all,results,col_titles, [],HRVparams, tNN, NN);
+resFilename = GenerateHRVresultsOutput(subjectIDs(i_patient),RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
 
 fprintf('A file named %s.%s \n has been saved in %s \n', ...
     resFilename,HRVparams.output.format, HRVparams.writedata);

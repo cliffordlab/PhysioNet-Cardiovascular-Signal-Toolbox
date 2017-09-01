@@ -90,7 +90,7 @@ end
     if HRVparams.af.on == 1
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
         % Create RRAnalysisWindows contating AF segments
-        RRwindowStartIndices = RomoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
+        RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);
     end
     

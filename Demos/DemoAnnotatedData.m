@@ -77,7 +77,7 @@ for i_patient = 1:numsub
         %% 4. Calculate AF Features
         
         [AFtest, AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
-        RRwindowStartIndices = RomoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, AFtest,HRVparams);
+        RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, AFtest,HRVparams);
         
         %% 5. Calculate time domain HRV metrics - Using HRV Toolbox
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...

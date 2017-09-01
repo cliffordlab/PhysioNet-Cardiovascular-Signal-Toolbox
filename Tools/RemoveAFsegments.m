@@ -1,6 +1,6 @@
-function cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams)
+function cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams)
 
-%   cleanRRAnalysisWindows = RomoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams )
+%   cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams )
 %
 %	OVERVIEW:
 %       Remove windows containing AF segments 

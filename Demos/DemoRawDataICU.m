@@ -187,7 +187,7 @@ RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 %% 6. Calculate AF Features
 
 [afresults,AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);
-RRwindowStartIndices = RomoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, afresults, HRVparams);
+RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, afresults, HRVparams);
 
 
 

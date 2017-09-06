@@ -70,12 +70,12 @@ end
 
 
 
-%try    
+try   
     if strcmp(InputFormat, 'ECGWaveform')
         % Convert ECG waveform in rr intervals
         [t, rr, sqi] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
         avgLeadSQI = mean(sqi);
-        GenerateHRVresultsOutput(subjectID,[],avgLeadSQI,'SQI','SQI',HRVparams,[],[]);    
+        GenerateHRVresultsOutput(subjectID,[],avgLeadSQI,'SQI','SQI',HRVparams,[],[]);  
     else
         rr = InputSig; 
         sqi = [];
@@ -148,13 +148,19 @@ end
 
     
     fprintf('HRV Analysis completed for file ID %s \n',subjectID )
-%catch
+catch
     
     results = NaN;
     col_titles = {'NaN'};
     GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);    
     fprintf('Analysis not performed for file ID %s \n', subjectID);
-%end
+end
+
+
+
+
+
+
 
 end %== function ================================================================
 %

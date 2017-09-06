@@ -1,6 +1,6 @@
 function r = run_wabp(abp)
 % WABP  ABP waveform onset detector.
-%   r = WABP(ABP) obtains the onset time (in samples) 
+%   r = run_wabp(abp) obtains the onset time (in samples) 
 %       of each beat in the ABP waveform.
 %
 %   In:   ABP (125Hz sampled)

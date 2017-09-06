@@ -52,7 +52,7 @@ i_patient = idx;
 load(filesTBA{i_patient});
 
 % QRS Dection 1 - jqrs
-[jqrs_ann,sign,en_thres] = jqrs(signal(:,1),HRVparams);
+[jqrs_ann,sign,en_thres] = jqrs(signal(:,1),HRVparams); 
 
 % QRS Detection 2 - sqrs
 [sqrs] = run_sqrs(signal(:,1)*2000,HRVparams,0);

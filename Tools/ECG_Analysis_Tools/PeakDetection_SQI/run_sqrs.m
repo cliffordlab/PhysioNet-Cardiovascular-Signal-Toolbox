@@ -1,5 +1,5 @@
 function out = run_sqrs(ecg,HRVparams,rs)
-%[fid] = run_sqrs(ecg,s,rs)
+%out = run_sqrs(ecg,s,rs)
 %	OVERVIEW:
 %       QRS onset detector
 %   INPUT:
@@ -7,7 +7,7 @@ function out = run_sqrs(ecg,HRVparams,rs)
 %       s   = settings struct
 %       rs  = resampling option; 1 = resample original signal, 0 = don't
 %   OUTPUT:
-%       fid = sample points of onset of each QRS complex
+%       out = sample points of onset of each QRS complex
 %   DEPENDENCIES & LIBRARIES:
 %   REFERENCE: 
 %	REPO:       

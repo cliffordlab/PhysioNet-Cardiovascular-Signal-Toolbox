@@ -1,4 +1,4 @@
-function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations)
+function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations,varargin)
 %  ====================== VOSIM Toolbox Main Script ======================
 %
 %   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -12,13 +12,18 @@ function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVpar
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
 %                     'RRinetrvals' for RR interval data 
-%                     'ECGWaveform' for ECG waveform 
+%                     'ECGWaveform' for ECG waveform
 %       HRVparams   - struct of settings for hrv_toolbox analysis that can
 %                     be obtained using InitializeHRVparams.m function 
 %                     HRVparams = InitializeHRVparams();
 %       subjectID   - (optional) string to identify current subject
 %       annotations - (optional) annotations of the RR data at each point
 %                     indicating the quality of the beat 
+%   OPTIONAL INPUTS:
+%       Use InputSig, Type pairs for additional signals such as ABP 
+%       or PPG signal. The input signal must be a vector containing
+%       signal waveform and the Type: 'ABP' and\or 'PPG'.
+%       
 %
 %   OUTPUT
 %       results - HRV time and frequency domain metrics as well as AC and
@@ -30,14 +35,13 @@ function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVpar
 %       NOTE: before running this script review and modifiy the parameters
 %             in "initialize_HRVparams.m" file accordingly with the specific
 %             of the new project (see the readme.txt file for further details)   
-%   EXAMPLE
+%   EXAMPLES
 %       - rr interval input
 %       Main_VOSIM(RR,t,'RRintervals',HRVparams)
-%       - MIT Arrhythmia ECG wavefrom input
+%       - ECG wavefrom input
 %       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,'101')
-%    
-%   OUTPUT:
-%       HRV Metrics 
+%       - ECG waveform and also ABP and PPG waveforms
+%       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -68,12 +72,21 @@ if nargin < 6
     annotations = [];
 end
 
+if length(varargin) == 1 || length(varargin) == 3
+    error('Incomplete Signal-Type pair')
+elseif length(varargin)  == 2
+    extraSigType = varargin(2);
+    extraSig = varargin{1};
+elseif length(varargin)  == 4
+    extraSigType = [varargin(2) varargin(4)];
+    extraSig = [varargin{1} varargin{3}];
+end
 
 
 try   
     if strcmp(InputFormat, 'ECGWaveform')
         % Convert ECG waveform in rr intervals
-        [t, rr, sqi] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+        [t, rr, jqrs_ann, sqi] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
         avgLeadSQI = mean(sqi);
         GenerateHRVresultsOutput(subjectID,[],avgLeadSQI,'SQI','SQI',HRVparams,[],[]);  
     else
@@ -146,8 +159,14 @@ try
         fprintf('MSE failed for file ID %s \n', subjectID);
     end
 
+    % 7. Analyze additional signals (ABP, PPG or both)
+    if ~isempty(varargin)
+        fprintf('Analyizing %s \n', extraSigType{:});
+        Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
+    end
     
     fprintf('HRV Analysis completed for file ID %s \n',subjectID )
+    
 catch
     
     results = NaN;

@@ -1,5 +1,5 @@
-function [t,rr,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
-%   [t,rr,sqijw] = ConvertRawDataToRRIntervals(HRVparams)  
+function [t,rr,jqrs_ann,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
+%   [t,rr,jqrs_ann,sqijw] = ConvertRawDataToRRIntervals(HRVparams)  
 %
 %	OVERVIEW:
 %       Load raw signal perfom QRS detection & Signal Quality Index SQI

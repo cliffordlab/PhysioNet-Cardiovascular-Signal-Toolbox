@@ -30,7 +30,7 @@ for i = 1:NmbOfSigs
             [PPGann] = qppg(Waveform(:,i),HRVparams.Fs);
             % PPG SQI 
             [ppgsqi,~,~,~] = PPG_SQI_buf(Waveform(:,i),PPGann);
-            % Write annotations
+            % Write PPG  annotations
             write_ann([AnnotationFolder subjectID],HRVparams,'ppg',PPGann);
             write_ann([AnnotationFolder subjectID],HRVparams,'sqippg',PPGann,char(ppgsqi));
             
@@ -42,19 +42,20 @@ for i = 1:NmbOfSigs
             % ABP SQI
             ABPfeatures =  abpfeature(Waveform(:,i), ABPann, HRVparams.Fs);
             [BeatQ, ~] = jSQI(ABPfeatures, ABPann, Waveform(:,i));
-            % Pulse Transit Time
-            ptt = pulsetransit(detectedQRS, ABPann);
-            % Plot BP vs PTT
-            syst = ABPfeatures(:,2);
-            if HRVparams.gen_figs
-                figure;
-                plot(syst,ptt(:,3)./HRVparams.Fs,'o');
-                xlabel('BP (mmHg)'); ylabel('PTT (s)');
-                title('Pulse Transit Time - BP vs PTT (ABP - QRS)')
-            end
             
-
-            % Write annotations
+            if ~isempty(detectedQRS)
+                % Pulse Transit Time
+                ptt = pulsetransit(detectedQRS, ABPann);
+                % Plot BP vs PTT
+                syst = ABPfeatures(:,2);
+                if HRVparams.gen_figs
+                    figure;
+                    plot(syst,ptt(:,3)./HRVparams.Fs,'o');
+                    xlabel('BP (mmHg)'); ylabel('PTT (s)');
+                    title('Pulse Transit Time - BP vs PTT (ABP - QRS)')
+                end
+            end
+            % Write ABP annotations
             write_ann([AnnotationFolder subjectID],HRVparams,'abpm',ABPann);
             write_ann([AnnotationFolder subjectID],HRVparams,'sqiabp',BeatQ(:,1));
             

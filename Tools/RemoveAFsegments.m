@@ -51,6 +51,6 @@ if ~isempty(afsegs)
         catch
         end
     end
-    cleanRRAnalysisWindows(idx_af) = NaN;   
+    cleanRRAnalysisWindows(idx_af) = [];  % Remove all the windows with AF   
 end
 

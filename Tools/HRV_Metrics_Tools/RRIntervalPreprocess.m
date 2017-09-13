@@ -53,21 +53,19 @@ function [NNinterp3, tinterp3, flagged_beats] = RRIntervalPreprocess(rr,time,ann
 % don't put phantom beats in for the lomb
 
 % check input
-if nargin<5 || isempty(HRVparams)
-    HRVparams = initialize_HRVparams; 
-end
-if nargin<4 || isempty(sqi)
+
+if isempty(sqi)
     % Assume SQI is good and no signal needs to be removed
     sqi(:,1) = 1:1:time(end);
     sqi(:,2) = 100*ones(length(sqi(:,1)),1);
 end
-if nargin<3 || isempty(annotations)
+if isempty(annotations)
     annotations = repmat('N',[length(rr) 1]);
 end
-if nargin<2 || isempty(time)
+if isempty(time)
     time = cumsum(rr);
 end
-if nargin <1
+if nargin < 5
 	error('Not enough input arguments!')
 end
 
@@ -147,8 +145,8 @@ end
 % Identify Data that changes above a certain percent from beat to beat
 
 perLimit = HRVparams.preprocess.per_limit; % see initialize_settings.m for value
-percent_outliers = false(length(rr),1); %preallocate        
-pChange = abs(diff(rr))./rr(1:end-1); %percent change from previous
+percent_outliers = false(length(rr),1); % preallocate        
+pChange = abs(diff(rr))./rr(1:end-1); % percent change from previous
 % find index of values where pChange > perLimit
 percent_outliers(2:end) = (pChange >perLimit);
 %[pNN pNNtime] = replaceOutliers(new_time,rr_sec_hisqi, percent_outliers,'spline');

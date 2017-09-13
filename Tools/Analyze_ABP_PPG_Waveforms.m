@@ -2,7 +2,7 @@ function Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID
 %
 %   Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
 %	OVERVIEW:
-%       Analyze ABP and\or PPG waveform 
+%       Analyze ABP or PPG waveform 
 %
 %   INPUT:
 %       Waveform    - matrix containing the a raw signal in each column

@@ -27,7 +27,7 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Main script written by Adriana N. Vest
 %       Dependent scripts written by various authors 
-%       (see functions for details)       
+%       (see functions for details)   
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
@@ -121,7 +121,7 @@ while t_window_start <= tNN(end) - windowlength + increment
     if truelength < (windowlength * (1-win_tol))
         % Only remove window if not working in 'AF' or 'SQI' Mode
         if ~strcmp(option,'af') && ~strcmp(option,'sqi')
-            windowRRintervals(i) = NaN;
+            windowRRintervals(i) = NaN; 
         end
     end
     

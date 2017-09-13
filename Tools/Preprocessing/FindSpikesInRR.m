@@ -1,0 +1,54 @@
+function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
+% 
+% idxRRtoBeRemoved = FidnSpikesInRR(RR, th)
+%
+% OVERVIEW : Code used to clean RR intervals that change more than a given 
+% threshold (eg., th = 0.2 = 20%) with respect to the median value of the 
+% pervious 5 and next 5 RR intervals (using a forward-backward approach).
+%
+% INPUTS:
+%        RR :
+%        th :
+% OUTPUTS:
+%        idxRRtoBeRemoved :
+%
+% Written by Giulia Da Poian (giulia.dap@gmail.com), 09-13-2017
+%
+
+
+if size(RR,1)>size(RR,2)
+    RR = RR';
+end
+
+% Forward search 
+FiveRR_MedianVal = medfilt1(RR,5); % compute as median RR(-i-2: i+2)
+% shift of three position to aligne with to corresponding RR 
+FiveRR_MedianVal = [RR(1:5) FiveRR_MedianVal(3:end-3)];
+rr_above_th = find((abs(RR-FiveRR_MedianVal)./FiveRR_MedianVal)>=th);
+
+RR_forward = RR;
+RR_forward(rr_above_th) = NaN;
+
+
+% Backward search 
+RRfilpped = fliplr(RR);
+
+FiveRR_MedianVal = medfilt1(RRfilpped,5); % compute as median RR(-i-2: i+2)
+% shift of three position to aligne with to corresponding RR 
+FiveRR_MedianVal = [RRfilpped(1:5) FiveRR_MedianVal(3:end-3)];
+rr_above_th = find(abs(RRfilpped-FiveRR_MedianVal)./FiveRR_MedianVal>=th);
+rr_above_th = sort(length(RR)-rr_above_th+1);
+
+
+RR_backward = RRfilpped;
+RR_backward(rr_above_th) = NaN;
+
+
+% Combine 
+
+idxRRtoBeRemoved = (isnan(RR_forward) & isnan(RR_backward));
+
+
+end
+
+

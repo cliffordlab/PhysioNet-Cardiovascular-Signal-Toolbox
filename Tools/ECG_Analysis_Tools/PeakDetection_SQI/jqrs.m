@@ -3,22 +3,9 @@ function [qrs_pos,sign,en_thres] = jqrs(ecg,HRVparams)
 % of the detector.
 %
 % inputs
-%   ecg:            one ecg channel on which to run the detector (required)
-%                   in [mV]
-%   s: (settings)
-%       THRES:      energy threshold of the detector (default: 0.6) 
-%                   [arbitrary units]
-%       REF_PERIOD: refractory period in sec between two R-peaks (default: 0.250)
-%                   in [ms]
-%       fs:         sampling frequency (default: 1KHz) [Hz]
-%       fid_vec:    if some subsegments should not be used for finding the
-%                   optimal threshold of the P&Tthen input the indices of
-%                   the corresponding points here
-%       SIGN_FORCE: force sign of peaks (positive value/negative value).
-%                   Particularly usefull if we do window by window detection and want to
-%                   unsure the sign of the peaks to be the same accross
-%                   windows (which is necessary to build an FECG template)
-%       debug:      1: plot to bebug, 0: do not plot
+%   ecg             : one ecg channel on which to run the detector (required)
+%                     in [mV]
+%   HRVparams       : project settings)
 %
 % outputs
 %   qrs_pos:        indexes of detected peaks (in samples)

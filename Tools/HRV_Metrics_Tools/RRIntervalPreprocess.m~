@@ -53,9 +53,7 @@ function [NNinterp3, tinterp3, flagged_beats] = RRIntervalPreprocess(rr,time,ann
 % don't put phantom beats in for the lomb
 
 % check input
-if isempty(time)
-    time = cumsum(rr);
-end
+
 if isempty(sqi)
     % Assume SQI is good and no signal needs to be removed
     sqi(:,1) = 1:1:time(end);
@@ -64,7 +62,9 @@ end
 if isempty(annotations)
     annotations = repmat('N',[length(rr) 1]);
 end
-
+if isempty(time)
+    time = cumsum(rr);
+end
 if nargin < 5
 	error('Not enough input arguments!')
 end

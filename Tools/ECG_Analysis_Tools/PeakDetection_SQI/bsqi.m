@@ -1,11 +1,11 @@
-function [F1, windows_all] = bsqi(ann1,ann2,HRVparams)
+function [F1, StartIdxSQIwindows] = bsqi(ann1,ann2,HRVparams)
 %	OVERVIEW:
 %       Measure SQI of ECG signals by comparing two peak detection
 %       annotation files.
 %   INPUT:
-%       ann1 =  first annotation file
-%       ann2 =  second annotation file
-%       s    =  settings file 
+%       ann1         =  first annotation file
+%       ann2         =  second annotation file
+%       HRVparams    =  settings file 
 %   OUTPUT:
 %       output = sqi of each window
 %   DEPENDENCIES & LIBRARIES:
@@ -41,20 +41,20 @@ endtime = max([ann1(end), ann2(end)]);
 time = (1/HRVparams.Fs):(1/HRVparams.Fs):endtime;
 
 %% 1. Create Windows
-windows_all = CreateWindowRRintervals(time, [], HRVparams,'sqi');
+StartIdxSQIwindows = CreateWindowRRintervals(time, [], HRVparams,'sqi');
 
 %% 2. Calculate SQI for Window
-for seg = 1:length(windows_all)
+for seg = 1:length(StartIdxSQIwindows)
     % Check window for sufficient data
-    if ~isnan(windows_all(seg))
+    if ~isnan(StartIdxSQIwindows(seg))
         % Isolate data in this window
         try
-            idx_ann1_in_win = find(ann1 >= windows_all(seg) & ann1 < windows_all(seg) + windowlength);
+            idx_ann1_in_win = find(ann1 >= StartIdxSQIwindows(seg) & ann1 < StartIdxSQIwindows(seg) + windowlength);
             %idx_ann2_in_win = find(ann1 >= windows_all(i_win) & ann1 < windows_all(i_win) + windowlength);
         
             % Normalize timing of annotation data to the windows
-            a1 = ann1(idx_ann1_in_win) - windows_all(seg);
-            a2 = ann2 - windows_all(seg);
+            a1 = ann1(idx_ann1_in_win) - StartIdxSQIwindows(seg);
+            a2 = ann2 - StartIdxSQIwindows(seg);
         
             [F1(seg),Se,PPV,Nb] = run_sqi(a1,a2,threshold,margin,windowlength,fs);
         catch

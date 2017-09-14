@@ -12,10 +12,10 @@ function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRInterv
 %       subjectID   : name that identify the analyzed signal 
 %
 %   OUTPUT:
-%       rr                     :  Vector containing RR interval
+%       rr     :  Vector containing RR interval
 %       t                      :  Time indices of the rr interval data (seconds)
 %       SQIjs                  :  Signal Quality Index values comparing jqrs and wqrsm 
-%       StartIdxSQIwindows_jw  :  Indexes of SQI windows
+%       StartIdxSQIwindows_jw
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) 
 
@@ -47,7 +47,7 @@ sqrs = run_sqrs(ECG_RawData*GainQrsDetect,HRVparams,0);
 wqrs = wqrsm(ECG_RawData*GainQrsDetect);
 
 % QRS SQI analysis
-[sqijs, StartIdxSQIwindows_js] = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
+[sqijs, StartIdxSQIwindows_js = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
 [SQIjw, StartIdxSQIwindows_jw] = bsqi(jqrs_ann(:),wqrs(:),HRVparams);
 
 

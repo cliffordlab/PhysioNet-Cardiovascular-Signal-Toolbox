@@ -129,18 +129,13 @@ elseif strcmp(type, 'SQI')
 
         % Print out all the sqi values for all the SQI time windows
        
-        for v = 1:1:length(variables_names)
-            % putting variable into format acceptable for csv file
-            var_formatted_for_output = variables_vals(:,v);
-            fid=fopen(fullfilename,'at');
-            fprintf(fid,'%s,%s,',sub_id,variables_names{v});
-            if length(variables_vals) > 1
-                fprintf(fid,'%f,',var_formatted_for_output(1:end-1));
-            end
-            fprintf(fid,'%f',var_formatted_for_output(end));
-            fprintf(fid,'\n');
-            fclose(fid);
-         end
+        fid=fopen(fullfilename,'at');
+        fprintf(fid,'%s,%s,',sub_id,char(variables_names));
+        if length(variables_vals) > 1
+                fprintf(fid,'%f,',variables_vals(1:end-1));
+        end
+        fprintf(fid,'%f \n',variables_vals(end));
+        fclose(fid);
         
     elseif strcmp(HRVparams.output.format,'mat')
         % Add .mat extension to filename and directory

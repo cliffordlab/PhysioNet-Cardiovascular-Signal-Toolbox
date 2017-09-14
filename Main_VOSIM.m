@@ -86,9 +86,9 @@ end
 try   
     if strcmp(InputFormat, 'ECGWaveform')
         % Convert ECG waveform in rr intervals
-        [t, rr, jqrs_ann, sqi] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
-        avgLeadSQI = mean(sqi);
-        GenerateHRVresultsOutput(subjectID,[],avgLeadSQI,'SQI','SQI',HRVparams,[],[]);  
+        [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+        sqi = [SQIidx', SQIvalue'];
+        GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
     else
         rr = InputSig; 
         sqi = [];

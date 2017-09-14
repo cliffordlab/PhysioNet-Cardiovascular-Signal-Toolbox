@@ -23,8 +23,8 @@ function out = run_sqrs(ecg,HRVparams,rs)
 %   
 %   03-06-2017
 %   Edited by Adriana Vest
-%   Now requires settings struct s, which defines debug mode and sampling
-%   frequency, and resampling option rs.
+%   Now requires settings struct HRVparams, which defines debug mode and 
+%   sampling frequency, and resampling option rs.
 %   LICENSE AND COPYRIGHT:    
 %       See Below
 % 
@@ -82,7 +82,7 @@ function out = run_sqrs(ecg,HRVparams,rs)
 %%
 
 if nargin<2
-    HRVparams = initialize_HRVparams;
+    error('Incorrect number of input arguments: must provide ECG signal and HRV paramters struct')
 end
 if nargin < 3
     rs = 1;

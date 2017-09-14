@@ -172,14 +172,14 @@ HRVparams.preprocess.per_limit = 0.2;           % Percent limit of change from o
                                                 % interval to the next
 HRVparams.preprocess.forward_gap = 3;	        % Maximum tolerable gap at beginning  
                                                 % of timeseries in seconds
-HRVparams.preprocess.method_outliers = 'pchip';   % Method of dealing with outliers
+HRVparams.preprocess.method_outliers = 'rem';   % Method of dealing with outliers
                                         % 'cub' = replace outlier points 
                                         %  with cubic spline method
                                         % 'rem' = remove outlier points
                                         % 'pchip' = replace with pchip method
 HRVparams.preprocess.lowerphysiolim = 60/160;
 HRVparams.preprocess.upperphysiolim = 60/30;
-HRVparams.preprocess.method_unphysio = 'pchip';   % Method of dealing with 
+HRVparams.preprocess.method_unphysio = 'rem';   % Method of dealing with 
                                         % unphysiologically low beats
                                         % 'cub' = replace outlier points 
                                         %  with cubic spline method
@@ -269,7 +269,7 @@ HRVparams.af.increment = 30;      % No overlap necessary in AF feat calc
 
 %% 15. Peak Detection Settings
 
-% The following settings are for qrs_detect2.m
+% The following settings are for jqrs.m
 
 HRVparams.REF_PERIOD = 0.250; 
 HRVparams.THRES = .6; 

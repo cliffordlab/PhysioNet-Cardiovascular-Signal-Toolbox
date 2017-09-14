@@ -6,7 +6,10 @@ function [ac_results, dc_results, windows_all] = prsa(rr, rri, sqi, windows_all,
 %   INPUT
 %       rr           - rr intervals
 %       rri          - index of rr intervals
-%       sqi          - 
+%       sqi          - Signal Quality Index; Requires a matrix with
+%                      at least two columns. Column 1 should be
+%                      timestamps of each sqi measure, and Column 2
+%                      should be SQI on a scale from 0 to 1.
 %       windows_all  -
 %       HRVparams    - struct of settings for hrv_toolbox analysis
 %
@@ -55,7 +58,7 @@ if nargin < 2 || isempty(rri)
 end
 if nargin <3 || isempty(sqi)
     sqi(:,1) = rri;
-    sqi(:,2) = 100* ones(length(rri),1);
+    sqi(:,2) = ones(length(rri),1);
 end
 if nargin<4 || isempty(windows_all)
     windows_all = CreateWindowRRintervals(rri, NN, HRVparams);

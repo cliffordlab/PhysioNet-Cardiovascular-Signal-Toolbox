@@ -46,7 +46,7 @@ t = cumsum(rr);
 
 %% 2. Preprocess RR Data - Using HRV Toolbox
 % Remove noise, Remove ectopy, Don't detrend (yet)
-[NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
+[NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,[], HRVparams);
 
 %% 3. Calculate the Multiscale Entropy
 

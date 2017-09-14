@@ -1,6 +1,6 @@
-function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annotations,sqi,HRVparams)
+function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annotations,HRVparams)
 %
-%   [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr, time, annotations, sqi, HRVparams)
+%   [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr, time, annotations, HRVparams)
 %
 %   OVERVIEW:   This function preprocesses RR interval data in preparation
 %               for running HRV analyses. Noise and non-normal beats are
@@ -12,12 +12,6 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %                             (seconds)
 %               annotations - (optional) annotations of the RR data at each
 %                              point indicating the quality of the beat
-%               sqi         - Signal Quality Index; Requires a matrix with
-%                             at least two columns. Column 1 should be
-%                             timestamps of each sqi measure, and Column 2
-%                             should be SQI on a scale from 0 to 1.
-%                             Additional columns can be included with
-%                             additional sqi at the same timestamps
 %               HRVparams   - struct of settings for hrv_toolbox analysis
 %
 %   OUTPUT:     cleanNN       - normal normal interval data
@@ -42,10 +36,12 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %
 %   09-013-2017
 %   Edited by Giulia Da Poian
-%   Updated the method for measuring changes in the current RR interval 
+%   -Updated the method for measuring changes in the current RR interval 
 %   from the last N (N=5) intervals and excluding intervals that 
 %   change by more than a certain percentage define by 
 %   HRVparams.preprocess.per_limit
+%   - Removed SQI, windows containing low quality SQI segments are removed  
+%     in EvalTimeDomainHRVstats and EvalFrequencyDomainHRVstats
 %
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
@@ -64,16 +60,12 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 if isempty(time)
     time = cumsum(rr);
 end
-if isempty(sqi)
-    % Assume SQI is good and no signal needs to be removed
-    sqi(:,1) = 1:1:time(end);
-    sqi(:,2) = 100*ones(length(sqi(:,1)),1);
-end
+
 if isempty(annotations)
     annotations = repmat('N',[length(rr) 1]);
 end
 
-if nargin < 5
+if nargin < 4
 	error('Not enough input arguments!')
 end
 
@@ -185,74 +177,73 @@ idx_outliers = find(outliers == 1);
 % Keep count of outliers 
 numOutliers = length(idx_outliers);
 
-rr_before_interp = rr;
+rr_original = rr;
 rr(idx_outliers) = NaN;
 if strcmp(HRVparams.preprocess.method_outliers,'cub')
-    NNinterp = interp1(time,rr,time,'spline','extrap');
-    tinterp = time;
+    NN_Outliers = interp1(time,rr,time,'spline','extrap');
+    t_Outliers = time;
 elseif strcmp(HRVparams.preprocess.method_outliers,'pchip')
-    NNinterp = interp1(time,rr,time,'pchip');
-    tinterp = time;
+    NN_Outliers = interp1(time,rr,time,'pchip');
+    t_Outliers = time;
 elseif strcmp(HRVparams.preprocess.method_outliers,'lin')
-    NNinterp = interp1(time,rr,time,'linear','extrap'); 
-    tinterp = time;
+    NN_Outliers = interp1(time,rr,time,'linear','extrap'); 
+    t_Outliers = time;
 elseif strcmp(HRVparams.preprocess.method_outliers,'rem')
-    NNinterp = rr;
-    NNinterp(idx_outliers) = [];
-    tinterp = time;
-    tinterp(idx_outliers) = []; 
+    NN_Outliers = rr;
+    NN_Outliers(idx_outliers) = [];
+    t_Outliers = time;
+    t_Outliers(idx_outliers) = []; 
 else
     % By default remove outliers
-    NNinterp = rr;
-    NNinterp(idx_outliers) = [];
-    tinterp = time;
-    tinterp(idx_outliers) = [];
+    NN_Outliers = rr;
+    NN_Outliers(idx_outliers) = [];
+    t_Outliers = time;
+    t_Outliers(idx_outliers) = [];
 end
 
 if figures
     figure;
-    plot(time,rr_before_interp,tinterp,NNinterp);
+    plot(time,rr_original,t_Outliers,NN_Outliers);
     legend('raw','interp1(after outliers removed)')
 end
 
 %% 10. Identify Non-physiologic Beats
-toohigh = NNinterp > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
-toolow = NNinterp < HRVparams.preprocess.lowerphysiolim;     % equivalent to RR = .375
+toohigh = NN_Outliers > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
+toolow = NN_Outliers < HRVparams.preprocess.lowerphysiolim;     % equivalent to RR = .375
 
 idx_toolow = find(toolow == 1);
-NNinterp2 = NNinterp;
-NNinterp2(idx_toolow) = NaN;
+NN_NonPhysBeats = NN_Outliers;
+NN_NonPhysBeats(idx_toolow) = NaN;
 numOutliers = numOutliers + length(idx_toolow);
 
 
 if strcmp(HRVparams.preprocess.method_unphysio,'cub')
-    NNinterp2 = interp1(tinterp,NNinterp2,tinterp,'spline','extrap');
-    tinterp2 = tinterp;
+    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'spline','extrap');
+    t_NonPhysBeats = t_Outliers;
     flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
 elseif strcmp(HRVparams.preprocess.method_unphysio,'pchip')
-    NNinterp2 = interp1(tinterp,NNinterp2,tinterp,'pchip');
-    tinterp2 = tinterp;
+    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
+    t_NonPhysBeats = t_Outliers;
     flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
 elseif strcmp(HRVparams.preprocess.method_unphysio,'lin')
-    NNinterp2 = interp1(tinterp,NNinterp2,tinterp,'linear','extrap'); 
-    tinterp2 = tinterp;
+    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'linear','extrap'); 
+    t_NonPhysBeats = t_Outliers;
     flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
 elseif strcmp(HRVparams.preprocess.method_unphysio,'rem')
-    NNinterp2(idx_toolow) = [];
-    tinterp2 = tinterp;
-    tinterp2(idx_toolow) = []; % Review this line of code for improvement
-    
+    NN_NonPhysBeats(idx_toolow) = [];
+    t_NonPhysBeats = t_Outliers;
+    t_NonPhysBeats(idx_toolow) = []; % Review this line of code for improvement
+
 else
     % Default is cubic spline
-    NNinterp2 = interp1(tinterp,NNinterp2,tinterp,'pchip');
-    tinterp2 = tinterp;
-    flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
+    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
+    t_NonPhysBeats = t_Outliers;
 end
 
 if figures
     hold on;
-    plot(tinterp2,NNinterp2+.01);
-    hold on; plot(time,toolow,'o')
+    plot(t_NonPhysBeats,NN_NonPhysBeats+.01);
+    hold on; plot(t_NonPhysBeats,toolow,'o')
     legend('raw','interp1(after outliers removed)',...
         'interp2(after too low)','toolow')
 end
@@ -260,38 +251,38 @@ end
 
 
 %% 11. Interpolate Through Beats that are Too Fast
-toohigh = NNinterp2 > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
+toohigh = NN_NonPhysBeats > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
 
 idx_outliers_2ndPass = find(logical(toohigh(:)) ~= 0);
-NNinterp3 = NNinterp2;
-NNinterp3(idx_outliers_2ndPass) = NaN;
+NN_TooFastBeats = NN_NonPhysBeats;
+NN_TooFastBeats(idx_outliers_2ndPass) = NaN;
 numOutliers = numOutliers + length(idx_outliers_2ndPass);
 if strcmp(HRVparams.preprocess.method_unphysio,'rem')
     flagged_beats = numOutliers;
 end
 
 if strcmp(HRVparams.preprocess.method_outliers,'cub')            
-    NNinterp3 = interp1(tinterp2,NNinterp3,tinterp2,'spline','extrap');
-    tinterp3 = tinterp2;
+    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
+    t_TooFasyBeats = t_NonPhysBeats;
 elseif strcmp(HRVparams.preprocess.method_outliers,'pchip')
-    NNinterp3 = interp1(tinterp2,NNinterp3,tinterp2,'pchip');
-    tinterp3 = tinterp2;
+    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'pchip');
+    t_TooFasyBeats = t_NonPhysBeats;
 elseif strcmp(HRVparams.preprocess.method_outliers,'lin')
-    NNinterp3 = interp1(tinterp2,NNinterp3,tinterp2,'linear','extrap');
-    tinterp3 = tinterp2;
+    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'linear','extrap');
+    t_TooFasyBeats = t_NonPhysBeats;
 elseif strcmp(HRVparams.preprocess.method_outliers,'rem')
-    NNinterp3(idx_outliers_2ndPass) = [];
-    tinterp3 = tinterp2;
-    tinterp3(idx_outliers_2ndPass) = []; % Review this line of code for improvement
+    NN_TooFastBeats(idx_outliers_2ndPass) = [];
+    t_TooFasyBeats = t_NonPhysBeats;
+    t_TooFasyBeats(idx_outliers_2ndPass) = []; % Review this line of code for improvement
 else
     % Default is cubic spline
-    NNinterp3 = interp1(tinterp2,NNinterp3,tinterp2,'spline','extrap');
-    tinterp3 = tinterp2;
+    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
+    t_TooFasyBeats = t_NonPhysBeats;
 end
 
 if figures
     hold on;
-    plot(tinterp3,NNinterp3);
+    plot(t_TooFasyBeats,NN_TooFastBeats);
     legend('raw','interp1(after outliers removed)',...
         'interp2(after too low)','toolow','interp3 (after too fast removed)')
 end
@@ -300,13 +291,13 @@ end
 %       (i.e. a un-physiologic point caused by removing data at the end of
 %       a record)
 
-while NNinterp3(end) > HRVparams.preprocess.upperphysiolim	% equivalent to RR = 2
-    NNinterp3(end) = [];
-    tinterp3(end) = [];
+while NN_TooFastBeats(end) > HRVparams.preprocess.upperphysiolim	% equivalent to RR = 2
+    NN_TooFastBeats(end) = [];
+    t_TooFasyBeats(end) = [];
 end
 
 
-cleanNN = NNinterp3;
-cleantNN = tinterp3;
+cleanNN = NN_TooFastBeats;
+cleantNN = t_TooFasyBeats;
 end
 

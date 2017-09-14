@@ -96,7 +96,7 @@ try
 
     % Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
 
-    [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, sqi, HRVparams);
+    [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
     
     % 1. Atrial Fibrillation Detection
@@ -111,16 +111,16 @@ try
 
     [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
         RMSSD,pnn50,btsdet,avgsqi,fbeatw] = ...
-        EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
+        EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices,fbeats);
 
     % 3. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
 
      [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag] = ...
-         EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
+         EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
      
     % 4. PRSA
     try
-        [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
+        [ac,dc,~] = prsa(NN, tNN,sqi, RRwindowStartIndices, HRVparams);
     catch
         ac = NaN; 
         dc = NaN;

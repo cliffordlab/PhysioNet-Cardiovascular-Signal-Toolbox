@@ -121,7 +121,7 @@ HRVparams.increment = 60;       % 60 seconds or 1 minute window increment
 HRVparams.numsegs = 5;          % number of segments to collect with lowest HR
 
 %% 4. Quality Threshold Settings
-HRVparams.threshold1 = 0;       % Threshold for which SQI represents good data
+HRVparams.threshold1 = 0.9;       % Threshold for which SQI represents good data
 HRVparams.threshold2 = .20;     % Amount (%) of data that can be rejected before a
                                 % window is considered too low quality for analysis
 HRVparams.win_tol = .15;        % maximum percentage of data allowable to be missing

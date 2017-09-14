@@ -122,8 +122,7 @@ elseif strcmp(type, 'SQI')
     filename = ['SQI_results_' sub_id];
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename and directory
-        %fullfilename = [HRVparams.writedata filesep filename '.csv'];
-        fullfilename = [filename '.csv'];
+        fullfilename = [HRVparams.writedata filesep filename '.csv'];
         variables_names = titles;
         variables_vals = results;
 

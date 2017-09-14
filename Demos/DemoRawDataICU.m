@@ -179,7 +179,7 @@ rr = diff(jqrs_ann./HRVparams.Fs);
 t = jqrs_ann(1:end-1)./HRVparams.Fs;
 
 % Remove noise, Remove ectopy, Don't detrend (yet)
-[NN, tNN, ~] = RRIntervalPreprocess(rr,t,[], [], HRVparams);
+[NN, tNN, ~] = RRIntervalPreprocess(rr,t,[], HRVparams);
 
 %% 5. Calculate Windows
 RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
@@ -195,7 +195,7 @@ RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AFwindowsStartIndic
 fbeats = zeros(length(NN),1);
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
     RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
-    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
+    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices);
 
 %% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds

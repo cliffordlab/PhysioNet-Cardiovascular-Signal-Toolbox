@@ -16,7 +16,7 @@ function [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, methods, fdflag, windows_all] = 
 %               sqi         : Signal Quality Index; Requires a matrix with
 %                             at least two columns. Column 1 should be
 %                             timestamps of each sqi measure, and Column 2
-%                             should be SQI on a scale from 1 to 100.
+%                             should be SQI on a scale from 0 to 1.
 %                             Additional columns can be included with
 %                             additional sqi at the same timestamps
 %               HRVparams   : struct of settings for hrv_toolbox analysis
@@ -68,7 +68,7 @@ if nargin<2 || isempty(tNN)
 end
 if nargin<3 || isempty(sqi) 
         sqi(:,1) = tNN;
-        sqi(:,2) = 100* ones(length(tNN),1);
+        sqi(:,2) = ones(length(tNN),1);
 end
 if nargin<4 || isempty(HRVparams) 
         HRVparams = initialize_HRVparams('demo');

@@ -69,7 +69,7 @@ for i_patient = 1:numsub
 
         %% 2. Preprocess RR Data - Using HRV Toolbox
         % Remove noise, Remove ectopy, Don't detrend (yet)
-        [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, [], HRVparams);
+        [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
 
         %% 3. Calculate Windows
         RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);   
@@ -81,7 +81,7 @@ for i_patient = 1:numsub
         
         %% 5. Calculate time domain HRV metrics - Using HRV Toolbox
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-            RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices,fbeats);
+            RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices);
 
         %% 6. Frequency domain HRV metrics (LF HF TotPow)
         %       All Inputs in Seconds

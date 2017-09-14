@@ -1,5 +1,5 @@
 function [t,rr,jqrs_ann,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
-%   [t,rr,jqrs_ann,sqijw] = ConvertRawDataToRRIntervals(HRVparams)  
+%   [t,rr,jqrs_ann,sqijs] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)  
 %
 %	OVERVIEW:
 %       Load raw signal perfom QRS detection & Signal Quality Index SQI
@@ -7,28 +7,19 @@ function [t,rr,jqrs_ann,sqijw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVpar
 %       (single lead ECG signal)
 %
 %   INPUT:
-%       HRVparam : struct of settings for hrv_toolbox analysis
+%       ECG_RawData : vector containing the 'raw' ECG signal 
+%       HRVparam    : struct of settings for hrv_toolbox analysis
+%       subjectID   : name that identify the analyzed signal 
 %
 %   OUTPUT:
 %       rr    :  Vector containing RR interval
 %       t     :  Time indices of the rr interval data (seconds)
-%       sqijw :  Signal Quality Index
+%       sqijs :  Signal Quality Index 
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
-%	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
-%   ORIGINAL SOURCE AND AUTHORS:     
-%       Function written by Giulia Da Poian
-%	COPYRIGHT (C) 2016 
-%   LICENSE:    
-%       This software is offered freely and without warranty under 
-%       the GNU (v3 or later) public license. See license file for
-%       more information
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%   Written by Giulia Da Poian (giulia.dap@gmail.com) 
+
+
 
 if nargin < 3
     error('Wrong number of arguments in ConvertRawDataToRRIntervals')

@@ -13,7 +13,7 @@ function Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID
 %       subjectID   - string to identify current subject
 %
 %   OUTPUT
-%       results - 
+%       Annotation files
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) on Sep 6, 2017.
 

@@ -20,23 +20,9 @@ function cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %                                by a NaN index and therfore exluded during
 %                                analysis
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
-%	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
-%   ORIGINAL SOURCE AND AUTHORS:     
-%       This script written by Giulia Da Poian
-%       Dependent scripts written by various authors 
-%       (see functions for details)       
-%	COPYRIGHT (C) 2016 
-%   LICENSE:    
-%       This software is offered freely and without warranty under 
-%       the GNU (v3 or later) public license. See license file for
-%       more information
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%
+%   Written by Giulia Da Poian (giulia.dap@gmail.com) 
+
 
 cleanRRAnalysisWindows = RRAnalysisWindows;
 

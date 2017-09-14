@@ -38,7 +38,15 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Script written by Adriana N. Vest
 %       Dependent scripts written by various authors 
-%       (see functions for details)       
+%       (see functions for details)    
+%
+%   09-013-2017
+%   Edited by Giulia Da Poian
+%   Updated the method for measuring changes in the current RR interval 
+%   from the last N (N=5) intervals and excluding intervals that 
+%   change by more than a certain percentage define by 
+%   HRVparams.preprocess.per_limit
+%
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
@@ -141,9 +149,9 @@ if ~(length(annotations) == length(rr))
 end
 
 
-%% 6. Find RR Over Given Percentage Change
+%% 6. Find RR Over Given Percentage Change 
 perLimit = HRVparams.preprocess.per_limit;
-idxRRtoBeRemoved = FindSpikesInRR(rr, perLimit);
+idxRRtoBeRemoved = FindSpikesInRR(rr, perLimit); 
 
 %% 7. Find Long Running Outliers
 

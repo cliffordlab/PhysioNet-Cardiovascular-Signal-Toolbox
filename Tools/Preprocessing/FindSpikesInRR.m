@@ -7,10 +7,11 @@ function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 % pervious 5 and next 5 RR intervals (using a forward-backward approach).
 %
 % INPUTS:
-%        RR :
-%        th :
+%        RR : a single row of rr interval data in seconds
+%        th : threshold percent limit of change from one interval to the next
 % OUTPUTS:
-%        idxRRtoBeRemoved :
+%        idxRRtoBeRemoved : a single vector of indexes related to RR
+%                           intervals corresponding to a change > th
 %
 % Written by Giulia Da Poian (giulia.dap@gmail.com), 09-13-2017
 %

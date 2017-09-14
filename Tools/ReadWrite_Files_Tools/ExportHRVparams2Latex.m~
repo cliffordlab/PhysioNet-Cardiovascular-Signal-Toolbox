@@ -51,7 +51,7 @@ for idx=1:length(ValuesOfParameters)
                      extractedArray = tempVal{kk};
                      freqLimits = cellstr(strcat(num2str(extractedArray(:,1)),'-', num2str(extractedArray(:,2))));
                      T = [T array2table(freqLimits','VariableNames',{'ulf','vlf','lf','hf'})];
-                     tempVal{kk} = "[]";
+                     tempVal{kk} =  [tempVal(1:kk-1) tempVal(1:kk-1)];
                  elseif ~isnumeric(tempVal{kk})
                      tempVal{kk} = string(tempVal{kk});
                  elseif isempty(tempVal{kk})
@@ -78,7 +78,7 @@ for idx = 1: length(TableValues)
     if iscellstr(TableValues(idx))
         TableValues(idx) = strrep(TableValues(idx),{'\'},{'$\$'});
         TableValues(idx) = strrep(TableValues(idx),{'_'},{' '});
-    elseif ~ischar(TableValues{1,idx}) && ~isstring(TableValues{1,idx})
+    elseif ~ischar(TableValues{1,idx})
         TableValues{idx} = char(num2str(TableValues{1,idx}));
     end
 end

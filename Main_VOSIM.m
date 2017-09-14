@@ -108,7 +108,9 @@ try
     end
     
     % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
-
+    
+    if strcmp(HRVparams.preprocess.method_outliers,'rem'); fbeats = []; end
+    
     [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
         RMSSD,pnn50,btsdet,avgsqi,fbeatw] = ...
         EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices,fbeats);

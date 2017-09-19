@@ -117,7 +117,7 @@ HRVparams.data_confidence_level = 1;
 %% 3. Global Settings
 
 HRVparams.windowlength = 300;	% 300 seconds or 5 minutes
-HRVparams.increment = 60;       % 60 seconds or 1 minute window increment
+HRVparams.increment = 30;       % 30 seconds increment
 HRVparams.numsegs = 5;          % number of segments to collect with lowest HR
 
 %% 4. Quality Threshold Settings
@@ -189,7 +189,7 @@ HRVparams.preprocess.method_unphysio = 'rem';   % Method of dealing with
 % The following settings do not yet have any functional effect on 
 % the output of preprocess.m:                             
 HRVparams.preprocess.threshold1 = HRVparams.threshold1;	 % Threshold for which SQI represents good data
-HRVparams.preprocess.minlength = 30;             % (seconds) The minimum length of a good data segment
+HRVparams.preprocess.minlength = 30;                     % (seconds) The minimum length of a good data segment
                                 
 
 %% 10. Time Domain Analysis Settings
@@ -263,7 +263,7 @@ HRVparams.prsa.win_tol = HRVparams.win_tol; % Maximum percentage of data allowab
 
 %% 14. AF Detection Settings
 
-HRVparams.af.on = 0;              % AF Detection On or Off
+HRVparams.af.on = 1;              % AF Detection On or Off
 HRVparams.af.windowlength = 30;   % Set to include ~60 beats in each window
 HRVparams.af.increment = 30;      % No overlap necessary in AF feat calc
 

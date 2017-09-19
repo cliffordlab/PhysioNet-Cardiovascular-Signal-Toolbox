@@ -59,7 +59,7 @@ HRVparams.Fs = 128;
 [wqrs]=wqrsm(signal(:,1)*2000);
 
 % QRS SQI
-[sqijs,RRwindowStartIndices] = bsqi(jqrs_ann,sqrs,HRVparams);  
+[sqijs,~] = bsqi(jqrs_ann,sqrs,HRVparams);  
 
 [sqijw,RRwindowStartIndices] = bsqi(jqrs_ann,wqrs,HRVparams);
 
@@ -68,16 +68,10 @@ if HRVparams.gen_figs
     % ECG
     figure;
     plot(time,signal(:,1)); hold on;
-    %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann)),'o'); hold on;
-    %plot(sqrs./s.Fs,.79.*ones(length(sqrs)),'o'); hold on;
-    %plot(wqrs./s.Fs,.81.*ones(length(wqrs)),'o'); hold on;
-    %plot(RRwindowStartIndices,sqijw,'.','markersize',10); hold on;
     stairs(RRwindowStartIndices,sqijw);
     for j = 1:length(jqrs_ann)
         line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','red');
-        %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann),1),'o'); hold on;
     end
-    %plot(RRwindowStartIndices, sqijs,'.','markersize',10); hold on;
 	legend('ECG','jqrs','sqrs','wqrs','SQI JvW','SQI JvS');
     xlabel('Time (s)'); ylabel('Amplitude (mV)');
     title('ECG')
@@ -126,7 +120,6 @@ graphannot(AFtest, AFwindowsStartIndices,.25);
 
 %% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
-%%% TO DO: Remove necessity of creating phantom beats with lomb 
 
 [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
    EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
@@ -154,9 +147,6 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
     'ttlpwr','fdflag','NNmean','NNmedian','NNmode','NNvar','NNskew',...
     'NNkurt','SDNN','NNiqr','RMSSD','pnn50','beatsdetected','corrected_beats'};
 
-% Uncomment the following lines for just DC
-%results = [NNmean(:), NNmedian(:)];
-%col_titles = {'NN Mean','NNmedian'};
 
 % Generates Output - Never comment out
 resFilename = GenerateHRVresultsOutput(subjectIDs{i_patient},RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);

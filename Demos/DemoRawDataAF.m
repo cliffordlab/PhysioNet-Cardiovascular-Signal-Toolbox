@@ -1,9 +1,8 @@
 %	OVERVIEW:
-%       HRV Toolbox demo using raw data 
-%   INPUT:
-%        
+%       Demo using 'raw' 5-minutes long ECG signal recoded during  
+%       atrial fibrillation (AF) episodes.%        
 %   OUTPUT:
-%       HRV Metrics
+%       Detected AF and HRV Metrics 
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
 %       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
@@ -20,7 +19,6 @@
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all; clc; close all;
 

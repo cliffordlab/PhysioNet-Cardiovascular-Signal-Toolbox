@@ -1,4 +1,4 @@
-function [afresults, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams)    
+function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,tNN,NN,HRVparams)    
 %   PerformAFdetection(subjectID,tNN,NN,HRVparams)  
 %
 %	OVERVIEW:
@@ -48,5 +48,6 @@ end
 afresults = AFtest(:);
 afcol_titles = {'AFtest'};
 
-type = 'AF';
-GenerateHRVresultsOutput(subjectID,AfAnalysisWindows,afresults,afcol_titles, type, HRVparams, tNN, NN);
+outputType = 'AF';
+AFfile = GenerateHRVresultsOutput(subjectID,AfAnalysisWindows,afresults, ...
+    afcol_titles, outputType, HRVparams, tNN, NN);

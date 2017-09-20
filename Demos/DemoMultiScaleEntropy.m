@@ -59,18 +59,25 @@ xlabel('Scale Factor');
 ylabel('SampEn');
 
 %% 4. Save Results
-
-
 results = mse;
 col_titles = {'MSE'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput('MSE_RRgenDemoData',[],results,col_titles, 'MSE', HRVparams, tNN, NN);
+resFilenameMSE = GenerateHRVresultsOutput('RRgenData',[],results,...
+    col_titles, 'MSE', HRVparams, tNN, NN);
 
 
-%clearvars NN tNN t rr sqi ac dc ulf vlf lf hf lfhf ttlpwr methods fdflag NNmean NNmedian NNmode NNvariance NNskew NNkurt SDNN NNiqr RMSSD pnn50;
 
-fprintf('A file named %s.%s \n has been saved in %s \n', ...
-    resFilename,HRVparams.output.format, HRVparams.writedata);
+%% 11 Compare generated output file with the reference one
+        
+currentFile = [HRVparams.writedata filesep resFilenameMSE '.csv'];
+referenceFile = ['ReferenceOutput' filesep 'MSEDemo.csv'];
+testHRV = CompareOutput(currentFile,referenceFile);
 
-
+if testHRV
+    fprintf('** DemoMultiScaleEntropy: TEST SUCCEEDED ** \n ')
+     fprintf('A file named %s.csv \n has been saved in %s \n', ...
+    resFilenameMSE, HRVparams.writedata);
+else
+    fprintf('** DemoMultiScaleEntropy: TEST FAILED ** \n')
+end

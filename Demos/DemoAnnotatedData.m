@@ -1,5 +1,5 @@
 %	OVERVIEW:
-%       Main HRV Toolbox script
+%       Demo using annotated data 
 %   OUTPUT:
 %       HRV Metrics
 %
@@ -133,19 +133,26 @@ for i_patient = 1:numsub
             'NNkurt','SDNN','NNiqr','RMSSD','pnn50','beatsdetected','corrected_beats'};
 
         % Uncomment the following lines for just Mean
-        %results = [NNmean(:)];
-        %col_titles = {'NN Mean'};
+        % results = [NNmean(:)];
+        % col_titles = {'NN Mean'};
 
         % Generates Output - Never comment out
-        resFilename = GenerateHRVresultsOutput(subjectIDs(i_patient),RRwindowStartIndices,results,col_titles, [], HRVparams, tNN, NN);
-
-        fprintf('Completing subject %5s \n', ...
-            subjectIDs{i_patient});
-
-        %clearvars NN tNN t rr sqi ac dc ulf vlf lf hf lfhf ttlpwr methods fdflag NNmean NNmedian NNmode NNvariance NNskew NNkurt SDNN NNiqr RMSSD pnn50;
-       
-        fprintf('A file named %s.%s \n has been saved in %s \n', ...
-            resFilename,HRVparams.output.format, HRVparams.writedata);
+        resFilenameHRV = GenerateHRVresultsOutput(subjectIDs(i_patient), ...
+            RRwindowStartIndices,results,col_titles, [], HRVparams, tNN, NN);
+              
+        % Compare generated output file with the reference one
+        
+        currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
+        referenceFile = ['ReferenceOutput' filesep 'Annotated_HRV_allwindows.csv'];
+        testHRV = CompareOutput(currentFile,referenceFile);
+        
+        if testHRV
+            fprintf('** DemoAnnotatedData: TEST SUCCEEDED ** \n ')
+             fprintf('A file named %s.csv \n has been saved in %s \n', ...
+            resFilenameHRV, HRVparams.writedata);
+        else
+            fprintf('** DemoAnnotatedData: TEST FAILED ** \n')
+        end
         
     catch
         if isnumeric(subjectIDs(i_patient))
@@ -157,9 +164,11 @@ for i_patient = 1:numsub
         results = NaN;
         col_titles = {'NaN'};
         fprintf('Error on subject %s \n', char(subjectIDs(i_patient)));
-        GenerateHRVresultsOutput(subjectIDs(i_patient),RRwindowStartIndices,results,col_titles,[],HRVparams,tNN,NN);
-        %clearvars NN tNN t rr sqi ac dc ulf vlf lf hf lfhf ttlpwr methods fdflag NNmean NNmedian NNmode NNvariance NNskew NNkurt SDNN NNiqr RMSSD pnn50;
+
+        fprintf('** DemoAnnotatedData: TEST FAILED ** \n')
     end
     
 end
+
+
 

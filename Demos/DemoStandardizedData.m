@@ -89,10 +89,20 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
 % col_titles = {'NN Mean','NNmedian'};
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput('demo',RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
+resFilenameHRV = GenerateHRVresultsOutput('demo',RRwindowStartIndices,...
+    results,col_titles, [],HRVparams, tNN, NN);
 
 
-fprintf('A file named %s.%s \n has been saved in %s \n', ...
-    resFilename,HRVparams.output.format, HRVparams.writedata);
+%% 11 Compare generated output file with the reference one
+        
+currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
+referenceFile = ['ReferenceOutput' filesep 'StandardizedData_HRV_allwindows.csv'];
+testHRV = CompareOutput(currentFile,referenceFile);
 
-disp('RRGEN demo completed!')
+if testHRV
+    fprintf('** DemoStandardizedData: TEST SUCCEEDED ** \n ')
+     fprintf('A file named %s.csv \n has been saved in %s \n', ...
+    resFilenameHRV, HRVparams.writedata);
+else
+    fprintf('** DemoStandardizedData: TEST FAILED ** \n')
+end

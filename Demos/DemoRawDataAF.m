@@ -109,7 +109,7 @@ RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 
 %% 5. Calculate AF Features
 
-[AFtest, AFwindowsStartIndices] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);  
+[AFtest, AFwindowsStartIndices,AFfile] = PerformAFdetection(subjectIDs{i_patient},tNN,NN,HRVparams);  
 figure(1);
 graphannot(AFtest, AFwindowsStartIndices,.25);  
 
@@ -149,9 +149,23 @@ col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
 
 
 % Generates Output - Never comment out
-resFilename = GenerateHRVresultsOutput(subjectIDs{i_patient},RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
+resFilenameHRV = GenerateHRVresultsOutput(subjectIDs{i_patient}, ...
+    RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
 
-fprintf('A file named %s.%s \n has been saved in %s \n', ...
-    resFilename,HRVparams.output.format, HRVparams.writedata);
 
-disp('AF demo completed!')
+
+%% 11 Compare generated output file with the reference one
+        
+currentFile = [HRVparams.writedata filesep AFfile '.csv'];
+referenceFile = ['ReferenceOutput' filesep 'AFDemo.csv'];
+testHRV = CompareOutput(currentFile,referenceFile);
+
+if testHRV
+    fprintf('** DemoRawDataAF: TEST SUCCEEDED ** \n ')
+     fprintf('A file named %s.csv \n has been saved in %s \n', ...
+    AFfile, HRVparams.writedata);
+else
+    fprintf('** DemoRawDataAF: TEST FAILED ** \n')
+end
+
+

@@ -190,7 +190,6 @@ RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
 RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AFwindowsStartIndices, afresults, HRVparams);
 
 
-
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 fbeats = zeros(length(NN),1);
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...

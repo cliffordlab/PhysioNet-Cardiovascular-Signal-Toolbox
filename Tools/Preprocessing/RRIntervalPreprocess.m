@@ -276,8 +276,8 @@ switch HRVparams.preprocess.method_outliers
         t_TooFasyBeats = t_NonPhysBeats;
         t_TooFasyBeats(idx_outliers_2ndPass) = []; % Review this line of code for improvement
     otherwise % USe cubic spline interpoletion as default
-    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
-    t_TooFasyBeats = t_NonPhysBeats;
+        NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
+        t_TooFasyBeats = t_NonPhysBeats;
 end
 
 if figures

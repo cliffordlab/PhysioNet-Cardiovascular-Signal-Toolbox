@@ -48,7 +48,7 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%%
+%
 
 
 % CINC 2002 - Cite for rationale for % good data for cutoff
@@ -71,7 +71,7 @@ end
 
 figures = HRVparams.gen_figs;
 
-%% 1. Identify data that is too close together and Remove
+% 1. Identify data that is too close together and Remove
 % These are not counted towards the total signal removed
 idx_remove = find(diff(time) < 1/HRVparams.Fs); 
 % could make this the refractory period - and have the variable in the settings
@@ -81,7 +81,7 @@ time(idx_remove) = [];
 annotations(idx_remove) = [];
 clear idx_remove;
 
-%% 2. Find Artifact Annotations and Remove Those Points
+% 2. Find Artifact Annotations and Remove Those Points
 % These are not counted towards the total signal removed
 idx_remove = strcmp('|', annotations); % find artifacts
 rr(idx_remove) = [];
@@ -94,12 +94,12 @@ annotations(idx_remove2) = [];
 time(idx_remove2) = [];
 clear idx_remove idx_remove2
 
-%% 3. Remove Large Gaps in Data At Beginning of Dataset
+% 3. Remove Large Gaps in Data At Beginning of Dataset
 %if t(1) > settings.preprocess.forward_gap
 %    t = t - t(1);
 %end
 
-%% 4. Remove Large RR intervals Caused by Gaps
+% 4. Remove Large RR intervals Caused by Gaps
 % These are not counted towards the total signal removed
 idx_remove = find(rr >= HRVparams.preprocess.gaplimit);
 rr(idx_remove) = [];
@@ -107,7 +107,7 @@ time(idx_remove) = [];
 annotations(idx_remove) = [];
 clear idx_remove;
 
-%% Detect PVCs and Implement Phantom Beat
+% Detect PVCs and Implement Phantom Beat
 % Look for premature ectopic beats
 % replace value of ectopic beat with a linear interpolated point
 % replace sample number
@@ -134,22 +134,22 @@ clear idx_remove;
 
 %hold on; plot(t,rr);
 
-%% 5. Find Non-'N' Annotations
+% 5. Find Non-'N' Annotations
 [~,~,ann_outliers] = AnnotationConversion(annotations);
 if ~(length(annotations) == length(rr))
     ann_outliers = zeros(length(rr),1);
 end
 
 
-%% 6. Find RR Over Given Percentage Change 
+% 6. Find RR Over Given Percentage Change 
 perLimit = HRVparams.preprocess.per_limit;
 idxRRtoBeRemoved = FindSpikesInRR(rr, perLimit); 
 
-%% 7. Find Long Running Outliers
+% 7. Find Long Running Outliers
 
     
 
-%% 8. Combine Annotations and Percentage Outliers
+% 8. Combine Annotations and Percentage Outliers
 % Combination of methods
 outliers_combined = idxRRtoBeRemoved(:) + ann_outliers(:);
 outliers = logical(outliers_combined); 
@@ -171,7 +171,7 @@ end
 % r1_rmv_small = (find(runlength1 > 10));
 % idx_groups_outliers =  find(runlength1 > 10);
 
-%% 9. Remove or Interpolate Outliers
+% 9. Remove or Interpolate Outliers
 idx_outliers = find(outliers == 1);
 
 % Keep count of outliers 
@@ -179,26 +179,27 @@ numOutliers = length(idx_outliers);
 
 rr_original = rr;
 rr(idx_outliers) = NaN;
-if strcmp(HRVparams.preprocess.method_outliers,'cub')
-    NN_Outliers = interp1(time,rr,time,'spline','extrap');
-    t_Outliers = time;
-elseif strcmp(HRVparams.preprocess.method_outliers,'pchip')
-    NN_Outliers = interp1(time,rr,time,'pchip');
-    t_Outliers = time;
-elseif strcmp(HRVparams.preprocess.method_outliers,'lin')
-    NN_Outliers = interp1(time,rr,time,'linear','extrap'); 
-    t_Outliers = time;
-elseif strcmp(HRVparams.preprocess.method_outliers,'rem')
-    NN_Outliers = rr;
-    NN_Outliers(idx_outliers) = [];
-    t_Outliers = time;
-    t_Outliers(idx_outliers) = []; 
-else
-    % By default remove outliers
-    NN_Outliers = rr;
-    NN_Outliers(idx_outliers) = [];
-    t_Outliers = time;
-    t_Outliers(idx_outliers) = [];
+
+switch HRVparams.preprocess.method_outliers
+    case 'cub'
+        NN_Outliers = interp1(time,rr,time,'spline','extrap');
+        t_Outliers = time;
+    case 'pchip'
+        NN_Outliers = interp1(time,rr,time,'pchip');
+        t_Outliers = time;
+    case 'lin'
+        NN_Outliers = interp1(time,rr,time,'linear','extrap'); 
+        t_Outliers = time;
+    case 'rem'
+        NN_Outliers = rr;
+        NN_Outliers(idx_outliers) = [];
+        t_Outliers = time;
+        t_Outliers(idx_outliers) = []; 
+    otherwise % By default remove outliers
+        NN_Outliers = rr;
+        NN_Outliers(idx_outliers) = [];
+        t_Outliers = time;
+        t_Outliers(idx_outliers) = [];
 end
 
 if figures
@@ -207,7 +208,7 @@ if figures
     legend('raw','interp1(after outliers removed)')
 end
 
-%% 10. Identify Non-physiologic Beats
+% 10. Identify Non-physiologic Beats
 toohigh = NN_Outliers > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
 toolow = NN_Outliers < HRVparams.preprocess.lowerphysiolim;     % equivalent to RR = .375
 
@@ -217,27 +218,26 @@ NN_NonPhysBeats(idx_toolow) = NaN;
 numOutliers = numOutliers + length(idx_toolow);
 
 
-if strcmp(HRVparams.preprocess.method_unphysio,'cub')
-    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'spline','extrap');
-    t_NonPhysBeats = t_Outliers;
-    flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
-elseif strcmp(HRVparams.preprocess.method_unphysio,'pchip')
-    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
-    t_NonPhysBeats = t_Outliers;
-    flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
-elseif strcmp(HRVparams.preprocess.method_unphysio,'lin')
-    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'linear','extrap'); 
-    t_NonPhysBeats = t_Outliers;
-    flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
-elseif strcmp(HRVparams.preprocess.method_unphysio,'rem')
-    NN_NonPhysBeats(idx_toolow) = [];
-    t_NonPhysBeats = t_Outliers;
-    t_NonPhysBeats(idx_toolow) = []; % Review this line of code for improvement
-
-else
-    % Default is cubic spline
-    NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
-    t_NonPhysBeats = t_Outliers;
+switch HRVparams.preprocess.method_unphysio
+    case 'cub'
+        NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'spline','extrap');
+        t_NonPhysBeats = t_Outliers;
+        flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
+    case 'pchip'
+        NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
+        t_NonPhysBeats = t_Outliers;
+        flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
+    case 'lin'
+        NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'linear','extrap'); 
+        t_NonPhysBeats = t_Outliers;
+        flagged_beats = logical(outliers(:) + toohigh(:)+ toolow(:));
+    case 'rem'
+        NN_NonPhysBeats(idx_toolow) = [];
+        t_NonPhysBeats = t_Outliers;
+        t_NonPhysBeats(idx_toolow) = []; % Review this line of code for improvement
+    otherwise % use cubic spline interpoletion as default
+        NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
+        t_NonPhysBeats = t_Outliers;
 end
 
 if figures
@@ -250,7 +250,7 @@ end
 
 
 
-%% 11. Interpolate Through Beats that are Too Fast
+% 11. Interpolate Through Beats that are Too Fast
 toohigh = NN_NonPhysBeats > HRVparams.preprocess.upperphysiolim;    % equivalent to RR = 2
 
 idx_outliers_2ndPass = find(logical(toohigh(:)) ~= 0);
@@ -261,21 +261,21 @@ if strcmp(HRVparams.preprocess.method_unphysio,'rem')
     flagged_beats = numOutliers;
 end
 
-if strcmp(HRVparams.preprocess.method_outliers,'cub')            
-    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
-    t_TooFasyBeats = t_NonPhysBeats;
-elseif strcmp(HRVparams.preprocess.method_outliers,'pchip')
-    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'pchip');
-    t_TooFasyBeats = t_NonPhysBeats;
-elseif strcmp(HRVparams.preprocess.method_outliers,'lin')
-    NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'linear','extrap');
-    t_TooFasyBeats = t_NonPhysBeats;
-elseif strcmp(HRVparams.preprocess.method_outliers,'rem')
-    NN_TooFastBeats(idx_outliers_2ndPass) = [];
-    t_TooFasyBeats = t_NonPhysBeats;
-    t_TooFasyBeats(idx_outliers_2ndPass) = []; % Review this line of code for improvement
-else
-    % Default is cubic spline
+switch HRVparams.preprocess.method_outliers
+    case 'cub'            
+        NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
+        t_TooFasyBeats = t_NonPhysBeats;
+    case 'pchip'
+        NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'pchip');
+        t_TooFasyBeats = t_NonPhysBeats;
+    case 'lin'
+        NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'linear','extrap');
+        t_TooFasyBeats = t_NonPhysBeats;
+    case 'rem'
+        NN_TooFastBeats(idx_outliers_2ndPass) = [];
+        t_TooFasyBeats = t_NonPhysBeats;
+        t_TooFasyBeats(idx_outliers_2ndPass) = []; % Review this line of code for improvement
+    otherwise % USe cubic spline interpoletion as default
     NN_TooFastBeats = interp1(t_NonPhysBeats,NN_TooFastBeats,t_NonPhysBeats,'spline','extrap');
     t_TooFasyBeats = t_NonPhysBeats;
 end
@@ -287,7 +287,7 @@ if figures
         'interp2(after too low)','toolow','interp3 (after too fast removed)')
 end
 
-%% 12. Remove erroneous data at the end of a record 
+% 12. Remove erroneous data at the end of a record 
 %       (i.e. a un-physiologic point caused by removing data at the end of
 %       a record)
 

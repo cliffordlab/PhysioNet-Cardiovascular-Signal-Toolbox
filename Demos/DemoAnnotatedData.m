@@ -102,26 +102,8 @@ for i_patient = 1:numsub
         %% 8. SDANN and SDNNi
         [SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
-        %% 9. Compare to YALE & Joe Mietus's HRV Toolbox
-        % J M Toolbox Results
-        % (Requires a lot of processing time because of WFDB functions)
-        % jm = compareJMHRV(NN,tNN,samples,annotations,num2str(subjectids(i_patient)),s);
-        % 
-        % yale = compareYale(subjectids(i_patient),t_win,s);
-
-        % % Plots of Comparisons
-        % % (Yale data was scaled on account of input being in ms rather than s)
-        % figure; plot(t_win(1:200),vlf(1:200),t_win(1:200),jm.JMvlf,t_win(1:200),yale_mod_vlf(1:200)./1000000); legend('CL HRV TBx','JM HRV TBx','Yale'); title('VLF')
-        % figure; plot(t_win(1:200),NNmean(1:200),t_win(1:200),jm.JMNNmean+.001,t_win(1:200),yale_mod_rr(1:200)./1000); legend('CL HRV TBx','JM HRV TBx + .001 offset'); title('Mean RR')
-        % %figure; plot(t_win(1:200),pnn50(1:200),t_win(1:200),jm.JMpnn50+.001,t_win(1:200),yale_mod_pnn50(1:200)); legend('CL HRV TBx','JM HRV TBx + .001 offset'); title('pnn50')
-        % figure; plot(t_win(1:200),hf(1:200),t_win(1:200),jm.JMhf,t_win(1:200),yale_mod_hf(1:200)./1000000); legend('CL HRV TBx','JM HRV TBx','Yale'); title('HF')
-        % figure; plot(t_win(1:200),lf(1:200),t_win(1:200),jm.JMlf,t_win(1:200),yale_mod_lf(1:200)./1000000); legend('CL HRV TBx','JM HRV TBx','Yale'); title('LF')
-        % figure; plot(t_win(1:200),RMSSD(1:200),t_win(1:200),jm.JMrmssd,t_win(1:200),yale_mod_rmssd(1:200)./1000); legend('CL HRV TBx','JM HRV TBx','Yale'); title('RMSSD')
-        % figure; plot(t_win(1:200),SDNN(1:200),t_win(1:200),jm.JMSDNN+.0001,t_win(1:200),yale_mod_sdnn(1:200)./1000); legend('CL HRV TBx','JM HRV TBx + .0001 offset','Yale'); title('SDNN')
-        % figure; plot(t_win(1:200),ttlpwr(1:200),t_win(1:200),jm.JMttlpwr,t_win(1:200), yale_mod_tp(1:200)./1000000); legend('CL HRV TBx','JM HRV TBx','Yale'); title('Total Power')
-        % figure; plot(t_win(1:200),lfhf(1:200),t_win(1:200),jm.JMlfhf+.0001,t_win(1:200),yale_mod_lfhf(1:200)); legend('CL HRV TBx','JM HRV TBx + .0001 offset','Yale'); title('LF / HF Ratio')
-  
-        %% 10. Save Results
+   
+        %% 9. Save Results
         % Uncomment the following lines for All Results
         results = [RRwindowStartIndices(:),ac(:),dc(:),...
             ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
@@ -140,7 +122,7 @@ for i_patient = 1:numsub
         resFilenameHRV = GenerateHRVresultsOutput(subjectIDs(i_patient), ...
             RRwindowStartIndices,results,col_titles, [], HRVparams, tNN, NN);
               
-        % Compare generated output file with the reference one
+        %% 10 Compare generated output file with the reference one
         
         currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
         referenceFile = ['ReferenceOutput' filesep 'Annotated_HRV_allwindows.csv'];

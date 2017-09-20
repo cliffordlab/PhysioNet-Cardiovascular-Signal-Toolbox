@@ -1,6 +1,16 @@
-function alpha = dfa(x, pflag)
-% alpha = dfa(x) calculates the detrended fluctuation analysis 
-% estimate of the scaling exponent alpha. 
+function alpha = dfaScalingExponent(x, minBoxSize, maxBoxSize, pflag)
+%
+% alpha = dfaScalingExponent(xminBoxSize, maxBoxSize, pflag) calculates the 
+% detrended fluctuation analysis estimate of the scaling exponent alpha. 
+%
+% INPUTS
+%         x          : A Nx1 vector containing the series to be analyzed
+%         minBoxSize : Smallest box width (default: 2p+2)
+%         maxBoxSize : Largest box width (default: N/4)
+%         pflag      : (Optional) pflag=1 plot,  plag=0 
+% OUTPUTS     
+%         alpha      : estimate of scaling exponent 
+%
 % The raw time series x(i) is first integrated to give y(i); i=1,...,N. 
 % For each length scale, n, y(i) is divided into segments of equal length, n.
 % In each segment, the data is detrended by subtracting the local linear least 
@@ -16,6 +26,9 @@ function alpha = dfa(x, pflag)
 % Peng C-K, Buldyrev SV, Havlin S, Simons M, Stanley HE, Goldberger AL. 
 % Mosaic organization of DNA nucleotides. Phys Rev E 1994;49:1685-1689.
 % Copyright (c) 2005 Patrick E. McSharry (patrick@mcsharry.net)
+%
+% 09-20-2017 Modified by Giulia Da Poian (GDP) to be included in the VOSIM 
+%            HRV toolbox. (Original function name: dfa)
 
 if nargin < 2
    pflag = 0;
@@ -24,18 +37,17 @@ end
 N = length(x);     
 y = cumsum(x);
 
-n1 = 3; 
-n2 = round(log2(N/2)); 
-ns = [2.^[n1:n2] N]'; 
+n1 = round(log2(minBoxSize)); % modified GDP, was n1 = 3
+n2 = round(log2(maxBoxSize)); % modified GDP, was n2 = round(log2(N/2))
+ns = (2.^(n1:n2))';           % modified GDP, was ns =[2.^[n1:n2] N]' 
 nn = length(ns);
 F = zeros(nn,1);
 for n=1:nn
    t = trend(y, ns(n));
    z = y - t;
    F(n) = sqrt(mean(z.^2));
-   
+ 
 end
-
 
 lns = log10(ns);
 lF = log10(F);
@@ -56,7 +68,9 @@ if pflag == 1
     title(['F(n) ~ n^{\alpha} with \alpha = ' num2str(a(2)) ]);
 end
 
-end % dfa function
+end % dfaScalingExponent function
+
+
 
 function t = trend(y, n)
     N = length(y);

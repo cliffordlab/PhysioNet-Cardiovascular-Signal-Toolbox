@@ -73,7 +73,7 @@ end
 if nargin<4 || isempty(HRVparams) 
         HRVparams = initialize_HRVparams('demo');
 end
-if nargin<6 || isempty(windows_all)
+if nargin<5 || isempty(windows_all)
     windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 end
 

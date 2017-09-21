@@ -56,17 +56,17 @@ end
 
 % Establish Filename Based on Type of Output
 if strcmp(type,'AF') || strcmp(type,'MSE') || strcmp(type,'SQI')
-    filename = ['patid_' sub_id '_' type '_results_' HRVparams.time];
+    filename = strcat('patid_', sub_id, '_', type, '_results_', HRVparams.time);
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename and directory
-        fullfilename = [HRVparams.writedata filesep filename '.csv']; 
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv'); 
         % Write AF results to a table 
         T =  array2table(results,'VariableNames',titles);
         % Use writetable to geberate csv file with the results   
         writetable(T,fullfilename);        
     elseif strcmp(HRVparams.output.format,'mat')
         % Add .mat extension to filename and directory
-        fullfilename = [HRVparams.writedata filesep filename '.mat'];
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.mat');
         %Save results
         save(fullfilename, 'results', 'titles');
     end
@@ -82,30 +82,30 @@ else % HRV results
         num_results = x(3-idx);
         
         if num_results > 1 % Specify number of lowest hr windows returned
-            filename = ['HRV_results_' num2str(HRVparams.output.num_win) 'LowestHRwin_' HRVparams.time];
+            filename = strcat('HRV_results_', num2str(HRVparams.output.num_win), 'LowestHRwin_', HRVparams.time);
         else
-            filename = ['HRV_results_' HRVparams.time];
+            filename = strcat('HRV_results_', HRVparams.time);
         end
         
         if HRVparams.output.separate
             % Generate a new file for each output
-            fullfilename = ['patid_' sub_id '_' filename];
+            fullfilename = strcat(sub_id, '_', filename);
         end
         
     % File Name for all windows     
     elseif isempty(HRVparams.output.num_win) 
-        filename = ['HRV_results_allwindows_allpatients_' HRVparams.time];
+        filename = strcat('HRV_results_allwindows_allpatients_', HRVparams.time);
 
         if HRVparams.output.separate
             % Generate a new file for each output
-            filename = ['patid_' sub_id 'HRV_results_allwindows_' HRVparams.time];
+            filename = strcat(sub_id, 'HRV_results_allwindows_', HRVparams.time);
         end
     end
 
 
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename
-        fullfilename = [HRVparams.writedata filesep filename '.csv'];
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv');
     
         if ~isempty(HRVparams.output.num_win) 
             % Returns results based on the number of windows set by the
@@ -158,7 +158,7 @@ else % HRV results
 
     elseif strcmp(HRVparams.output.format,'mat')
         % Add .mat extension to filename
-        fullfilename = [HRVparams.writedata filesep filename '.mat'];
+        fullfilename = strcat(HRVparams.writedata, filesep, filename, '.mat');
     
         if ~isempty(HRVparams.output.num_win)
             windows_output = FindLowestHRwin(tNN, NN,HRVparams.output.num_win);

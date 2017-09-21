@@ -71,7 +71,7 @@ catch
 end
 
 %% 8. SDANN and SDNNi
-[SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
+[SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
 %% 10. Save Results
 % Uncomment the following lines for All Results

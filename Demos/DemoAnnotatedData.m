@@ -100,7 +100,7 @@ for i_patient = 1:numsub
         end
 
         %% 8. SDANN and SDNNi
-        [SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
+        [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
 
    
         %% 9. Save Results

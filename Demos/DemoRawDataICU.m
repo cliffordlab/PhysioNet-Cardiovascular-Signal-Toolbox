@@ -211,7 +211,7 @@ catch
 end
 
 %% 10. SDANN and SDNNi
-[SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
+[SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
 
 %% 11. Export HRV Metrics as CSV File
 %Uncomment the following lines for All Results

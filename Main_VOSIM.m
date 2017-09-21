@@ -145,7 +145,7 @@ try
     fprintf('HRV metrics for file ID %s saved in the output folder in %s \n', subjectID, ResultsFileName);
     
     % 5. SDANN and SDNNi
-    [SDANN, SDNNI] = ClalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
+    [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
 
     
     

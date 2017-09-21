@@ -160,7 +160,7 @@ currentFile = [HRVparams.writedata filesep AFfile '.csv'];
 referenceFile = ['ReferenceOutput' filesep 'AFDemo.csv'];
 testHRV = CompareOutput(currentFile,referenceFile);
 
-if testHRV
+if testHRV 
     fprintf('** DemoRawDataAF: TEST SUCCEEDED ** \n ')
      fprintf('A file named %s.csv \n has been saved in %s \n', ...
     AFfile, HRVparams.writedata);

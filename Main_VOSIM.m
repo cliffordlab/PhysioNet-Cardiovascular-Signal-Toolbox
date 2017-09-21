@@ -158,6 +158,7 @@ try
         % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     catch
+        mse = NaN;
         fprintf('MSE failed for file ID %s \n', subjectID);
     end
 
@@ -172,6 +173,9 @@ try
 catch
     
     results = NaN;
+    SDNN = NaN;
+    SDNNI = NaN;
+    mse = NaN;
     col_titles = {'NaN'};
     GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);    
     fprintf('Analysis not performed for file ID %s \n', subjectID);

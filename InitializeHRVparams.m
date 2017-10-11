@@ -116,16 +116,16 @@ HRVparams.data_confidence_level = 1;
 
 %% 3. Global Settings
 
-HRVparams.windowlength = 300;	% 300 seconds or 5 minutes
-HRVparams.increment = 30;       % 30 seconds increment
-HRVparams.numsegs = 5;          % number of segments to collect with lowest HR
+HRVparams.windowlength = 300;	% Default: 300, seconds
+HRVparams.increment = 30;       % Default: 30, seconds increment
+HRVparams.numsegs = 5;          % Default: 5, number of segments to collect with lowest HR
 
 %% 4. Quality Threshold Settings
-HRVparams.threshold1 = 0.9;       % Threshold for which SQI represents good data
-HRVparams.threshold2 = .20;     % Amount (%) of data that can be rejected before a
-                                % window is considered too low quality for analysis
-HRVparams.win_tol = .15;        % maximum percentage of data allowable to be missing
-                                % from a window .15 = 15%
+HRVparams.threshold1 = 0.9;       % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.threshold2 = .20;       % Default: 0.2, amount (%) of data that can be rejected before a
+                                  % window is considered too low quality for analysis
+HRVparams.win_tol = .15;          % Default: 0.15, maximum percentage of data allowable to be missing
+                                  % from a window .15 = 15%
 %% 5. Debug Settings
 
 HRVparams.rawsig = 0;           % Load raw signal if it is available for debugging
@@ -133,10 +133,10 @@ HRVparams.debug = 0;
 
 %% 6. SQI Settings
 
-HRVparams.sqi.windowlength = 10; % In seconds
-HRVparams.sqi.increment = 1;     % In seconds
-HRVparams.sqi.threshold = 0.1;   % In seconds
-HRVparams.sqi.margin = 2;        % In seconds
+HRVparams.sqi.windowlength = 10; % Default: 10, seconds
+HRVparams.sqi.increment = 1;     % Default: 1, seconds
+HRVparams.sqi.threshold = 0.1;   % Default: 0.1, seconds
+HRVparams.sqi.margin = 2;        % Default: 2, seconds
 
 %% 7. Output Settings
 
@@ -153,135 +153,135 @@ HRVparams.output.separate = 0;          % 1 = separate files for each subject
                                         % 0 = all results in one file
 HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
                                         % leave blank if all windows should be returned
-
                                         % Format settings for annotations generated
 HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file generated
                                         % 'csv'     = ASCII CSV file generated
                             
 
 %% 8. Filename to Save Data
-HRVparams.time = datestr(now, 'yyyymmdd');      % Setup time for filename of output
+HRVparams.time = datestr(now, 'yyyymmdd');              % Setup time for filename of output
 HRVparams.filename = [HRVparams.time '_' project_name];
 
 %% 9. Preprocess Settings
 
-HRVparams.preprocess.figures = HRVparams.gen_figs;      % Figures on = 1, Figures off = 0
-HRVparams.preprocess.gaplimit = 4;                      % seconds; maximum believable gap 
-                                                        % in rr intervals
-HRVparams.preprocess.per_limit = 0.2;           % Percent limit of change from one 
-                                                % interval to the next
-HRVparams.preprocess.forward_gap = 3;	        % Maximum tolerable gap at beginning  
-                                                % of timeseries in seconds
-HRVparams.preprocess.method_outliers = 'rem';   % Method of dealing with outliers
-                                        % 'cub' = replace outlier points 
-                                        %  with cubic spline method
-                                        % 'rem' = remove outlier points
-                                        % 'pchip' = replace with pchip method
-HRVparams.preprocess.lowerphysiolim = 60/160;
-HRVparams.preprocess.upperphysiolim = 60/30;
-HRVparams.preprocess.method_unphysio = 'rem';   % Method of dealing with 
-                                        % unphysiologically low beats
-                                        % 'cub' = replace outlier points 
-                                        %  with cubic spline method
-                                        % 'rem' = remove outlier points
-                                        % 'pchip' = replace with pchip method
+HRVparams.preprocess.figures = HRVparams.gen_figs;  % Figures on = 1, Figures off = 0
+HRVparams.preprocess.gaplimit = 4;                  % Default: 2, seconds; maximum believable gap in rr intervals
+HRVparams.preprocess.per_limit = 0.2;               % Default: 0.2, Percent limit of change from one interval to the next
+HRVparams.preprocess.forward_gap = 3;	            % Default: 3, Maximum tolerable gap at beginning of timeseries in seconds
+HRVparams.preprocess.method_outliers = 'rem';       % Default: 'rem', Method of dealing with outliers
+                                                    % 'cub' = replace outlier points with cubic spline method
+                                                    % 'rem' = remove outlier points
+                                                    % 'pchip' = replace with pchip method
+HRVparams.preprocess.lowerphysiolim = 60/160;       % Default: 60/160
+HRVparams.preprocess.upperphysiolim = 60/30;        % Default: 60/30
+HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of dealing with unphysiologically low beats
+                                                    % 'cub' = replace outlier points with cubic spline method
+                                                    % 'rem' = remove outlier points
+                                                    % 'pchip' = replace with pchip method
 
 % The following settings do not yet have any functional effect on 
 % the output of preprocess.m:                             
-HRVparams.preprocess.threshold1 = HRVparams.threshold1;	 % Threshold for which SQI represents good data
-HRVparams.preprocess.minlength = 30;                     % (seconds) The minimum length of a good data segment
+HRVparams.preprocess.threshold1 =0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
 
 %% 10. Time Domain Analysis Settings
 
-HRVparams.timedomain.threshold1 = HRVparams.threshold1;  % Threshold for which SQI represents good data
-HRVparams.timedomain.threshold2 = 0.20;          % Amount (%) of data that can be rejected before a
-                                                 % window is considered too low quality for analysis
-HRVparams.timedomain.dataoutput = 0;             % 1 = Print results to .txt file
-                                                 % Anything else = utputs to return variables only
-                                                 % returned variables
-HRVparams.timedomain.alpha = 0.050;              % In seconds
-HRVparams.timedomain.win_tol = HRVparams.win_tol;    % Maximum percentage of data allowable 
-                                                     % to be missing from a window
+HRVparams.timedomain.on = 1;                                   % Default: 1, Time Domain Analysis 1=On or 0=Off
+
+HRVparams.timedomain.threshold1 = 0.9;                   % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.timedomain.threshold2 = 0.20;                  % Default: 0.20, Amount (%) of data that can be rejected before a
+                                                         % window is considered too low quality for analysis
+HRVparams.timedomain.dataoutput = 0;                     % 1 = Print results to .txt file
+                                                         % Anything else = utputs to return variables only
+                                                         % returned variables
+HRVparams.timedomain.alpha = 0.050;                      % Default: 0.05 ,In seconds
+HRVparams.timedomain.win_tol = .15;                      % Default: .15, Maximum percentage of data allowable 
+                                                         % to be missing from a window
 
 %% 11. Frequency Domain Analysis Settings
 
-ULF = [0 .0033];                    % Requires a
+HRVparams.freq.on = 1;              % Default: 1, Frequency Domain Analysis 1=On or 0=Off
+
+ULF = [0 .0033];                    % 
 VLF = [0.0033 .04];                 % Requires at least 300 s window
 LF = [.04 .15];                     % Requires at least 25 s window
 HF = [0.15 0.4];                    % Requires at least 7 s window
 
 HRVparams.freq.limits = [ULF; VLF; LF; HF];
-HRVparams.freq.threshold1 = HRVparams.threshold1;	% Threshold for which SQI represents good data
-                                                    % (Used only when SQI is provided)
-HRVparams.freq.threshold2 = 0.05;           % Amount (%) of data that can be rejected before a
+HRVparams.freq.threshold1 = 0.9;	        % Default: 0.9, Threshold for which SQI represents good data
+                                            % (Used only when SQI is provided)
+HRVparams.freq.threshold2 = 0.05;           % Default: 0.05, Amount (%) of data that can be rejected before a
                                             % window is considered too low quality for analysis
                                             % (Used only when SQI is provided)
-HRVparams.freq.zero_mean = 1;               % Option for subtracting the mean from the input data
+HRVparams.freq.zero_mean = 1;               % Default: 1, Option for subtracting the mean from the input data
 HRVparams.freq.methods = {'lomb'};
 HRVparams.freq.plot_on = 0;
-HRVparams.freq.dataoutput = 2;              % 1 = Print results to .txt file & outputs to return variables
+HRVparams.freq.dataoutput = 2;              % Default: 2, 
+                                            % 1 = Print results to .txt file & outputs to return variables
                                             % Anything else = outputs to return variables only
 
 % The following settings are for debugging spectral analysis methods
-HRVparams.freq.debug_sine = 0;              % Adds sine wave to tachogram for debugging
-HRVparams.freq.debug_freq = 0.15;  
-HRVparams.freq.debug_weight = .03;
+HRVparams.freq.debug_sine = 0;              % Default: 0, Adds sine wave to tachogram for debugging
+HRVparams.freq.debug_freq = 0.15;           % Default: 0.15
+HRVparams.freq.debug_weight = .03;          % Default: 0.03
 
 % Lomb:
-HRVparams.freq.normalize_lomb = 0;	        % 1 = Normalizes Lomb Periodogram, 
-                                            % 0 = Doesn't normalize
+HRVparams.freq.normalize_lomb = 0;	        % Default: 0
+                                            % 1 = Normalizes Lomb Periodogram, 
+                                            % 0 = Doesn't normalize 
 
 % Burg: (not recommended)
-HRVparams.freq.burg_poles = 15;    % Number of coefficients for spectral 
-                                   % estimation using the Burg method 
-                                   % (not recommended)
+HRVparams.freq.burg_poles = 15;    % Default: 15, Number of coefficients 
+                                   % for spectral estimation using the Burg
+                                   % method (not recommended)
 
 % The following settings are only used when the user specifies spectral
 % estimation methods that use resampling
-HRVparams.freq.resampling_freq = 7; %Hz 
-HRVparams.freq.resample_interp_method = 'cub';  % 'cub' = cublic spline method (DEFAULT)
+HRVparams.freq.resampling_freq = 7;             % Default: 7, Hz 
+HRVparams.freq.resample_interp_method = 'cub';  % Default: 'cub'
+                                                % 'cub' = cublic spline method
                                                 % 'lin' = linear spline method
-HRVparams.freq.resampled_burg_poles = 100; 
+HRVparams.freq.resampled_burg_poles = 100;      % Default: 100
 
 %% 12. SDANN and SDNNI Analysis Settings
-
-HRVparams.sd.segmentlength = HRVparams.windowlength;
+HRVparams.sd.on = 1;                        % Default: 1, SD analysis 1=On or 0=Off
+HRVparams.sd.segmentlength = 300;           % Default: 300, windows length in seconds
 
 %% 13. PRSA Analysis Settings
 
-HRVparams.prsa.win_length = 30;  % In seconds
-HRVparams.prsa.thresh_per = 20;  % Percent difference that one beat can 
-                                 % differ from the  next in the prsa code
-HRVparams.prsa.plot_results = 0;    
-HRVparams.prsa.threshold1= HRVparams.threshold1;  % Threshold for which SQI represents good data
-HRVparams.prsa.threshold2 = 0.20; % Amount (%) of data that can be rejected 
-                                  % before a window is considered too low 
-                                  % quality for analysis                            
-HRVparams.prsa.win_tol = HRVparams.win_tol; % Maximum percentage of data allowable to 
-                                            % be missing from a window
+HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
+HRVparams.prsa.win_length = 30;    % Default: 30, In seconds
+HRVparams.prsa.thresh_per = 5;     % Default: 5,Percent difference that one beat can 
+                                   % differ from the  next in the prsa code
+HRVparams.prsa.plot_results = 0;   % Default:0   
+HRVparams.prsa.threshold1= 0.9;    % Default:0.9, Threshold for which SQI represents good data
+HRVparams.prsa.threshold2 = 0.20;  % Default:0.2, Amount (%) of data that can be rejected 
+                                   % before a window is considered too low quality for analysis                            
+HRVparams.prsa.win_tol = 0.15;     % Default:0.15, Maximum percentage of data allowable to 
+                                   % be missing from a window
 
 %% 14. AF Detection Settings
 
-HRVparams.af.on = 1;              % AF Detection On or Off
-HRVparams.af.windowlength = 30;   % Set to include ~60 beats in each window
-HRVparams.af.increment = 30;      % No overlap necessary in AF feat calc
+HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
+HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~60 beats in each window
+HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
 
 %% 15. Peak Detection Settings
 
 % The following settings are for jqrs.m
 
-HRVparams.REF_PERIOD = 0.250; 
-HRVparams.THRES = .6; 
-HRVparams.fid_vec = [];
-HRVparams.SIGN_FORCE = [];
-HRVparams.debug = 0;
+HRVparams.REF_PERIOD = 0.250;   % Default: 0.25
+HRVparams.THRES = .6;           % Default: 0.6
+HRVparams.fid_vec = [];         % Default: []
+HRVparams.SIGN_FORCE = [];      % Default: []
+HRVparams.debug = 0;            % Default: 0
 
 %% 16. Multiscale Entropy Settings
-
-HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Radius of similarity (% of std)
-HRVparams.MSE.MSEpatternLength = 2;             % Pattern length
-HRVparams.MSE.maxCoarseGrainings = 7;           % Maximum number of coarse-grainings
+HRVparams.MSE.on = 1;                           % Default: 1, MSE Analysis 1=On or 0=Off
+HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Default: 0.15, Radius of similarity (% of std)
+HRVparams.MSE.MSEpatternLength = 2;             % Default: 2, Pattern length
+HRVparams.MSE.maxCoarseGrainings = 7;           % Default: 7, Maximum number of coarse-grainings
 %
 
 %% Export Parameter as Latex Table

@@ -14,13 +14,14 @@ function HRVparams = InitializeHRVparams(project_name)
 %       7.  Output Settings 
 %       8.  Time of Process and Filename to Save Data
 %       9.  Preprocess Settings
-%       10. Time Domain Analysis Settings
-%       11. Frequency Domain Analysis Settings
-%       12. SDANN and SDNNI Analysis Settings
-%       13. PRSA Analysis Settings
-%       14. AF Detection Settings
+%       10. AF Detection Settings
+%       11. Time Domain Analysis Settings
+%       12. Frequency Domain Analysis Settings
+%       13. SDANN and SDNNI Analysis Settings
+%       14. PRSA Analysis Settings
 %       15. Peak Detection Settings
 %       16. Multiscale Entropy - MSE - Settings
+%       17. Detrended Fluctuation Analysis - DFA - Settings
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
@@ -184,8 +185,13 @@ HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of 
 HRVparams.preprocess.threshold1 =0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
+%% 10. AF Detection Settings
 
-%% 10. Time Domain Analysis Settings
+HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
+HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~60 beats in each window
+HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
+
+%% 11. Time Domain Analysis Settings
 
 HRVparams.timedomain.on = 1;                                   % Default: 1, Time Domain Analysis 1=On or 0=Off
 
@@ -199,7 +205,7 @@ HRVparams.timedomain.alpha = 0.050;                      % Default: 0.05 ,In sec
 HRVparams.timedomain.win_tol = .15;                      % Default: .15, Maximum percentage of data allowable 
                                                          % to be missing from a window
 
-%% 11. Frequency Domain Analysis Settings
+%% 12. Frequency Domain Analysis Settings
 
 HRVparams.freq.on = 1;              % Default: 1, Frequency Domain Analysis 1=On or 0=Off
 
@@ -244,11 +250,11 @@ HRVparams.freq.resample_interp_method = 'cub';  % Default: 'cub'
                                                 % 'lin' = linear spline method
 HRVparams.freq.resampled_burg_poles = 100;      % Default: 100
 
-%% 12. SDANN and SDNNI Analysis Settings
+%% 13. SDANN and SDNNI Analysis Settings
 HRVparams.sd.on = 1;                        % Default: 1, SD analysis 1=On or 0=Off
 HRVparams.sd.segmentlength = 300;           % Default: 300, windows length in seconds
 
-%% 13. PRSA Analysis Settings
+%% 14. PRSA Analysis Settings
 
 HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
 HRVparams.prsa.win_length = 30;    % Default: 30, In seconds
@@ -261,11 +267,6 @@ HRVparams.prsa.threshold2 = 0.20;  % Default:0.2, Amount (%) of data that can be
 HRVparams.prsa.win_tol = 0.15;     % Default:0.15, Maximum percentage of data allowable to 
                                    % be missing from a window
 
-%% 14. AF Detection Settings
-
-HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
-HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~60 beats in each window
-HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
 
 %% 15. Peak Detection Settings
 

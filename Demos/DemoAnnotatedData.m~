@@ -52,6 +52,7 @@ for i_patient = 1:numsub
     try
         
         % 1. Import Patient Data
+        
         RRwindowStartIndices = [];
         tNN = [];
         NN = [];
@@ -60,15 +61,21 @@ for i_patient = 1:numsub
         t = cumsum(rr);
                
         % 2. Perform HRV analysis on the RR intervals
-        [results, resFilenameHRV] = Main_VOSIM(rr,t,'RRIntervals',HRVparams,subjectIDs(i_patient),annotations);
-        currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
 
+        [results, resFilenameHRV] = Main_VOSIM([],t,'RRIntervals',HRVparams,subjectIDs(i_patient),annotations);
+
+       
         
     catch
-       
+        if isnumeric(subjectIDs(i_patient))
+            current_filename = ['error_' num2str(subjectIDs(i_patient))];
+        else
+            current_filename = ['error_' subjectIDs{}];
+        end
+
         results = NaN;
         col_titles = {'NaN'};
-        currentFile = '';
+        
         notAnalyzed = 1;
         fprintf('Error on subject %s \n', char(subjectIDs(i_patient)));    
 
@@ -79,6 +86,7 @@ end
 
 % 3. Compare generated output file with the reference one
 
+currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
 referenceFile = ['ReferenceOutput' filesep 'NSR_HRV_allwindows_allpatients.csv'];
 testHRV = CompareOutput(currentFile,referenceFile);
 
@@ -89,5 +97,5 @@ elseif notAnalyzed == 0
     fprintf('Error: generated output does not match reference \n')
 elseif notAnalyzed == 1
     fprintf('** DemoAnnotatedData: TEST FAILED ** \n')
-    fprintf('Error: analysis not performed \n');    
+    fprintf('Error: analysis not performed');    
 end

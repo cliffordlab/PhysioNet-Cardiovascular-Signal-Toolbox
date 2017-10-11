@@ -24,76 +24,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all; clc; close all;
-HRVparams = InitializeHRVparams('demo'); % include the project name
+HRVparams = InitializeHRVparams('demo_RRgen'); % include the project name
 
-% Check existence of Output data folders and add to search path
-
-HRVparams.writedata = [HRVparams.writedata filesep 'RRgenData'];
-if ~exist(HRVparams.writedata, 'dir')
-   mkdir(HRVparams.writedata)
-end
-addpath(HRVparams.writedata)
-
-
-%% 1. Generate Data
+% 1. Generate Data
 
 rr = rrgen(HRVparams.demo.length,HRVparams.demo.pe,HRVparams.demo.pn,HRVparams.demo.seed);
 t = cumsum(rr);
 
-%% 2. Preprocess RR Data - Using HRV Toolbox
-% Remove noise, Remove ectopy, Don't detrend (yet)
-[NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,[], HRVparams);
+% 2. Analyze RR Data - Using HRV Toolbox Main function
 
-%% 3. Calculate Windows
-RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
+[results, resFilenameHRV] = Main_VOSIM(rr,t,'RRIntervals',HRVparams,'rrgenData',[]);
 
 
-%% 4. Calculate time domain HRV metrics - Using HRV Toolbox
-[NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-    RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
-    EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices);
-
-%% 6. Frequency domain HRV metrics (LF HF TotPow)
-%       All Inputs in Seconds
-%%% TO DO: Remove necessity of creating phantom beats with lomb 
-%%% TO DO: Only should return these metrics for 5 min segments
-
-[ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
-
-%% 7. PRSA
-try
-    [ac,dc,~] = prsa(NN, tNN, [], RRwindowStartIndices, HRVparams);
-catch
-    ac = NaN;
-    dc = NaN;
-    error_flag(i_patient) = subjectids(i_patient);
-end
-
-%% 8. SDANN and SDNNi
-[SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams);
-
-%% 10. Save Results
-% Uncomment the following lines for All Results
-results = [RRwindowStartIndices(:),ac(:),dc(:),...
-    ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
-    NNmean(:),NNmedian(:),NNmode(:),...
-    NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),...
-    pnn50(:),btsdet(:),fbeatw(:)];
-
-col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
-    'ttlpwr','fdflag','NNmean','NNmedian','NNmode','NNvar','NNskew',...
-    'NNkurt','SDNN','NNiqr','RMSSD','pnn50','beatsdetected','corrected_beats'};
-
-% results = [NNmean(:), NNmedian(:)];
-% col_titles = {'NN Mean','NNmedian'};
-
-% Generates Output - Never comment out
-resFilenameHRV = GenerateHRVresultsOutput('demo',RRwindowStartIndices,...
-    results,col_titles, [],HRVparams, tNN, NN);
-
-
-%% 11 Compare generated output file with the reference one
+% 3 Compare generated output file with the reference one
         
 currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
 referenceFile = ['ReferenceOutput' filesep 'StandardizedData_HRV_allwindows.csv'];

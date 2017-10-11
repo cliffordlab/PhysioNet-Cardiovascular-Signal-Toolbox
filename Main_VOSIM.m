@@ -1,4 +1,4 @@
-function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations,varargin)
+function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations,varargin)
 %  ====================== VOSIM Toolbox Main Script ======================
 %
 %   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -25,12 +25,10 @@ function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVpar
 %       signal waveform and the Type: 'ABP' and\or 'PPG'.
 %       
 %
-%   OUTPUT
-%       results - HRV time and frequency domain metrics as well as AC and
-%                 DC
-%       SDANN   - standard deviation of the averages of values
-%       SDNNI   - mean of the standard deviations of all values
-%       mse     - Multiscale Entropy computed using SampleEntropy
+%   OUTPUT 
+%       results         - HRV time and frequency domain metrics as well
+%                         as AC and DC, SDANN and SDNNi
+%       ResultsFileName - Name of the file containing the results
 %
 %       NOTE: before running this script review and modifiy the parameters
 %             in "initialize_HRVparams.m" file accordingly with the specific
@@ -41,7 +39,7 @@ function [results, SDANN, SDNNI, mse] = Main_VOSIM(InputSig,t,InputFormat,HRVpar
 %       - ECG wavefrom input
 %       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
-%       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
+%       Main_VOSIM(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -66,7 +64,6 @@ if nargin < 4
 end
 if nargin < 5
     subjectID = '0000';
-    annotations = [];
 end
 if nargin < 6
     annotations = [];
@@ -85,6 +82,11 @@ end
 results = [];
 col_titles = {};
 
+if isa(subjectID,'cell'); subjectID = string(subjectID); end
+
+
+
+% Start HRV analysis
 try   
     if strcmp(InputFormat, 'ECGWaveform')
         % Convert ECG waveform in rr intervals
@@ -110,11 +112,11 @@ try
     end
     
     % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
-    if HRVparams.timedomian.on == 1
+    if HRVparams.timedomain.on == 1
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
         RMSSD,pnn50,btsdet,fdflagTime] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
         % Export results
-        results = [ results, RRwindowStartIndices(:), NNmean(:),NNmedian(:),NNvariance(:),...
+        results = [ results, RRwindowStartIndices(:), NNmean(:),NNmedian(:),NNmode(:),NNvariance(:),...
                     NNskew(:),NNkurt(:),SDNN(:), NNiqr(:),RMSSD(:), pnn50(:),...
                     btsdet(:),fdflagTime(:)];
         col_titles = [col_titles {'t_win','NNmean','NNmedian','NNmode','NNvar',...
@@ -148,29 +150,33 @@ try
     if HRVparams.sd.on == 1
         [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
         % Export results
-        results = [results, SDANN(:), SDNNI(:)];
-        col_titles = [col_titles {'SDANN' 'SDNNI'}];
+%         results = [results, SDANN(:), SDNNI(:)];
+%         col_titles = [col_titles {'SDANN' 'SDNNI'}];
     end
     
     
-    % Save results
+    % Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     
-    fprintf('HRV metrics for file ID %s saved in the output folder in %s \n', subjectID, ResultsFileName);
+    fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
     % 6. Multiscale Entropy
-    try
-        mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
-        % Save Results for MSE
+    if HRVparams.MSE.on == 1
+        try
+            mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
+        catch
+            mse = NaN;
+            fprintf('MSE failed for file ID %s \n', subjectID);
+        end
+         % Save Results for MSE
         results = mse;
         col_titles = {'MSE'};
         % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
-    catch
-        mse = NaN;
-        fprintf('MSE failed for file ID %s \n', subjectID);
     end
-
+    
+    
+    
     % 7. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
@@ -182,13 +188,10 @@ try
 catch
     
     results = NaN;
-    SDNN = NaN;
-    SDNNI = NaN;
-    mse = NaN;
     col_titles = {'NaN'};
     GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);    
     fprintf('Analysis not performed for file ID %s \n', subjectID);
-end
+end % end of HRV analysis
 
 
 

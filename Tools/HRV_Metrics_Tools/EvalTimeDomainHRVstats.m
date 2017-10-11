@@ -18,8 +18,6 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %                                Additional columns can be included with
 %                                additional sqi at the same timestamps
 %               HRVparams      : struct of settings for hrv_toolbox analysis
-%               windows_all    :
-%               flagged_beats  : 
 %                
 %   OUTPUT:     
 %               NNmean      :  
@@ -35,8 +33,6 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %                             more than a specified time.
 %               btsdet      :
 %               avgsqi      :
-%               fbeatw      :
-%               windows_all :
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox

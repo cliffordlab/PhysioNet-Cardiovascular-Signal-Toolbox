@@ -53,32 +53,36 @@ switch project_name
     
     % Define new project name and parameters
     case 'MyProjectName'                   % Update with your project name
-        HRVparams.readdata = '';           % (Optional) Specify data input folder\dir 
-        HRVparams.writedata = '';          % Specify name for data output folder
         HRVparams.Fs = Nan;                % Spacify sampling frequency
+        HRVparams.readdata = '';           % (Optional) Specify name for data input folder
+        HRVparams.writedata = '';          % (Optional) Specify name for data output folder
         HRVparams.datatype = '';           % (Optional) Spacify Data type
         HRVparams.ext = '';                % (Optional) Spacify file extension (e.g., 'mat','qrs')
         
     % Existing demo projects
-    case 'demo'                    % Parameters for demo using qrs data
-        HRVparams.readdata = 'TestData';
-        HRVparams.writedata = 'OutputData';
-        HRVparams.ext = 'qrs';
-        HRVparams.datatype = 'MARS';
+    case 'demo_NSR'      % Parameters for demo using MIT nsr data
+        HRVparams.readdata = strcat('TestData', filesep, 'Physionet_nsr2db');
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsNSR');
+        HRVparams.ext = 'ecg';
         HRVparams.Fs = 125;
-        % RRGEN Option, these parameters are passed to rrgen.m only for 
-        %demo pourposes 
+    case 'demo_RRgen' 
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsRRgen');
+        HRVparams.Fs = 125;
         HRVparams.demo.length = 5*60*60;   % Length of demo RR intervals in seconds
         HRVparams.demo.pe = 0.0003;        % Probability of ectopy ~ 1 per hr 
         HRVparams.demo.pn = 0.0048;        % Probability of noise ~ 16 per hr 
         HRVparams.demo.seed = 1;           % Seed for RRGEN
-
-    case 'rawdatademo'             % Parameters for demo using raw ECG data
-        HRVparams.readdata = 'TestData';
-        HRVparams.writedata = 'OutputData';
+    case 'demoICU'      % Parameters for ICU demo 
+        HRVparams.readdata = strcat('TestData');
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsICU');
+        HRVparams.ext = 'mat';
         HRVparams.Fs = 128;
-        HRVparams.datatype = 'MARS';
-        HRVparams.ext = 'mat';             
+    case 'demoAF'      % Parameters for AF demo 
+        HRVparams.readdata = strcat('TestData');
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsAFData');
+        HRVparams.ext = 'mat';
+        HRVparams.Fs = 128;
+           
 end
 
 if  isempty(HRVparams.writedata)    

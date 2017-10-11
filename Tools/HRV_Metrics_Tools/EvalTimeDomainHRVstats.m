@@ -1,5 +1,5 @@
 function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, ...
-          pnn50,btsdet,avgsqi] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
+          pnn50,btsdet,avgsqi,fdflag] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 
 % [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,SDNN,NNiqr,RMSSD, pnn50
 % btsdet,avgsqi] = EvalTimeDomainHRVstats(windows_all,NN,tNN,sqi,settings)
@@ -33,6 +33,9 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %                             more than a specified time.
 %               btsdet      :
 %               avgsqi      :
+%               fdflag      : 2 - Not enough high SQI data
+%                             3 - Not enough data in the window to analyze
+%                             5 - Success
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -94,7 +97,7 @@ RMSSD      = zeros(1,length(windows_all));
 pnn50      = zeros(1,length(windows_all));
 btsdet     = zeros(1,length(windows_all));
 avgsqi     = zeros(1,length(windows_all));
-
+fdflag     = zeros(1,length(windows_all));
 
 %% Analyze by Window
 
@@ -133,7 +136,8 @@ for i_win = 1:length(windows_all)
 
             btsdet(i_win) = length(nn_win);
             avgsqi(i_win) = mean(sqi_win(:,2));
-                
+            
+            fdflag(i_win) = 5; %'sucess';
           
         else
             NNmean(i_win) = NaN;
@@ -148,6 +152,7 @@ for i_win = 1:length(windows_all)
             pnn50(i_win) = NaN;
             btsdet(i_win) = length(nn_win);
             avgsqi(i_win) = mean(sqi_win(:,2));
+            fdflag(i_win) = 2; % 2: low SQI
         end % end of conditional statements that run if SQI is above threshold2
         
     else
@@ -163,6 +168,7 @@ for i_win = 1:length(windows_all)
         pnn50(i_win) = NaN;
         btsdet(i_win) = NaN;
         avgsqi(i_win) = NaN;
+        fdflag(i_win) = 3; % 3: Not enough data in the window to analyze;
     end % end check for sufficient data
     
     % Print Results to File If Option Selected

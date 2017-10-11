@@ -56,7 +56,7 @@ end
 
 % Establish Filename Based on Type of Output
 if strcmp(type,'AF') || strcmp(type,'MSE') || strcmp(type,'SQI')
-    filename = strcat('patid_', sub_id, '_', type, '_results_', HRVparams.time);
+    filename = strcat( sub_id, '_', type, '_results_', HRVparams.time);
     if strcmp(HRVparams.output.format,'csv')
         % Add .csv extension to filename and directory
         fullfilename = strcat(HRVparams.writedata, filesep, filename, '.csv'); 

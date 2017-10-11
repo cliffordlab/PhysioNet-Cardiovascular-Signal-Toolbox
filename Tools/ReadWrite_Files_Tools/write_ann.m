@@ -82,7 +82,7 @@ end
 
 %% Binary ATR Output
 if strcmp(HRVparams.output.ann_format,'binary')
-    annfile=[recordName '.' annotator];
+    annfile=strcat(recordName, '.', annotator);
     ann_pre=0;
     byte_write=[];
     for i=1:length(ann)
@@ -196,7 +196,7 @@ end
 
 %% CSV Output
 if strcmp(HRVparams.output.ann_format,'csv')
-    filename = [recordName '.' annotator '.csv'];
+    filename = strcat(recordName, '.', annotator, '.csv');
     % ann,annType,subType,chan,num,comments
 
     % Write annotations to .txt file in WFDB compatible format

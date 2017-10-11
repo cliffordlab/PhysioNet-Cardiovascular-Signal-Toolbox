@@ -1,7 +1,7 @@
-function [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, methods, fdflag, windows_all] = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
+function [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, fdflag] = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
 %
-% [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, methods, fdflag, windows_all] = ...
-%         EvalFrequencyDomainHRVstats (NN, tNN, , sqi, settings, windows_all)
+% [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, fdflag, windows_all] = ...
+%         EvalFrequencyDomainHRVstats (NN, tNN, , sqi, settings)
 %   
 %   OVERVIEW:   This function returns frequency domain HRV metrics 
 %               calculated on input NN intervals.
@@ -20,7 +20,6 @@ function [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, methods, fdflag, windows_all] = 
 %                             Additional columns can be included with
 %                             additional sqi at the same timestamps
 %               HRVparams   : struct of settings for hrv_toolbox analysis
-%               windows_all :
 %
 %   OUTPUT:     ulfL        :
 %               vlfL        :
@@ -28,13 +27,11 @@ function [ulfL, vlfL, lfL, hfL, lfhfL, ttlpwrL, methods, fdflag, windows_all] = 
 %               hfL         :
 %               lfhfL       :
 %               ttlpwrL     :
-%               methods     :
 %               fdflag      : 1 - Lomb Periodogram Failed
 %                             2 - Not enough high SQI data
 %                             3 - Not enough data in the window to analyze
 %                             4 - Window is missing too much data
 %                             5 - Success
-%               windows_all : 
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -141,7 +138,7 @@ for i_win = 1:length(windows_all)
 
             % Initialize variables
             % maxF=fs/2; % This calculation works for regularly sampled data
-            N     = length(nn_win);     % RR interval series length
+            N     = length(nn_win);       % RR interval series length
             % m_fs  = 1/mean(nn_win);     % mean frequency of heart rate, i.e., the mean sample rate (fs) of RR sereis  
             % max_f = .5/(min(nn_win));   % max frequency of RR interval series
             % nfft  = 2^nextpow2(N);      % Next power of 2 from N

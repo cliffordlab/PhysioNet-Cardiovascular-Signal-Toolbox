@@ -32,7 +32,7 @@ i_patient = idx;
 
 load(filesTBA{i_patient});
 % 2. Analyze data using HRV VOSIM toolbox
-[results, resFilenameHRV] = Main_VOSIM(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient));
+[results, resFilenameHRV,RRwindowStartIndices] = Main_VOSIM(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient));
 
 
 % 3. Compare generated output file with the reference one
@@ -46,10 +46,10 @@ testHRV = CompareOutput(currentFile,referenceFile);
 % 3. Load QRS annotation saved by Main_VOSIM 
 annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,subjectIDs(i_patient));
 jqrs_ann = rdann( annotName{1} , 'jqrs');
-wqrs_ann = rdann( annotName{1} , 'wqrs');
+sqijw = rdann( annotName{1} , 'sqijw');
 
 % For demo pourpose recompute bsqi
-[sqijw, StartIdxSQIwindows] = bsqi(jqrs_ann,wqrs_ann,HRVparams);
+[F1, StartIdxSQIwindows] = bsqi(jqrs_ann,ann2,HRVparams)
 
 HRVparams.gen_figs = 1;
 % Plot detected beats
@@ -57,9 +57,9 @@ if HRVparams.gen_figs
     % ECG
     figure;
     plot(time,signal(:,1)); hold on;
-    stairs(StartIdxSQIwindows,sqijw);
+    stairs(RRwindowStartIndices,sqijw);
     for j = 1:length(jqrs_ann)
-        line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','green');
+        line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','red');
     end
 	legend('ECG','jqrs');
     xlabel('Time (s)'); ylabel('Amplitude (mV)');
@@ -67,10 +67,12 @@ if HRVparams.gen_figs
 end
 
 
+
+
 if testHRV 
     fprintf('** DemoRawDataAF: TEST SUCCEEDED ** \n ')
      fprintf('A file named %s.csv \n has been saved in %s \n', ...
-    resFilenameHRV, HRVparams.writedata);
+    AFfile, HRVparams.writedata);
 else
     fprintf('** DemoRawDataAF: TEST FAILED ** \n')
 end

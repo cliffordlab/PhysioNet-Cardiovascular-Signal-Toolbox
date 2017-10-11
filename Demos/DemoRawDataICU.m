@@ -22,24 +22,9 @@
 %       more information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all; clc; close all;
+clear; clc; close all;
 
-HRVparams = InitializeHRVparams('rawdatademo'); % include the project name
-
-% Check existence of Input\Output data folders and add to search path
-
-if  isempty(HRVparams.readdata) || ~exist([pwd filesep HRVparams.readdata], 'dir')    
-    error('Invalid data INPUT folder');    % If folder name is empty
-end
-addpath(HRVparams.readdata)
-
-
-HRVparams.writedata = [HRVparams.writedata filesep 'ICU'];
-if ~exist([pwd filesep HRVparams.writedata], 'dir')
-   mkdir(HRVparams.writedata)
-end
-addpath(HRVparams.writedata)
-
+HRVparams = InitializeHRVparams('demoICU'); % include the project name
 
 [subjectIDs,filesTBA] = GenerateListOfFilesTBA(HRVparams.ext,HRVparams.readdata,0);
 
@@ -193,14 +178,14 @@ RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AFwindowsStartIndic
 %% 7. Calculate time domain HRV metrics - Using HRV Toolbox
 fbeats = zeros(length(NN),1);
 [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-    RMSSD,pnn50,btsdet,avgsqi,fbeatw, RRwindowStartIndices] = ...
+    RMSSD,pnn50,btsdet,avgsqi, fdflagTime] = ...
     EvalTimeDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices);
 
 %% 8. Frequency domain HRV metrics (LF HF TotPow)
 %       All Inputs in Seconds
 
-[ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag, window] = ...
-   EvalFrequencyDomainHRVstats(NN,tNN, [],HRVparams,RRwindowStartIndices);
+[ulf, vlf, lf, hf, lfhf, ttlpwr, fdflagFreq] = ...
+   EvalFrequencyDomainHRVstats(NN,tNN,[],HRVparams,RRwindowStartIndices);
 
 %% 9. PRSA
 try
@@ -216,13 +201,13 @@ end
 %% 11. Export HRV Metrics as CSV File
 %Uncomment the following lines for All Results
 results = [RRwindowStartIndices(:), ac(:),dc(:),...
-    ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflag(:),...
+    ulf(:),vlf(:),lf(:),hf(:),lfhf(:),ttlpwr(:),fdflagFreq(:),...
     NNmean(:),NNmedian(:),NNmode(:),...
-    NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fbeatw(:)];
+    NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fdflagTime(:)];
 
 col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf','lfhf',...
-    'ttlpwr','fdflag','NNmean','NNmedian','NNmode','NNvar','NNskew',...
-    'NNkurt','SDNN','NNiqr','RMSSD','pnn50','beatsdetected','corrected_beats'};
+    'ttlpwr','fdflagFreq','NNmean','NNmedian','NNmode','NNvar','NNskew',...
+    'NNkurt','SDNN','NNiqr','RMSSD','pnn50','beatsdetected','fdflagTime'};
 
 % Uncomment the following lines for just two HRV metrics
 %results = [NNmean(:), NNmedian(:)];

@@ -284,6 +284,13 @@ HRVparams.MSE.MSEpatternLength = 2;             % Default: 2, Pattern length
 HRVparams.MSE.maxCoarseGrainings = 7;           % Default: 7, Maximum number of coarse-grainings
 %
 
+
+%% 17. DFA Settings
+HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
+HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
+HRVparams.DFA.maxBoxSize = [];      % Largest box width (default: signal length/4)
+%
+
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 
 % this might not work

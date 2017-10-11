@@ -82,6 +82,8 @@ elseif length(varargin)  == 4
     extraSig = [varargin{1} varargin{3}];
 end
 
+results = [];
+col_titles = {};
 
 try   
     if strcmp(InputFormat, 'ECGWaveform')
@@ -108,47 +110,54 @@ try
     end
     
     % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
+    if HRVparams.timedomian.on == 1
+        [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
+        RMSSD,pnn50,btsdet,fdflagTime] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
+        % Export results
+        results = [ results, RRwindowStartIndices(:), NNmean(:),NNmedian(:),NNvariance(:),...
+                    NNskew(:),NNkurt(:),SDNN(:), NNiqr(:),RMSSD(:), pnn50(:),...
+                    btsdet(:),fdflagTime(:)];
+        col_titles = [col_titles {'t_win','NNmean','NNmedian','NNmode','NNvar',...
+                      'NNskew','NNkurt','SDNN','NNiqr','RMSSD','pnn50',...
+                      'beatsdetected','WinFlagTime'}];
+    end
     
-    if strcmp(HRVparams.preprocess.method_outliers,'rem'); fbeats = []; end
-    
-    [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-        RMSSD,pnn50,btsdet,avgsqi,fbeatw] = ...
-        EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices,fbeats);
-
     % 3. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
-
-     [ulf, vlf, lf, hf, lfhf, ttlpwr, methods, fdflag] = ...
+    if HRVparams.freq.on == 1
+        [ulf, vlf, lf, hf, lfhf, ttlpwr, fdflagFreq] = ...
          EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
-     
+         % Export results
+         results = [results, ulf(:),vlf(:),lf(:),hf(:), lfhf(:),ttlpwr(:),fdflagFreq(:)];
+          col_titles = [col_titles {'ulf','vlf','lf','hf', 'lfhf','ttlpwr','WinFlagFreq'}];
+    end
+    
     % 4. PRSA
-    try
-        [ac,dc,~] = prsa(NN, tNN,sqi, RRwindowStartIndices, HRVparams);
-    catch
-        ac = NaN; 
-        dc = NaN;
+    if HRVparams.prsa.on == 1
+        try
+            [ac,dc,~] = prsa(NN, tNN,sqi, RRwindowStartIndices, HRVparams);
+        catch
+            ac = NaN; 
+            dc = NaN;
+        end
+        % Export results
+        results = [results, ac(:), dc(:)];
+        col_titles = [col_titles {'ac' 'dc'}];
     end
 
-    % 5.Export HRV Metrics as CSV File
-    results = [RRwindowStartIndices(:), ac(:),dc(:),ulf(:),vlf(:),lf(:),hf(:), ...
-               lfhf(:),ttlpwr(:),fdflag(:), NNmean(:),NNmedian(:), ...
-               NNmode(:),NNvariance(:),NNskew(:),NNkurt(:),SDNN(:),...
-               NNiqr(:),RMSSD(:),pnn50(:),btsdet(:),fbeatw(:)];
-
-    col_titles = {'t_win','ac','dc','ulf','vlf','lf','hf',...
-                  'lfhf','ttlpwr','fdflag','NNmean','NNmedian',...
-                  'NNmode','NNvar','NNskew','NNkurt','SDNN',...
-                  'NNiqr','RMSSD','pnn50','beatsdetected','corrected_beats'};
-
+    % 5. SDANN and SDNNi
+    if HRVparams.sd.on == 1
+        [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
+        % Export results
+        results = [results, SDANN(:), SDNNI(:)];
+        col_titles = [col_titles {'SDANN' 'SDNNI'}];
+    end
+    
+    
     % Save results
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     
     fprintf('HRV metrics for file ID %s saved in the output folder in %s \n', subjectID, ResultsFileName);
-    
-    % 5. SDANN and SDNNi
-    [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
 
-    
-    
     % 6. Multiscale Entropy
     try
         mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  

@@ -1,6 +1,6 @@
 function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, ...
-          pnn50,btsdet,avgsqi,fbeatw, windows_all] = EvalTimeDomainHRVstats(...
-          NN,tNN,sqi,HRVparams,windows_all,flagged_beats)
+          pnn50,btsdet,avgsqi] = EvalTimeDomainHRVstats(...
+          NN,tNN,sqi,HRVparams,windows_all)
 % [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,SDNN,NNiqr,RMSSD, ...
 % pnn50,btsdet,avgsqi,fbeatw, windows_all] = EvalTimeDomainHRVstats(...
 % windows_all,NN,tNN,sqi,settings,flagged_beats
@@ -75,9 +75,6 @@ end
 if nargin<5 || isempty(windows_all)
     windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
 end
-if nargin <6 || isempty(flagged_beats)
-    flagged_beats = zeros(length(NN),1);      
-end
 
 
 % Set Defaults
@@ -102,7 +99,6 @@ RMSSD      = zeros(1,length(windows_all));
 pnn50      = zeros(1,length(windows_all));
 btsdet     = zeros(1,length(windows_all));
 avgsqi     = zeros(1,length(windows_all));
-fbeatw     = zeros(1,length(windows_all));
 
 
 %% Analyze by Window
@@ -118,7 +114,6 @@ for i_win = 1:length(windows_all)
         sqi_win = sqi(idx_sqi_win,:);
         t_win = tNN(idx_NN_in_win);
         nn_win = NN(idx_NN_in_win);
-        fbeats_win = flagged_beats(idx_NN_in_win);
 
         % Analysis of SQI for the window
         lowqual_idx = find(sqi_win(:,2) < threshold1);
@@ -143,7 +138,6 @@ for i_win = 1:length(windows_all)
 
             btsdet(i_win) = length(nn_win);
             avgsqi(i_win) = mean(sqi_win(:,2));
-            fbeatw(i_win) = sum(fbeats_win);
                 
           
         else
@@ -159,7 +153,6 @@ for i_win = 1:length(windows_all)
             pnn50(i_win) = NaN;
             btsdet(i_win) = length(nn_win);
             avgsqi(i_win) = mean(sqi_win(:,2));
-            fbeatw(i_win) = sum(fbeats_win);
         end % end of conditional statements that run if SQI is above threshold2
         
     else
@@ -175,7 +168,6 @@ for i_win = 1:length(windows_all)
         pnn50(i_win) = NaN;
         btsdet(i_win) = NaN;
         avgsqi(i_win) = NaN;
-        fbeatw(i_win) = NaN;
     end % end check for sufficient data
     
     % Print Results to File If Option Selected

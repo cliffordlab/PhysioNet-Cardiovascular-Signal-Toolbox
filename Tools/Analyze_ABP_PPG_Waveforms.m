@@ -31,8 +31,8 @@ for i = 1:NmbOfSigs
             % PPG SQI 
             [ppgsqi,~,~,~] = PPG_SQI_buf(Waveform(:,i),PPGann);
             % Write PPG  annotations
-            write_ann([AnnotationFolder subjectID],HRVparams,'ppg',PPGann);
-            write_ann([AnnotationFolder subjectID],HRVparams,'sqippg',PPGann,char(ppgsqi));
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'ppg',PPGann);
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqippg',PPGann,char(ppgsqi));
             
 
 
@@ -56,8 +56,8 @@ for i = 1:NmbOfSigs
                 end
             end
             % Write ABP annotations
-            write_ann([AnnotationFolder subjectID],HRVparams,'abpm',ABPann);
-            write_ann([AnnotationFolder subjectID],HRVparams,'sqiabp',BeatQ(:,1));
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'abpm',ABPann);
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqiabp',BeatQ(:,1));
             
     end
 end

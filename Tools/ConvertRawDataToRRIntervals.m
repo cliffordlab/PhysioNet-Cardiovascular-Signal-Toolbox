@@ -65,14 +65,15 @@ if ~exist(WriteAnnotationFolder, 'dir')
 end
 addpath(WriteAnnotationFolder)
 
+AnnFile = strcat(WriteAnnotationFolder, filesep, subjectID);
 % Header File
-write_hea([WriteAnnotationFolder filesep subjectID] , HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
+write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
 % ECG QRS and SQI
-write_ann([WriteAnnotationFolder filesep subjectID],HRVparams,'jqrs',jqrs_ann);
-write_ann([WriteAnnotationFolder filesep subjectID],HRVparams,'sqrs',sqrs);
-write_ann([WriteAnnotationFolder filesep subjectID],HRVparams,'wqrs',wqrs);
-write_ann([WriteAnnotationFolder filesep subjectID],HRVparams,'sqijs',sqijs);
-write_ann([WriteAnnotationFolder filesep subjectID],HRVparams,'sqijw',SQIjw);
+write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
+write_ann(AnnFile, HRVparams,'sqrs',sqrs);
+write_ann(AnnFile, HRVparams,'wqrs',wqrs);
+write_ann(AnnFile, HRVparams,'sqijs',sqijs);
+write_ann(AnnFile, HRVparams,'sqijw',SQIjw);
 
 
 

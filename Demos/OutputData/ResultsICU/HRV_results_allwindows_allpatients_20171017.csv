@@ -1,2 +1,0 @@
-patID,t_win,NNmean,NNmedian,NNmode,NNvar,NNskew,NNkurt,SDNN,NNiqr,RMSSD,pnn50,beatsdetected,WinFlagTime,ulf,vlf,lf,hf,lfhf,ttlpwr,WinFlagFreq,ac,dc
-TestICUdata,0,0.7805607,0.78125,0.78125,8.150374e-05,0.2454794,2.658504,0.009027942,0.015625,0.009564043,1,374,0.9915493,4.123789e-05,1.736501e-05,1.144522e-06,3.282258e-05,0.03,9.257001e-05,5,-2.905068,3.753064

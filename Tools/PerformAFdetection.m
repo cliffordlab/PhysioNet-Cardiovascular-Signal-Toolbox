@@ -33,7 +33,7 @@ for i = 1:length(AfAnalysisWindows)
     else
         idx_af = find(tNN >= tstart & tNN < tstart + HRVparams.af.windowlength);
         % When the RR interval time series is < 12 or >60 cannot extract feautures
-        if length(NN_afcalc(idx_af)) < 12 || length(NN_afcalc(idx_af)) < 60 
+        if (length(NN_afcalc(idx_af)) < 12 || length(NN_afcalc(idx_af)) > 60 )
             features_af = NaN;
             AFtest(i) = NaN;
         else

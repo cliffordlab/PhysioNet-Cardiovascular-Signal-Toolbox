@@ -23,7 +23,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all; clc; close all;
-HRVparams = InitializeHRVparams('demo');   % Initialize settings for demo
+HRVparams = InitializeHRVparams('demoICU');   % Initialize settings for demo
 
 % Check existence of Input\Output data folders and add to search path
 

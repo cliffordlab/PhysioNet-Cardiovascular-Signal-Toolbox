@@ -32,29 +32,32 @@ idx = find(strcmp(subjectIDs,'TestICUdata'));
 
 i_patient = idx;
 
-% 1. Load Raw Patient Data (ECG Waveform)
+%% 1. Process Raw Patient Data
+
 load(filesTBA{i_patient});
 
 % 2. Analyze data using HRV VOSIM toolbox
 [~, resFilenameHRV] = Main_VOSIM(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient),[],signal(:,5),'PPG',signal(:,3),'ABP');
 
-% 3. Load annotations ans SQI for plot
-AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
-jqrs_ann = rdann(AnnFile,'jqrs');
 
-ppg_ann = rdann(AnnFile,'ppg');
+% Load PPG annotations ans SQI for plot
+ABP_AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
+abpann = rdann('TestICUdata','pph');
 qppg(signal(:,5),HRVparams.Fs);
-[ppgsqi,~,~,~] = rdann(AnnFile,'ppgsqi');
+[ppgsqi,~,~,~] = PPG_SQI_buf(signal(:,5),ppg_ann);
 
-abpann = rdann(AnnFile,'abpm');
+% Load ABP annotations and SQI for plot
+ABP_AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
+abpann = rdann('TestICUdata','abpm');
 features =  abpfeature(signal(:,3), abpann, HRVparams.Fs);
 [BeatQ, goodbeats] = jSQI(features, abpann, signal(:,3));
 
-% 5. Plotting
 HRVparams.gen_figs = 1;
 if HRVparams.gen_figs
     % ECG
     figure;
+    %stairs(windowsSqiJW,sqijw); hold on;
+    stairs(windowsSqiJS,sqijs);
     for j = 1:length(jqrs_ann)
         line([jqrs_ann(j)./HRVparams.Fs jqrs_ann(j)./HRVparams.Fs],[-1 2],'Color','red');
         %plot(jqrs_ann./s.Fs,.8.*ones(length(jqrs_ann),1),'o'); hold on;
@@ -106,11 +109,11 @@ if HRVparams.gen_figs
 
 end
 
-% 6. Pulse Transit Time
+%% 3. Pulse Transit Time
 
 ptt = pulsetransit(jqrs_ann, abpann);
 
-% 7. Plot BP vs PTT
+%% Plot BP vs PTT
 syst = features(:,2);
 
 if HRVparams.gen_figs
@@ -122,7 +125,8 @@ if HRVparams.gen_figs
 end
 
 
-% 8. Compare generated output file with the reference one
+
+%% 12 Compare generated output file with the reference one
         
 currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
 referenceFile = ['ReferenceOutput' filesep 'ICU_HRV_allwindows.csv'];

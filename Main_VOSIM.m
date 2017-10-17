@@ -136,7 +136,7 @@ try
     % 4. PRSA
     if HRVparams.prsa.on == 1
         try
-            [ac,dc,~] = prsa(NN, tNN,sqi, RRwindowStartIndices, HRVparams);
+            [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
         catch
             ac = NaN; 
             dc = NaN;

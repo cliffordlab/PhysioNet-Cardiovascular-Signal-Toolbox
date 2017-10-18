@@ -5,9 +5,9 @@ function alpha = dfaScalingExponent(x, minBoxSize, maxBoxSize, pflag)
 %
 % INPUTS
 %         x          : A Nx1 vector containing the series to be analyzed
-%         minBoxSize : Smallest box width (default: 2p+2)
+%         minBoxSize : Smallest box width (default: 4)
 %         maxBoxSize : Largest box width (default: N/4)
-%         pflag      : (Optional) pflag=1 plot,  plag=0 
+%         pflag      : (Optional) pflag=1 plot,  pflag=0 
 % OUTPUTS     
 %         alpha      : estimate of scaling exponent 
 %
@@ -30,14 +30,21 @@ function alpha = dfaScalingExponent(x, minBoxSize, maxBoxSize, pflag)
 % 09-20-2017 Modified by Giulia Da Poian (GDP) to be included in the VOSIM 
 %            HRV toolbox. (Original function name: dfa)
 
-if nargin < 2
+if nargin < 2 || isempty(maxBoxSize)
+    minBoxSize = 4;
+end
+if nargin < 3 || isempty(maxBoxSize)
+    maxBoxSize = length(x)/4;
+end
+if nargin < 4
    pflag = 0;
 end
+
 
 N = length(x);     
 y = cumsum(x);
 
-n1 = round(log2(minBoxSize)); % modified GDP, was n1 = 3
+n1 = round(log2(minBoxSize)); % modified GDP, was 3
 n2 = round(log2(maxBoxSize)); % modified GDP, was n2 = round(log2(N/2))
 ns = (2.^(n1:n2))';           % modified GDP, was ns =[2.^[n1:n2] N]' 
 nn = length(ns);

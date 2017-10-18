@@ -38,6 +38,7 @@ if ~isempty(afsegs)
         catch
         end
     end
+    idx_af = unique (idx_af); % Do not consider duplicate positions
     cleanRRAnalysisWindows(idx_af) = NaN;  % Remove all the windows with AF   
 end
 

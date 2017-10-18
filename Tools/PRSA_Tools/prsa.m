@@ -1,24 +1,23 @@
-function [ac_results, dc_results, windows_all] = prsa(rr, rri, sqi, windows_all, HRVparams)
-%   [ac_results, dc_results, windows_all] = prsa(rr, rri, sqi, windows_all, HRVparams )
+function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, rri, HRVparams, sqi, WinStarIdxs)
+%   [ac_results, dc_results] = prsa(rr, rri, sqi, windows_all, HRVparams )
 %
 %   OVERVIEW:
-%       Calculates acceleration and deceleration matrix  
+%       Calculates acceleration and deceleration capacity values  
 %   INPUT
 %       rr           - rr intervals
 %       rri          - index of rr intervals
+%       HRVparams    - struct of settings for hrv_toolbox analysis
 %       sqi          - Signal Quality Index; Requires a matrix with
 %                      at least two columns. Column 1 should be
 %                      timestamps of each sqi measure, and Column 2
 %                      should be SQI on a scale from 0 to 1.
-%       windows_all  -
-%       HRVparams    - struct of settings for hrv_toolbox analysis
+%       WinStarIdxs  - Starting index of each windows to analyze 
 %
-%       empty arrays are permissable except for first argument, e.g.
-%       [acm dcm ac dc] = prsa(rr, [], [], [], [], 1);
 %   OUTPUT
-%       ac_results   - ?
-%       dc_results   - ?
-%       windows_all  - ?
+%       ac_results   - Acceleration Capacity value
+%       dc_results   - Deceleration Capacity value
+%       prsa_ac      - PRSA signal for AC anchor points
+%       prsa_dc      - PRSA signal for DC anchor points
 %
 %   AUTHORS
 %       L. Campana
@@ -37,7 +36,10 @@ function [ac_results, dc_results, windows_all] = prsa(rr, rri, sqi, windows_all,
 % Code altered by Adriana N Vest for the HRV Toolbox. Most of code
 % unchanged except for HRVparams and Initializations Section and the
 % inclusion of windowing options.
-
+% Oct 13, 2017
+% Code altered by Giulia Da Poian to compute AC and DC value at different
+% scale s 
+%
 % These default parameters were a part of the original PRSA code developed
 % by the authors above. 
 % tp = 20; thresh_per
@@ -47,102 +49,94 @@ function [ac_results, dc_results, windows_all] = prsa(rr, rri, sqi, windows_all,
 % Make vector a column
 rr = rr(:);
 
-%% HRVparams and Initializations
-
-
-if nargin < 1
+if nargin < 3
     error('no data provided')
 end
-if nargin < 2 || isempty(rri)
-    rri = cumsum(rr);
-end
-if nargin <3 || isempty(sqi)
+if nargin <4 || isempty(sqi)
     sqi(:,1) = rri;
     sqi(:,2) = ones(length(rri),1);
 end
-if nargin<4 || isempty(windows_all)
-    windows_all = CreateWindowRRintervals(rri, NN, HRVparams);
-end
-if nargin<5 || isempty(HRVparams)
-    HRVparams = initialize_HRVparams;
+if nargin<5 || isempty(WinStarIdxs)
+    WinStarIdxs = CreateWindowRRintervals(rri, rr, HRVparams);
 end
 
 time_stamp = rri;
 
-prsa_win_length = HRVparams.prsa.win_length;
-thresh_per = HRVparams.prsa.thresh_per;
+prsaWinLength = HRVparams.prsa.win_length;
+s = HRVparams.prsa.scale;
+PRSA_th = HRVparams.prsa.thresh_per; 
 plot_results = HRVparams.prsa.plot_results;
 windowlength = HRVparams.windowlength;
-prsa_threshold1 = HRVparams.prsa.threshold1;
-prsa_threshold2 = HRVparams.prsa.threshold2;
+SQI_th = HRVparams.threshold1;        % SQI threshold
+WinQuality_th = HRVparams.threshold2; % Low quality windows threshold
 
-threshlow = 1-thresh_per/100-.0001;
-threshhigh = 1+thresh_per/100;
+Anchor_Low_th = 1-PRSA_th/100-.0001; % The lower limit for the AC anchor selection
+Anchor_High_th = 1+PRSA_th/100;      % The upper limit for the DC anchor selection
 
-%% Run PRSA by Window
+% Preallocation
+
+ac_results = zeros(length(WinStarIdxs),1);
+dc_results = zeros(length(WinStarIdxs),1);
+
+% Run PRSA by Window
 % Loop through each window of RR data
-for i_win = 1:length(windows_all)
+for i_win = 1:length(WinStarIdxs)
 	% Check window for sufficient data
-    if isnan(windows_all(i_win))
+    if isnan(WinStarIdxs(i_win))
 
     end
-    if ~isnan(windows_all(i_win))
+    if ~isnan(WinStarIdxs(i_win))
         % Isolate data in this window
-        idx_NN_in_win = find(rri >= windows_all(i_win) & rri < windows_all(i_win) + windowlength);
-        idx_sqi_win = find(sqi(:,1) >= windows_all(i_win) & sqi(:,1) < windows_all(i_win) + windowlength);
-        sqi_win = sqi(idx_sqi_win,:);
-        nn_win = rr(idx_NN_in_win);
+        % idx_NN_in_win = find(rri >= windows_all(i_win) & rri < windows_all(i_win) + windowlength);
+        % idx_sqi_win = find(sqi(:,1) >= windows_all(i_win) & sqi(:,1) < windows_all(i_win) + windowlength);
+        sqi_win = sqi( sqi(:,1) >= WinStarIdxs(i_win) & sqi(:,1) < WinStarIdxs(i_win) + windowlength,:);
+        nn_win = rr( rri >= WinStarIdxs(i_win) & rri < WinStarIdxs(i_win) + windowlength );
          
         % Analysis of SQI for the window
-        lowqual_idx = find(sqi_win(:,2) < prsa_threshold1);
+        lowqual_idx = find(sqi_win(:,2) < SQI_th);
 
         % If enough data has an adequate SQI, perform the calculations
-        if numel(lowqual_idx)/length(sqi_win(:,2)) < prsa_threshold2
+        if numel(lowqual_idx)/length(sqi_win(:,2)) < WinQuality_th
 
             % intialize
-            j =0;
-            k = 0; 
-            drrpi = [];
-            drrni = [];
             acm = [];
             dcm = [];
-            drr = nn_win(2:end)-nn_win(1:end-1);
             drr_per = nn_win(2:end)./nn_win(1:end-1);
 
-            ac_anchor = (drr_per > threshlow) & (drr_per <= .9999); % defines ac anchors, no changes greater then 5%
-            dc_anchor = (drr_per > 1) & (drr_per <= threshhigh);
+            ac_anchor = (drr_per > Anchor_Low_th) & (drr_per <= .9999); % defines ac anchors, no changes greater then 5%
+            dc_anchor = (drr_per > 1) & (drr_per <= Anchor_High_th);
             ac_anchor = [0; ac_anchor(:)];
             dc_anchor = [0; dc_anchor(:)];
-            ac_anchor(1:prsa_win_length) = 0;                                        % sets first window to 0
-            ac_anchor(length(ac_anchor)-prsa_win_length+1:length(ac_anchor)) = 0;    % sets last window to 0
-            dc_anchor(1:prsa_win_length) = 0;                                        % sets first window to 0
-            dc_anchor(length(dc_anchor)-prsa_win_length+1:length(dc_anchor)) = 0;    % sets last window to 0
+            ac_anchor(1:prsaWinLength) = 0;                                        % sets first window to 0
+            ac_anchor(length(ac_anchor)-prsaWinLength+1:length(ac_anchor)) = 0;    % sets last window to 0
+            dc_anchor(1:prsaWinLength) = 0;                                        % sets first window to 0
+            dc_anchor(length(dc_anchor)-prsaWinLength+1:length(dc_anchor)) = 0;    % sets last window to 0
             ac_ind = find(ac_anchor);
             dc_ind = find(dc_anchor);
 
             for i = 1:length(dc_ind)
-                dcm(i,:) = 1000*nn_win(dc_ind(i)-prsa_win_length:dc_ind(i)+prsa_win_length); % convert from sec to msec
+                dcm(i,:) = 1000*nn_win(dc_ind(i)-prsaWinLength:dc_ind(i)+prsaWinLength-1); % convert from sec to msec
             end
-
+            
             for i = 1:length(ac_ind)
-                acm(i,:) = 1000*nn_win(ac_ind(i)-prsa_win_length:ac_ind(i)+prsa_win_length); % convert from sec to msec
+                acm(i,:) = 1000*nn_win(ac_ind(i)-prsaWinLength:ac_ind(i)+prsaWinLength-1); % convert from sec to msec
             end
 
-            m_acm = mean(acm);
-            m_dcm = mean(dcm);
+            prsa_ac = mean(acm);
+            prsa_dc = mean(dcm);
             
             % Edited by Adriana Vest: Added the following if statements to
             % deal with scenarios when ac or dc is not computable for a
             % particular window. An example scenario is when the RR
             % intervals are flat.
-            if ~isnan(m_dcm)
-                dc = (m_dcm(prsa_win_length+1)+m_dcm(prsa_win_length+2)-m_dcm(prsa_win_length)-m_dcm(prsa_win_length-1))/4;
+            if ~isnan(prsa_dc) % Edited by Giulia Da Poian
+                dc = (sum(prsa_dc(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_dc(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 dc_results(i_win,1) = dc; % assign output of window
             else
                 dc_results(i_win,1) = NaN;
             end
-            if ~isnan(m_acm)
-                ac = (m_acm(prsa_win_length+1)+m_acm(prsa_win_length+2)-m_acm(prsa_win_length)-m_acm(prsa_win_length-1))/4;
+            if ~isnan(prsa_ac) % Edited by Giulia Da Poian
+                ac = (sum(prsa_ac(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_ac(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 ac_results(i_win,1) = ac; % assign output of window
             else
                 ac_results(i_win,1) = NaN;
@@ -180,14 +174,14 @@ for i_win = 1:length(windows_all)
 
                 figure(4);
                 subplot(2,1,1)
-                plot([-2:2*prsa_win_length-2],dcm,'k--')
+                plot([-2:2*prsaWinLength-2],dcm,'k--')
                 title('dc matrix')
                 hold on
-                plot([-2:2*prsa_win_length-2],m_dcm,'r');
+                plot([-2:2*prsaWinLength-2],prsa_dc,'r');
                 subplot(2,1,2)
-                plot([-2:2*prsa_win_length-2],acm,'k--')
+                plot([-2:2*prsaWinLength-2],acm,'k--')
                 hold on
-                plot([-2:2*prsa_win_length-2],m_acm,'r');
+                plot([-2:2*prsaWinLength-2],prsa_ac,'r');
                 title('ac matrix')
             end % end of plotting condition
         else % else, if SQI is not adequate

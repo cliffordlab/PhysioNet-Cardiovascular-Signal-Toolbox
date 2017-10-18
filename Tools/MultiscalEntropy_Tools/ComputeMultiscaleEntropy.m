@@ -34,6 +34,9 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 % Removed the possibility to use different types of entropy, only
 % fastSampen method in this version
 %
+% 10-10-2017 Modyfied by Giulia Da Poian, use FastSampEn in series < 34000
+% otherwise use traditional SampEn that is faster for long series 
+%
 % This software may be modified and distributed under the terms
 % of the BSD license. See the LICENSE file in this repo for details.
 
@@ -41,12 +44,25 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 % Initialize output vector
 mse = NaN(maxTau, 1);
 
+
+% Check data length, if < 34000 use Fast Implementation (introduced GDP) 
+SampEnType = 'Slow';
+
+if length(data)<34000
+    SampEnType = 'Fast'; 
+end
+
 % Loop through each timescale
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
         
-    mse(i_tau) = fastSampen(data, m, r);
-
+    
+    switch SampEnType
+        case 'Fast'
+           mse(i_tau) = fastSampen(data, m, r);
+        otherwise
+           mse(i_tau) = sampenMaxim(data, m, r); 
+    end
     % Coarse-grain data (default: halving method)
     data = coarsegrain(data);
     

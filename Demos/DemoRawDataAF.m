@@ -37,11 +37,9 @@ load(filesTBA{i_patient});
 
 % 3. Compare generated output file with the reference one
         
-currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
-referenceFile = ['ReferenceOutput' filesep 'AFDemo.csv'];
+currentFile = strcat(HRVparams.writedata, filesep, resFilenameHRV, '.csv');
+referenceFile = strcat('ReferenceOutput', filesep, 'AFDemo.csv');
 testHRV = CompareOutput(currentFile,referenceFile);
-
-
 
 % 3. Load QRS annotation saved by Main_VOSIM 
 annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,subjectIDs(i_patient));

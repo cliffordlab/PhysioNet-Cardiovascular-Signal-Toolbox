@@ -115,7 +115,7 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
             % warping
             d2=wave(beatbegin:beatend-1);
             
-            % if beat too long, set SQI=0;
+            % if beat too long, set SQI = 0;
             if (length(d2)>length(d1)*10)
                 c3(j)=0;
             else
@@ -124,7 +124,7 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
 
                [w ta tb] = simmx_dtw(y1,pla1,y2,pla2);
                [p,q,Dm] = dp_dtw(w);
-               [ym1 ym2 yout1]=draw_dtw(y1,pla1,p,y2,pla2,q);
+               [ym1, ym2, yout1] = draw_dtw(y1,pla1,p,y2,pla2,q); 
                 cc=corrcoef(y1,ym2);
                 c3(j)=cc(1,2);
                 if (c3(j)<0)

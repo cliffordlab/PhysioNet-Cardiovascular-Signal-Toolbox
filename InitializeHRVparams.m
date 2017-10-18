@@ -1,13 +1,13 @@
 function HRVparams = InitializeHRVparams(project_name)
 %
-%   settings = InitializeHRVparams('demo')
+%   settings = InitializeHRVparams('project_name')
 %
 %   OVERVIEW:   
 %       This file stores settings and should be configured before
 %       each use of the HRV toolbox:
 %       1.  Project Specific Input/Output Data type and Folders
 %       2.  How much does the user trust the data
-%       3.  Global Settings for signal segmentation
+%       3.  Global Settings (Window Size) for signal segmentation
 %       4.  Quality Threshold Settings
 %       5.  Debug Settings
 %       6.  SQI Settings
@@ -25,7 +25,7 @@ function HRVparams = InitializeHRVparams(project_name)
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
-%       will determine the naming convention of file folders
+%       will determine the naming convention of file folders 
 %
 %   OUTPUT:
 %       HRVparams - struct of various settings for the hrv_toolbox analysis
@@ -56,8 +56,8 @@ switch project_name
         HRVparams.Fs = Nan;                % Spacify sampling frequency
         HRVparams.readdata = '';           % (Optional) Specify name for data input folder
         HRVparams.writedata = '';          % (Optional) Specify name for data output folder
-        HRVparams.datatype = '';           % (Optional) Spacify Data type
-        HRVparams.ext = '';                % (Optional) Spacify file extension (e.g., 'mat','qrs')
+        HRVparams.datatype = '';           % (Optional) Spacify Data type of input
+        HRVparams.ext = '';                % (Optional) Spacify file extension of input (e.g., 'mat','qrs')
         
     % Existing demo projects
     case 'demo_NSR'      % Parameters for demo using MIT nsr data
@@ -96,8 +96,6 @@ elseif ~exist([pwd filesep HRVparams.writedata], 'dir')
 end
 addpath(genpath(HRVparams.writedata));   % Add folder to search path
 
-
-
 %% 2. How much does the user trust the data:
 % This setting determines how stringently filtered the data is prior to
 % calculating HRV metrics. Raw ECG or Pulse data that has been labeled
@@ -119,7 +117,7 @@ HRVparams.data_confidence_level = 1;
 
 % * ^^^^ NOT YET IN USE ^^^^  *
 
-%% 3. Global Settings
+%% 3. Global Settings (Window Size)
 
 HRVparams.windowlength = 300;	% Default: 300, seconds
 HRVparams.increment = 30;       % Default: 30, seconds increment
@@ -154,8 +152,8 @@ end
 % Format settings for HRV Outputs
 HRVparams.output.format = 'csv';        % 'csv' - creates csv file for output
                                         % 'mat' - creates .mat file for output
-HRVparams.output.separate = 0;          % 1 = separate files for each subject
-                                        % 0 = all results in one file
+HRVparams.output.separate = 1;          % Default : 1 = separate files for each subject
+                                        %           0 = all results in one file
 HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
                                         % leave blank if all windows should be returned
                                         % Format settings for annotations generated
@@ -186,18 +184,18 @@ HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of 
 
 % The following settings do not yet have any functional effect on 
 % the output of preprocess.m:                             
-HRVparams.preprocess.threshold1 =0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.preprocess.threshold1 = 0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
 %% 10. AF Detection Settings
 
 HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
-HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~60 beats in each window
+HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~30 beats in each window
 HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
 
 %% 11. Time Domain Analysis Settings
 
-HRVparams.timedomain.on = 1;                                   % Default: 1, Time Domain Analysis 1=On or 0=Off
+HRVparams.timedomain.on = 1;                             % Default: 1, Time Domain Analysis 1=On or 0=Off
 
 HRVparams.timedomain.threshold1 = 0.9;                   % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.timedomain.threshold2 = 0.20;                  % Default: 0.20, Amount (%) of data that can be rejected before a
@@ -261,16 +259,13 @@ HRVparams.sd.segmentlength = 300;           % Default: 300, windows length in se
 %% 14. PRSA Analysis Settings
 
 HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
-HRVparams.prsa.win_length = 30;    % Default: 30, In seconds
-HRVparams.prsa.thresh_per = 5;     % Default: 5,Percent difference that one beat can 
-                                   % differ from the  next in the prsa code
-HRVparams.prsa.plot_results = 0;   % Default:0   
-HRVparams.prsa.threshold1= 0.9;    % Default:0.9, Threshold for which SQI represents good data
-HRVparams.prsa.threshold2 = 0.20;  % Default:0.2, Amount (%) of data that can be rejected 
-                                   % before a window is considered too low quality for analysis                            
-HRVparams.prsa.win_tol = 0.15;     % Default:0.15, Maximum percentage of data allowable to 
-                                   % be missing from a window
-
+HRVparams.prsa.win_length = 30;    % Default: 30, The length of the PRSA signal 
+                                   % before and after the anchor points
+                                   % (the resulting PRSA has length 2*L)
+HRVparams.prsa.thresh_per = 20;    % Default: 20%, Percent difference that one beat can 
+                                   % differ from the next in the prsa code
+HRVparams.prsa.plot_results = 0;   % Default: 0                            
+HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet analysis (to compute AC and DC)
 
 %% 15. Peak Detection Settings
 
@@ -285,7 +280,7 @@ HRVparams.debug = 0;            % Default: 0
 %% 16. Multiscale Entropy Settings
 HRVparams.MSE.on = 1;                           % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Default: 0.15, Radius of similarity (% of std)
-HRVparams.MSE.MSEpatternLength = 2;             % Default: 2, Pattern length
+HRVparams.MSE.MSEpatternLength = 2;             % Default: 2, 
 HRVparams.MSE.maxCoarseGrainings = 7;           % Default: 7, Maximum number of coarse-grainings
 %
 
@@ -293,7 +288,7 @@ HRVparams.MSE.maxCoarseGrainings = 7;           % Default: 7, Maximum number of 
 %% 17. DFA Settings
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
-HRVparams.DFA.maxBoxSize = [];      % Largest box width (default: signal length/4)
+HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 %
 
 %% Export Parameter as Latex Table

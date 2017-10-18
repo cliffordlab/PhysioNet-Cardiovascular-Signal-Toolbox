@@ -59,6 +59,11 @@ for i_patient = 1:numsub
         [samples,annotations] = rdann(thisPatient{1},HRVparams.ext);
         rr = diff(samples)./HRVparams.Fs; 
         t = cumsum(rr);
+        
+        % Demo keeps only the first 2h 
+        
+        rr = rr(t<60*60*2);
+        t = t(t<60*60*2);
                
         % 2. Perform HRV analysis on the RR intervals
         [results, resFilenameHRV] = Main_VOSIM(rr,t,'RRIntervals',HRVparams,subjectIDs(i_patient),annotations);

@@ -88,10 +88,10 @@ end
 if  isempty(HRVparams.writedata)    
     % Default data OUTPUT folder name based on project name
     HRVparams.writedata = strcat(project_name,'_Results');  
-    fprintf('Creating new OUTPUT folder: "%s"\n', HRVparams.writedata)
+    fprintf('New OUTPUT folder: "%s"\n', HRVparams.writedata)
     mkdir(HRVparams.writedata);          % Create output folder and 
 elseif ~exist([pwd filesep HRVparams.writedata], 'dir')
-    fprintf('Creating new OUTPUT folder: "%s"\n',HRVparams.writedata)
+    fprintf('New OUTPUT folder: "%s"\n',HRVparams.writedata)
     mkdir(HRVparams.writedata);          % Create output folder and 
 end
 addpath(genpath(HRVparams.writedata));   % Add folder to search path

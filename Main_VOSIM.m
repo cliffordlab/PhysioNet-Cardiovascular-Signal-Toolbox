@@ -7,7 +7,7 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %       Configured to accept RR intervals as well as raw data as input file
 %
 %   INPUT:
-%       InputSig    - Vector containing RR interval data or ECG waveform  
+%       InputSig    - Vector containing RR intervals data or ECG waveform  
 %       t           - Time indices of the rr interval data (seconds) or
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
@@ -85,7 +85,6 @@ col_titles = {};
 if isa(subjectID,'cell'); subjectID = string(subjectID); end
 
 
-
 % Start HRV analysis
 try   
     if strcmp(InputFormat, 'ECGWaveform')
@@ -100,17 +99,17 @@ try
 
     % Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
 
-    [NN, tNN, fbeats] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
+    [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
     
     % 1. Atrial Fibrillation Detection
     if HRVparams.af.on == 1
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
         % Create RRAnalysisWindows contating AF segments
-        RRwindowStartIndices = RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
+        [RRwindowStartIndices, AFWindows]= RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);
     end
-    
+   
     % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
     if HRVparams.timedomain.on == 1
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
@@ -133,7 +132,7 @@ try
           col_titles = [col_titles {'ulf','vlf','lf','hf', 'lfhf','ttlpwr','WinFlagFreq'}];
     end
     
-    % 4. PRSA
+    % 4. PRSA, AC and DC values
     if HRVparams.prsa.on == 1
         try
             [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
@@ -145,22 +144,13 @@ try
         results = [results, ac(:), dc(:)];
         col_titles = [col_titles {'ac' 'dc'}];
     end
-
-    % 5. SDANN and SDNNi
-    if HRVparams.sd.on == 1
-        [SDANN, SDNNI] = CalcSDANN(RRwindowStartIndices, tNN, NN(:),HRVparams); 
-        % Export results
-%         results = [results, SDANN(:), SDNNI(:)];
-%         col_titles = [col_titles {'SDANN' 'SDNNI'}];
-    end
     
     
     % Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
-    
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
-    % 6. Multiscale Entropy
+    % 5. Multiscale Entropy
     if HRVparams.MSE.on == 1
         try
             mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
@@ -173,23 +163,27 @@ try
         col_titles = {'MSE'};
         % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
-    end
+    end   
     
-    
-    
-    % 7. Analyze additional signals (ABP, PPG or both)
+    % 6. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
         Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
     end
+        
+    % 7. Some statistics on %ages windows removed (poor quality and AF)
+    %    save on file  
+    RemovedWindowsStats(RRwindowStartIndices,AFWindows,HRVparams,subjectID);
     
     fprintf('HRV Analysis completed for file ID %s \n',subjectID )
-    
+  
 catch
-    
+    % Write subjectID on log file
+    fid = fopen(strcat(HRVparams.writedata,filesep,'Error.txt'),'a');
     results = NaN;
-    col_titles = {'NaN'};
-    GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);    
+    ResultsFileName = '';
+    fprintf(fid, '%s \n', subjectID);
+    fclose(fid); 
     fprintf('Analysis not performed for file ID %s \n', subjectID);
 end % end of HRV analysis
 

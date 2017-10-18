@@ -1,4 +1,4 @@
-function cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams)
+function [cleanRRAnalysisWindows,idx_af] = RemoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams)
 
 %   cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisWindows, AFtest, HRVparams )
 %
@@ -19,6 +19,7 @@ function cleanRRAnalysisWindows = RemoveAFsegments(RRAnalysisWindows,AfAnalysisW
 %                                where windows containing AF are identified
 %                                by a NaN index and therfore exluded during
 %                                analysis
+%       idx_af                 : indexes of the AF windows
 %
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) 

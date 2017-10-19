@@ -10,7 +10,8 @@ function [SD1, SD2, SD1_SD2_ratio] = PoincareMetrics(RRints,flag)
 %
 %   INPUTS:    
 %       rr  : Row vector of NN-intervals in seconds
-%     flag  : ...
+%     flag  : (Optional) 1: show Poincaré plot, 
+%                        0: do not show Poincaré plot
 %   OUTPUTS:
 %       SD1           : standard  deviation  of  projection  of  the  PP  on  
 %                       the line perpendicular to the line of identity (y=-x)
@@ -29,6 +30,9 @@ function [SD1, SD2, SD1_SD2_ratio] = PoincareMetrics(RRints,flag)
 %       more information
 %%
 
+if varargin<2
+    flag = 0; % default do not show plot
+end
 
 SDSD = std(diff(RRints));
 SDRR = std(RRints);

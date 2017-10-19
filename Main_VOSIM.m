@@ -13,6 +13,7 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %       InputFormat - String that specifiy if the input vector is: 
 %                     'RRinetrvals' for RR interval data 
 %                     'ECGWaveform' for ECG waveform
+%                     'PPGWaveform' for PPG signal
 %       HRVparams   - struct of settings for hrv_toolbox analysis that can
 %                     be obtained using InitializeHRVparams.m function 
 %                     HRVparams = InitializeHRVparams();
@@ -87,22 +88,26 @@ if isa(subjectID,'cell'); subjectID = string(subjectID); end
 
 % Start HRV analysis
 try   
-    if strcmp(InputFormat, 'ECGWaveform')
-        % Convert ECG waveform in rr intervals
-        [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
-        sqi = [SQIidx', SQIvalue'];
-        GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
-    else
-        rr = InputSig; 
-        sqi = [];
+    switch InputFormat
+        case 'ECGWaveform'
+            % Convert ECG waveform in rr intervals
+            [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+            sqi = [SQIidx', SQIvalue'];
+            GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
+        case 'PPGWaveform'
+            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,'PPG',HRVparams,[],subjectID);
+        case 'RRinetrvals'
+            rr = InputSig; 
+            sqi = [];
+        otherwise
+            error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRinetrvals')           
     end
 
-    % Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
-
+    % 1. Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
     [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
     
-    % 1. Atrial Fibrillation Detection
+    % 2. Atrial Fibrillation Detection
     if HRVparams.af.on == 1
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
         % Create RRAnalysisWindows contating AF segments
@@ -110,7 +115,7 @@ try
         fprintf('AF analysis completed for patient %s \n', subjectID);
     end
    
-    % 2. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
+    % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
     if HRVparams.timedomain.on == 1
         [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
         RMSSD,pnn50,btsdet,fdflagTime] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
@@ -123,7 +128,7 @@ try
                       'beatsdetected','WinFlagTime'}];
     end
     
-    % 3. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
+    % 4. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
     if HRVparams.freq.on == 1
         [ulf, vlf, lf, hf, lfhf, ttlpwr, fdflagFreq] = ...
          EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
@@ -132,7 +137,7 @@ try
           col_titles = [col_titles {'ulf','vlf','lf','hf', 'lfhf','ttlpwr','WinFlagFreq'}];
     end
     
-    % 4. PRSA, AC and DC values
+    % 5. PRSA, AC and DC values
     if HRVparams.prsa.on == 1
         try
             [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
@@ -145,11 +150,11 @@ try
         col_titles = [col_titles {'ac' 'dc'}];
     end
     
-    % Generates Output - Never comment out
+    % 6. Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
-    % 5. Multiscale Entropy (MSE)
+    % 7. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
             mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
@@ -164,7 +169,7 @@ try
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     end   
     
-    % 6. DetrendedFluctuation Analysis (DFA)
+    % 8. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
         % Note, DFA is done on the entair signal not on windows 
         alpha = dfaScalingExponent(NN, HRV.dfa.minBoxSize, HRV.dfa.maxBoxSize);   
@@ -175,13 +180,13 @@ try
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
     end
     
-    % 7. Analyze additional signals (ABP, PPG or both)
+    % 9. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
         Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
     end
         
-    % 8. Some statistics on %ages windows removed (poor quality and AF)
+    % 10. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
     RemovedWindowsStats(RRwindowStartIndices,AFWindows,HRVparams,subjectID);
     

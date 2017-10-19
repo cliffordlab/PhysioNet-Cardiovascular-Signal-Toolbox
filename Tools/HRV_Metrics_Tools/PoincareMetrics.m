@@ -13,10 +13,11 @@ function [SD1, SD2, SD1_SD2_ratio] = PoincareMetrics(RRints,flag)
 %     flag  : (Optional) 1: show Poincaré plot, 
 %                        0: do not show Poincaré plot
 %   OUTPUTS:
-%       SD1           : standard  deviation  of  projection  of  the  PP  on  
-%                       the line perpendicular to the line of identity (y=-x)
-%       SD2           : standard deviation of the projection of the PP on 
-%                       the line of identity (y=x)
+%       SD1           : (ms) standard  deviation  of  projection  of  the  
+%                       PP  on  the line perpendicular to the line of 
+%                       identity (y=-x)
+%       SD2           : (ms) standard deviation of the projection of the PP  
+%                       on the line of identity (y=x)
 %       SD1_SD2_ratio : SD1/SD2 ratio
 % 
 % 
@@ -49,6 +50,11 @@ if flag
     xlabel('RR_n (s)')
     ylabel('RR_n+1 (s)')
 end
+
+% Convert to ms
+SD1 = SD1 * 1000;
+SD2 = SD2 * 1000;
+SD1_SD2_ratio = SD1_SD2_ratio * 1000;
 
 end
 

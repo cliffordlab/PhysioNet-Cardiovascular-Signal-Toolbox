@@ -40,6 +40,9 @@ if nargin < 4
    pflag = 0;
 end
 
+if size(x,1)<size(x,2)
+    x=x';
+end
 
 N = length(x);     
 y = cumsum(x);

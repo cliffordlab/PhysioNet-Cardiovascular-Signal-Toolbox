@@ -104,7 +104,7 @@ try
     
     % 1. Atrial Fibrillation Detection
     if HRVparams.af.on == 1
-        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,tNN,NN,HRVparams);
+        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
         % Create RRAnalysisWindows contating AF segments
         [RRwindowStartIndices, AFWindows]= RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);

@@ -53,7 +53,7 @@ wqrs = wqrsm(ECG_RawData*GainQrsDetect);
 
 % Translate anotations to rr intervals
 rr = diff(jqrs_ann./HRVparams.Fs);
-t = jqrs_ann(1:end-1)./HRVparams.Fs;
+t = jqrs_ann(2:end)./HRVparams.Fs;
 
 %%  Export Annotations as ATR files
 

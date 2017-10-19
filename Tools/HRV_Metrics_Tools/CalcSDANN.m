@@ -34,11 +34,7 @@ function [SDANN, SDNNI] = CalcSDANN(windows_all, tNN, NN, HRVparams)
 %       more information
 %%
 
-
-if nargin < 3 || isempty(HRVparams)
-	HRVparams = initialize_HRVparams('demo');  % seconds
-end
-if nargin<2
+if nargin<3
     error('not enough input arguments!');   
 end
 
@@ -50,7 +46,7 @@ for i = 1:length(windows_all)
     
         nn_win = NN(idx);
     
-        sm(i) = mean(nn_win);    % mean of each segment
+        sm(i) = mean(nn_win);     % mean of each segment
         sstd(i) = std(nn_win);    % stdev of each segment
     else
         sm(i) = NaN;

@@ -14,11 +14,12 @@ function [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(rr, rri, HRVparams, W
 %       WinStarIdxs  - Starting index of each windows to analyze 
 %
 %   OUTPUTS:
-%       SD1           : standard  deviation  of  projection  of  the  PP  on  
-%                       the line perpendicular to the line of identity (y=-x)
-%       SD2           : standard deviation of the projection of the PP on 
-%                       the line of identity (y=x)
-%       SD1_SD2_ratio : SD1/SD2 ratio
+%       SD1           : (ms) standard  deviation  of  projection  of  the   
+%                       PP  on  the line perpendicular to the line of 
+%                       identity (y=-x)
+%       SD2           : (ms) standard deviation of the projection of the PP  
+%                       on the line of identity (y=x)
+%       SD1_SD2_ratio : (ms) SD1/SD2 ratio
 % 
 % 
 %   Written by: Giulia Da Poian <giulia.dap@gmail.com>

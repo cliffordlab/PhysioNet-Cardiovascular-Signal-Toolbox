@@ -145,12 +145,11 @@ try
         col_titles = [col_titles {'ac' 'dc'}];
     end
     
-    
     % Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
-    % 5. Multiscale Entropy
+    % 5. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
             mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
@@ -165,13 +164,24 @@ try
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     end   
     
-    % 6. Analyze additional signals (ABP, PPG or both)
+    % 6. DetrendedFluctuation Analysis (DFA)
+    if HRVparams.DFA.on == 1
+        % Note, DFA is done on the entair signal not on windows 
+        alpha = dfaScalingExponent(NN, HRV.dfa.minBoxSize, HRV.dfa.maxBoxSize);   
+        % Save Results for DFA
+        results = alpha;
+        col_titles = {'DFA'};
+        % Generates Output - Never comment out
+        GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+    end
+    
+    % 7. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
         Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
     end
         
-    % 7. Some statistics on %ages windows removed (poor quality and AF)
+    % 8. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
     RemovedWindowsStats(RRwindowStartIndices,AFWindows,HRVparams,subjectID);
     

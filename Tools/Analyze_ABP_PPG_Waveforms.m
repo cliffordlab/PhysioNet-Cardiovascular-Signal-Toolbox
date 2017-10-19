@@ -1,4 +1,4 @@
-function Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
+function [rr,t] = Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
 %
 %   Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
 %	OVERVIEW:
@@ -20,6 +20,13 @@ function Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID
 
 NmbOfSigs = size(Waveform,2);
 AnnotationFolder = strcat(HRVparams.writedata, filesep, 'Annotation', filesep);
+if ~exist(AnnotationFolder, 'dir')
+   mkdir(AnnotationFolder)
+end
+addpath(AnnotationFolder)
+
+rr = [];
+t = [];
 
 for i = 1:NmbOfSigs
     
@@ -34,6 +41,8 @@ for i = 1:NmbOfSigs
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'ppg',PPGann);
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqippg',PPGann,char(ppgsqi));
             
+            rr = diff(PPGann)./HRVparams.Fs;
+            t = PPGann(2:end)./HRVparams.Fs;
 
 
         case 'ABP'
@@ -58,6 +67,6 @@ for i = 1:NmbOfSigs
             % Write ABP annotations
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'abpm',ABPann);
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqiabp',BeatQ(:,1));
-            
+                      
     end
 end

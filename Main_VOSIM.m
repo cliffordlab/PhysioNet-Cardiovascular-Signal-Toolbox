@@ -11,7 +11,7 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %       t           - Time indices of the rr interval data (seconds) or
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
-%                     'RRinetrvals' for RR interval data 
+%                     'RRInetrvals' for RR interval data 
 %                     'ECGWaveform' for ECG waveform
 %                     'PPGWaveform' for PPG signal
 %       HRVparams   - struct of settings for hrv_toolbox analysis that can
@@ -36,7 +36,7 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %             of the new project (see the readme.txt file for further details)   
 %   EXAMPLES
 %       - rr interval input
-%       Main_VOSIM(RR,t,'RRintervals',HRVparams)
+%       Main_VOSIM(RR,t,'RRIntervals',HRVparams)
 %       - ECG wavefrom input
 %       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
@@ -95,12 +95,12 @@ try
             sqi = [SQIidx', SQIvalue'];
             GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
         case 'PPGWaveform'
-            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,'PPG',HRVparams,[],subjectID);
-        case 'RRinetrvals'
+            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subjectID);
+        case 'RRIntervals'
             rr = InputSig; 
             sqi = [];
         otherwise
-            error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRinetrvals')           
+            error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
     end
 
     % 1. Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
@@ -172,7 +172,7 @@ try
     % 8. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
         % Note, DFA is done on the entair signal not on windows 
-        alpha = dfaScalingExponent(NN, HRV.dfa.minBoxSize, HRV.dfa.maxBoxSize);   
+        alpha = dfaScalingExponent(NN, HRVparams.DFA.minBoxSize, HRVparams.DFA.maxBoxSize);   
         % Save Results for DFA
         results = alpha;
         col_titles = {'DFA'};
@@ -197,7 +197,7 @@ catch
     fid = fopen(strcat(HRVparams.writedata,filesep,'Error.txt'),'a');
     results = NaN;
     ResultsFileName = '';
-    fprintf(fid, '%s \n', subjectID);
+    fprintf(fid, 'Analysis faild for subject: %s \n', subjectID);
     fclose(fid); 
     fprintf('Analysis not performed for file ID %s \n', subjectID);
 end % end of HRV analysis

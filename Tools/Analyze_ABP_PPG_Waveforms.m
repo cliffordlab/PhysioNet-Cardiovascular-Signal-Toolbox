@@ -19,7 +19,7 @@ function Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID
 
 
 NmbOfSigs = size(Waveform,2);
-AnnotationFolder = [HRVparams.writedata filesep 'Annotation' filesep];
+AnnotationFolder = strcat(HRVparams.writedata, filesep, 'Annotation', filesep);
 
 for i = 1:NmbOfSigs
     

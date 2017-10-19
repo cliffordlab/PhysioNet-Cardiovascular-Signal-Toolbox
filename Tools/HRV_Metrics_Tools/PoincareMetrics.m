@@ -30,7 +30,7 @@ function [SD1, SD2, SD1_SD2_ratio] = PoincareMetrics(RRints,flag)
 %       more information
 %%
 
-if varargin<2
+if nargin<2
     flag = 0; % default do not show plot
 end
 

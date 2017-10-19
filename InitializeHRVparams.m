@@ -22,6 +22,7 @@ function HRVparams = InitializeHRVparams(project_name)
 %       15. Peak Detection Settings
 %       16. Multiscale Entropy - MSE - Settings
 %       17. Detrended Fluctuation Analysis - DFA - Settings
+%       18. Poincaré plot
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
@@ -290,6 +291,10 @@ HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 %
+
+%% 18. Poincaré plot
+
+HRVparams.poincare.on = 1;     % Default: 1, Poincare Analysis 1=On or 0=Off
 
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 

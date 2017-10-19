@@ -7,7 +7,8 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %       Configured to accept RR intervals as well as raw data as input file
 %
 %   INPUT:
-%       InputSig    - Vector containing RR intervals data or ECG waveform  
+%       InputSig    - Vector containing RR intervals data (in seconds) 
+%                     or ECG waveform  
 %       t           - Time indices of the rr interval data (seconds) or
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
@@ -152,7 +153,7 @@ try
     
     % 6.Poincarefeatures
     if HRVparams.poincare.on==1
-         [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, WinStarIdxs, sqi);
+         [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, RRwindowStartIndices, sqi);
          % Export results
          results = [results, SD1(:),SD2(:),SD1_SD2_ratio(:)];
          col_titles = [col_titles {'SD1', 'SD2', 'SD1SD2'}];

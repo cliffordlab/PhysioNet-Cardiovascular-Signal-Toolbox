@@ -124,8 +124,8 @@ end
 
 % 8. Compare generated output file with the reference one
         
-currentFile = [HRVparams.writedata filesep resFilenameHRV '.csv'];
-referenceFile = ['ReferenceOutput' filesep 'ICU_HRV_allwindows.csv'];
+currentFile = strcat(HRVparams.writedata, filesep, resFilenameHRV, '.csv');
+referenceFile = strcat('ReferenceOutput', filesep, 'ICU_HRV_allwindows.csv');
 testHRV = CompareOutput(currentFile,referenceFile);
 
 if testHRV

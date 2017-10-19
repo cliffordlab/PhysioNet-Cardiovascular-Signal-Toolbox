@@ -150,7 +150,15 @@ try
         col_titles = [col_titles {'ac' 'dc'}];
     end
     
-    % 6. Generates Output - Never comment out
+    % 6.Poincarefeatures
+    if HRVparams.poincare.on==1
+         [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, WinStarIdxs, sqi);
+         % Export results
+         results = [results, SD1(:),SD2(:),SD1_SD2_ratio(:)];
+         col_titles = [col_titles {'SD1', 'SD2', 'SD1SD2'}];
+    end
+    
+    % Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 

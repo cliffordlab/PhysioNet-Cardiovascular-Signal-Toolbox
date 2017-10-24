@@ -25,6 +25,7 @@
 clear; clc; close all;
 
 HRVparams = InitializeHRVparams('demoICU'); % include the project name
+HRVparams.poincare.on = 0; % Pinocare analysis off for this demo
 
 [subjectIDs,filesTBA] = GenerateListOfFilesTBA(HRVparams.ext,HRVparams.readdata,0);
 

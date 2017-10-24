@@ -1,6 +1,6 @@
 function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 
-% mse = ComputeMultiscaleEntropy(data, m, r, max_tau, entropy_script)
+% mse = ComputeMultiscaleEntropy(data, m, r, max_tau)
 %
 % Overview
 %	Calculates multiscale entropy on a vector of input data.
@@ -35,19 +35,23 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 % fastSampen method in this version
 %
 % 10-10-2017 Modyfied by Giulia Da Poian, use FastSampEn in series < 34000
-% otherwise use traditional SampEn that is faster for long series 
+% otherwise use traditional SampEn that is faster for long series
+%
+% 10-23-2017 Modyfied by Giulia Da Poian, using scales like in Costa's
+% paper instead ofcCoarse-grain data using halving method.
 %
 % This software may be modified and distributed under the terms
 % of the BSD license. See the LICENSE file in this repo for details.
 
 
-% Initialize output vector
-mse = NaN(maxTau, 1);
-
+data = zscore(data);  % (introduced by GDP) normalization of the signal that 
+                      % replace the common practice of expressing the 
+                      % tolerance as r times the standard deviation
+ 
+mse = NaN(maxTau, 1); % Initialize output vector
+SampEnType = 'Maxim'; % Initialize default SampEn method 
 
 % Check data length, if < 34000 use Fast Implementation (introduced GDP) 
-SampEnType = 'Slow';
-
 if length(data)<34000
     SampEnType = 'Fast'; 
 end
@@ -55,17 +59,16 @@ end
 % Loop through each timescale
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
-        
+    % Coarse-grain data (using scale in Costa's paper)
+    scaledData = ScaleData(data,i_tau); % Changed by GDP
     
     switch SampEnType
         case 'Fast'
-           mse(i_tau) = fastSampen(data, m, r);
+           mse(i_tau) = fastSampen(scaledData, m, r);
         otherwise
-           mse(i_tau) = sampenMaxim(data, m, r); 
+           mse(i_tau) = sampenMaxim(scaledData, m, r); 
     end
-    % Coarse-grain data (default: halving method)
-    data = coarsegrain(data);
-    
+
 end % end for loop
 
 end % end function

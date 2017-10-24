@@ -1,56 +1,41 @@
-function xOut = coarsegrain(x)
+function scaledData = coarsegrain(data,tau)
+%   scaledData = coarsegrain(data,tau)
+%
+%   OVERVIEW:  generate the consecutive coarse-grained time series
+%   
+%   INPUTS:    
+%     data  : Vector containing the original seires
+%     tau   : scale factor (if tau = 1 returs the original series)
+%   OUTPUTS:
+%       scaledData : the coarse-grained time series at the scale factor tau
+%
+%   Written by: Giulia Da Poian <giulia.dap@gmail.com>
+%   REPO:       
+%       https://github.com/cliffordlab/HRVToolbox1.0  
+%	COPYRIGHT (C) 2016 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
-% output = coarsegrain(inputData, factor, method)
-% 
-% Overview
-%   Coarse-grains a time series by averaging two-item sequences,
-%   e.g. new_datum = (i'th odd datum + (i'th + 1) datum) / 2;
-%   e.g. x = [1 2 3 5 2 3 5 6 8 9]
-%     xOut = [(1+2)/2 (3+5)/2 (2+3)/2 (5+6)/2 (8+9)/2]
-%     xOut = [1.5 4.0 2.5 5.5 8.5]
-%
-% Input    
-% 	x - 1D vector of ints or doubles
-%
-% Output
-%   xOut - 1D time series vector after coarse-graining
-%
-% Dependencies
-%
-% Reference(s)
-%
-% Authors
-%   Erik Reinertsen <er@gatech.edu>
-% 
-% Copyright (C) 2017 Authors, all rights reserved.
-%
-% This software may be modified and distributed under the terms
-% of the BSD license. See the LICENSE file in this repo for details.
-
-n = length(x);
-
-% If vector length is not divisible by 'factor'
-% decrement last index until it is
-lastIndex = n;
-while(mod(lastIndex, 2) > 0)
-    lastIndex = lastIndex - 1;
+if nargin < 2
+    error('Wrong number of input arguments');
 end
 
-% Trim inputData until vector length is divisible by 0
-x = x(1:lastIndex);
+L = length(data);
+J = fix(L/tau);
 
-% Calculate length of new inputData vector
-lenInputDataNew = floor(n * 0.5 ^ (2 - 1));
+scaledData = zeros(1,J);
 
-% % Initialize vector to store coarse-grained vector
-% output = NaN(lenInputDataNew, 1);
-
-% Loop through each index of output
-% compute mean of the i'th to (i+factor)th indices,
-% and write to i'th element of output
-for idxNew = 1:lenInputDataNew
-    index = 1 + 2 * (idxNew - 1);
-    xOut(idxNew) = mean(x(index:index + 2 - 1));
+if tau < 1
+    error('The scale factor must be a positive integer number');
+elseif tau == 1
+    scaledData = data; % return orignal series
+    return
+else
+    for idx=1:J
+        scaledData(idx) = mean(data((idx-1)*tau+1:idx*tau));
+    end
 end
 
-end
+

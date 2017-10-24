@@ -25,6 +25,7 @@
 
 clear; clc; close all;
 HRVparams = InitializeHRVparams('demo_RRgen'); % include the project name
+HRVparams.poincare.on = 0;
 
 % 1. Generate Data
 

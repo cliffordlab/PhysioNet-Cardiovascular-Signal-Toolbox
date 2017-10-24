@@ -60,7 +60,7 @@ end
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
     % Coarse-grain data (using scale in Costa's paper)
-    scaledData = ScaleData(data,i_tau); % Changed by GDP
+    scaledData = coarsegrain(data,i_tau); % Changed by GDP
     
     switch SampEnType
         case 'Fast'

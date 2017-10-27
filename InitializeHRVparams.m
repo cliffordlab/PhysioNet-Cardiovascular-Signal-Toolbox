@@ -20,9 +20,9 @@ function HRVparams = InitializeHRVparams(project_name)
 %       13. SDANN and SDNNI Analysis Settings
 %       14. PRSA Analysis Settings
 %       15. Peak Detection Settings
-%       16. Multiscale Entropy - MSE - Settings
+%       16. Entropy  and Multiscale Entropy - MSE - Settings
 %       17. Detrended Fluctuation Analysis - DFA - Settings
-%       18. Poincaré plot
+%       18. Poincaré plot - Settings
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
@@ -224,11 +224,10 @@ HRVparams.freq.threshold2 = 0.05;           % Default: 0.05, Amount (%) of data 
                                             % window is considered too low quality for analysis
                                             % (Used only when SQI is provided)
 HRVparams.freq.zero_mean = 1;               % Default: 1, Option for subtracting the mean from the input data
-HRVparams.freq.methods = {'lomb'};
+HRVparams.freq.methods = {'lomb'};          % Default: 'lomb' 
+                                            % Options: 'lomb', 'burg', 'fft', 'welch' or with 
+                                            % resempling 'burg_rs', 'fft_rs', 'welch_rs'
 HRVparams.freq.plot_on = 0;
-HRVparams.freq.dataoutput = 2;              % Default: 2, 
-                                            % 1 = Print results to .txt file & outputs to return variables
-                                            % Anything else = outputs to return variables only
 
 % The following settings are for debugging spectral analysis methods
 HRVparams.freq.debug_sine = 0;              % Default: 0, Adds sine wave to tachogram for debugging
@@ -246,7 +245,7 @@ HRVparams.freq.burg_poles = 15;    % Default: 15, Number of coefficients
                                    % method (not recommended)
 
 % The following settings are only used when the user specifies spectral
-% estimation methods that use resampling
+% estimation methods that use resampling : 'welch_rs','fft_rs'
 HRVparams.freq.resampling_freq = 7;             % Default: 7, Hz 
 HRVparams.freq.resample_interp_method = 'cub';  % Default: 'cub'
                                                 % 'cub' = cublic spline method
@@ -278,13 +277,15 @@ HRVparams.fid_vec = [];         % Default: []
 HRVparams.SIGN_FORCE = [];      % Default: []
 HRVparams.debug = 0;            % Default: 0
 
-%% 16. Multiscale Entropy Settings
-HRVparams.MSE.on = 1;                           % Default: 1, MSE Analysis 1=On or 0=Off
-HRVparams.MSE.RadiusOfSimilarity = 0.15;        % Default: 0.15, Radius of similarity (% of std)
-HRVparams.MSE.MSEpatternLength = 2;             % Default: 2, 
-HRVparams.MSE.maxCoarseGrainings = 7;           % Default: 7, Maximum number of coarse-grainings
+%% 16. Entropy Settings
+HRVparams.MSE.on = 1;                      % Default: 1, MSE Analysis 1=On or 0=Off
+HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
+HRVparams.MSE.MSEpatternLength = 2;        % Default: 2, 
+HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 7, Maximum number of coarse-grainings
 %
-
+HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or 0=Off
+HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)
+HRVparams.Entropy.patternLength = 2;          % Default: 2, 
 
 %% 17. DFA Settings
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off

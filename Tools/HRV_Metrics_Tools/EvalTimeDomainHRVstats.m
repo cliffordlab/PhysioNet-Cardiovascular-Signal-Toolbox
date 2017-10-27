@@ -15,8 +15,6 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %                                at least two columns. Column 1 should be
 %                                timestamps of each sqi measure, and Column 2
 %                                should be SQI on a scale from 0 to 1.
-%                                Additional columns can be included with
-%                                additional sqi at the same timestamps
 %               HRVparams      : struct of settings for hrv_toolbox analysis
 %                
 %   OUTPUT:     
@@ -45,15 +43,16 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Main script written by Adriana N. Vest
-%       Dependent scripts written by various authors 
-%       (see functions for details)       
+%       Written by Adriana N. Vest     
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%% 
+%
+%   10-25-2017 Modified by Giulia Da Poian, convert results in ms and 
+%   removed code for writing results on file
+%
 
 % Verify input arguments
 
@@ -78,28 +77,27 @@ end
 % Set Defaults
 
 windowlength = HRVparams.windowlength;
-dataoutput = HRVparams.timedomain.dataoutput;
 alpha = HRVparams.timedomain.alpha;
 threshold1 = HRVparams.timedomain.threshold1;
 threshold2 = HRVparams.timedomain.threshold2;
 
 
-% Preallocate arrays before entering the loop
-NNmean     = zeros(1,length(windows_all));
-NNmedian   = zeros(1,length(windows_all));
-NNmode     = zeros(1,length(windows_all));
-NNvariance = zeros(1,length(windows_all));
-NNskew     = zeros(1,length(windows_all));
-NNkurt     = zeros(1,length(windows_all));
-NNiqr      = zeros(1,length(windows_all));
-SDNN       = zeros(1,length(windows_all));
-RMSSD      = zeros(1,length(windows_all));
-pnn50      = zeros(1,length(windows_all));
-btsdet     = zeros(1,length(windows_all));
-avgsqi     = zeros(1,length(windows_all));
-fdflag     = zeros(1,length(windows_all));
+% Preallocate arrays (all NaN) before entering the loop
+NNmean     = nan(1,length(windows_all));
+NNmedian   = nan(1,length(windows_all));
+NNmode     = nan(1,length(windows_all));
+NNvariance = nan(1,length(windows_all));
+NNskew     = nan(1,length(windows_all));
+NNkurt     = nan(1,length(windows_all));
+NNiqr      = nan(1,length(windows_all));
+SDNN       = nan(1,length(windows_all));
+RMSSD      = nan(1,length(windows_all));
+pnn50      = nan(1,length(windows_all));
+btsdet     = nan(1,length(windows_all));
+avgsqi     = nan(1,length(windows_all));
+fdflag     = nan(1,length(windows_all));
 
-%% Analyze by Window
+%Analyze by Window
 
 % Loop through each window of RR data
 for i_win = 1:length(windows_all)
@@ -119,78 +117,36 @@ for i_win = 1:length(windows_all)
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
 
-            NNmean(i_win) = mean(nn_win);
-            NNmedian(i_win) = median(nn_win);
-            NNmode(i_win) = mode(nn_win);
-            NNvariance(i_win) = var(nn_win);
-            NNskew(i_win) = skewness(nn_win);
-            NNkurt(i_win) = kurtosis(nn_win);
-            NNiqr(i_win) = iqr(nn_win);
-            SDNN(i_win) = std(nn_win); % SDNN should only be done on longer data segments
+            NNmean(i_win) = mean(nn_win) * 1000; % compute and convert to ms
+            NNmedian(i_win) = median(nn_win)* 1000; % compute and convert to ms
+            NNmode(i_win) = mode(nn_win)* 1000; % compute and convert to ms
+            NNvariance(i_win) = var(nn_win)* 1000; % compute and convert to ms
+            NNskew(i_win) = skewness(nn_win)* 1000; % compute and convert to ms
+            NNkurt(i_win) = kurtosis(nn_win)* 1000; % compute and convert to ms
+            NNiqr(i_win) = iqr(nn_win)* 1000; % compute and convert to ms
+            SDNN(i_win) = std(nn_win)* 1000; % compute and convert to ms % SDNN should only be done on longer data segments
 
             % RMSSD
-            RMSSD(i_win) = runrmssd(nn_win);
+            RMSSD(i_win) = runrmssd(nn_win)* 1000; % compute and convert to ms
 
             % pNN50
-            pnn50(i_win) = pnna(t_win, alpha);
+            pnn50(i_win) = pnna(nn_win, alpha); % 
 
             btsdet(i_win) = length(nn_win);
             avgsqi(i_win) = mean(sqi_win(:,2));
             
-            fdflag(i_win) = 5; %'sucess';
+            fdflag(i_win) = 5; % 5 : 'sucess';
           
         else
-            NNmean(i_win) = NaN;
-            NNmedian(i_win) = NaN;
-            NNmode(i_win) = NaN;
-            NNvariance(i_win) = NaN;
-            NNskew(i_win) = NaN;
-            NNkurt(i_win) = NaN;
-            NNiqr(i_win) = NaN;
-            SDNN(i_win) = NaN; 
-            RMSSD(i_win) = NaN;
-            pnn50(i_win) = NaN;
-            btsdet(i_win) = length(nn_win);
-            avgsqi(i_win) = mean(sqi_win(:,2));
-            fdflag(i_win) = 2; % 2: low SQI
+            % 2: low SQI
+            fdflag(i_win) = 2; 
         end % end of conditional statements that run if SQI is above threshold2
         
     else
-        NNmean(i_win) = NaN;
-        NNmedian(i_win) = NaN;
-        NNmode(i_win) = NaN;
-        NNvariance(i_win) = NaN;
-        NNskew(i_win) = NaN;
-        NNkurt(i_win) = NaN;
-        NNiqr(i_win) = NaN;
-        SDNN(i_win) = NaN; 
-        RMSSD(i_win) = NaN;
-        pnn50(i_win) = NaN;
-        btsdet(i_win) = NaN;
-        avgsqi(i_win) = NaN;
-        fdflag(i_win) = 3; % 3: Not enough data in the window to analyze;
+        % 3: Not enough data in the window to analyze;
+        fdflag(i_win) = 3; 
     end % end check for sufficient data
     
-    % Print Results to File If Option Selected
-    if dataoutput == 1
-        if i_win == 1
-            cd([HRVparams.writedata]) 
-            fileID = fopen('generalstats.txt','w');
-            formatSpec = '%6s %6s %6s %6s %6s %6s %6s %6s %7s %8s\n';
-            fprintf(fileID,formatSpec,'NNmean','NNmedian','NNmode', ...
-            'NNvariance','NNskew', 'NNkurt', 'NNiqr', 'SDNN', 'RMSSD', 'pnn50');
-        end
-        
-        formatSpec = '%6.4f %6.4f %6.4f %6.4f %8.4f %8.4f %8.4f %8.4f %6.4f %6.4f \n';
-        fprintf(fileID,formatSpec,NNmean(i_win),NNmedian(i_win),NNmode(i_win), ...
-            NNvariance(i_win),NNskew(i_win) , NNkurt(i_win), NNiqr(i_win), ...
-            SDNN(i_win), RMSSD(i_win), pnn50(i_win));
-        
-        if i_win == i_win(end)
-            fclose(fileID);    
-        end
-    end
-
 end % end of loop through window
 
 end % end of function

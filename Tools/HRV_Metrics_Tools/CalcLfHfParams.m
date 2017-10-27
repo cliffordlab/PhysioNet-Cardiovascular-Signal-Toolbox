@@ -41,10 +41,10 @@ Indx_LF = find( (limits(3,1) <= F) & (F <= limits(3,2)) );
 Indx_HF = find( (limits(4,1) <= F) & (F <= limits(4,2)) );
 space = F(2)-F(1);
 
-ulf = sum(PSD(Indx_ULF)*space);
-vlf = sum(PSD(Indx_VLF)*space);
-lf = sum(PSD(Indx_LF)*space);
-hf = sum(PSD(Indx_HF)*space);
+ulf = sum(PSD(Indx_ULF)*space) * 1e6; % convert to ms^2
+vlf = sum(PSD(Indx_VLF)*space) * 1e6; % convert to ms^2
+lf = sum(PSD(Indx_LF)*space) * 1e6;   % convert to ms^2
+hf = sum(PSD(Indx_HF)*space) * 1e6;   % convert to ms^2
 
 ttlpwr = sum([ulf vlf lf hf]);
 

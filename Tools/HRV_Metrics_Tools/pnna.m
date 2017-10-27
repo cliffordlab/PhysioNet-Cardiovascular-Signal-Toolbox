@@ -7,11 +7,14 @@ function output = pnna(rr, alpha)
 %               Setting <alpha> to 50 msec will make this equivalent to pnn50
 %               50 msec is the default value of <alpha>
 %               When no arguments are given, the program documents itself%
-
+%
 %   INPUT:     
-%               rr    - RR intervals (in sec)
-%               alpha - 0.05 by default (input in sec)
+%               rr    - is a vector containing RR intervals in seconds
+%               alpha - is a number which specifies the limit of successive 
+%                       differences in milliseconds (50 ms by default) 
 %   OUTPUT:     
+%               pnna - Probability of intervals greater alpha ms or 
+%                      smaller -alpha ms (e.g., alpha = 50 ms)
 %   DEPENDENCIES 
 %   & LIBRARIES:
 %   REFERENCE:  
@@ -27,13 +30,14 @@ function output = pnna(rr, alpha)
 % set default parameters
 if nargin < 2
     % assume alpha is in millisecs
-    alpha = 0.050;
+    alpha = 50;
 end
 
-dif = diff(rr);
+dif = diff(rr); 
 
 % pnnalpha is the fraction of differences larger than alpha
-output = sum( abs(dif) >= alpha )/length(dif);
+
+output = sum( abs(dif) >= alpha/1000 )/length(dif);
 
 
 end

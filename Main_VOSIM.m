@@ -151,7 +151,7 @@ try
         col_titles = [col_titles {'ac' 'dc'}];
     end
     
-    % 6.Poincarefeatures
+    % 6.Poincare Features
     if HRVparams.poincare.on==1
          [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, RRwindowStartIndices, sqi);
          % Export results
@@ -159,11 +159,21 @@ try
          col_titles = [col_titles {'SD1', 'SD2', 'SD1SD2'}];
     end
     
+    % 7.Entropy Features
+    if HRVparams.Entropy.on==1
+        m = HRVparams.Entropy.patternLength;
+        r = HRVparams.Entropy.RadiusOfSimilarity;
+        [SampEn, ApEn] = EvalEntropyMetrics(NN, tNN, m,r, HRVparams, RRwindowStartIndices, sqi);
+        % Export results
+        results = [results, SampEn(:),ApEn(:)];
+        col_titles = [col_titles {'SampEn', 'ApEn'}];
+    end
+    
     % Generates Output - Never comment out
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
-    % 7. Multiscale Entropy (MSE)
+    % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
             mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
@@ -178,7 +188,7 @@ try
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     end   
     
-    % 8. DetrendedFluctuation Analysis (DFA)
+    % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
         % Note, DFA is done on the entair signal not on windows 
         alpha = dfaScalingExponent(NN, HRVparams.DFA.minBoxSize, HRVparams.DFA.maxBoxSize);   
@@ -189,13 +199,13 @@ try
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
     end
     
-    % 9. Analyze additional signals (ABP, PPG or both)
+    % 10. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
         Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
     end
         
-    % 10. Some statistics on %ages windows removed (poor quality and AF)
+    % 11. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
     RemovedWindowsStats(RRwindowStartIndices,AFWindows,HRVparams,subjectID);
     

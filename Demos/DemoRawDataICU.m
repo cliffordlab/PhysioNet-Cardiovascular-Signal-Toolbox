@@ -1,5 +1,6 @@
 %	OVERVIEW:
-%       Demo using ICU rawdata 
+%       This demonstration analyzes a segment of data collected in the 
+%       intensive care unit (ICU) which contains ECG, ABP, and PPG signals 
 %   INPUT:
 %       
 %   OUTPUT:

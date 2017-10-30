@@ -2,12 +2,12 @@
 %       This is demo for VOSIM HRV toolbox using RR intervals with
 %       annotations. Provided data are a subset from the MIT Physionet 
 %       NSR dataset, which contains long-term ECG recordings of subjects 
-%       in normal sinus rhythm
+%       in normal sinus rhythm.
 %       It shows how to automaticly import multiple files from a folder, 
 %       perfrom the HRV analysis on each of them and then store the results 
 %       in .csv format.  
 %       It uses the default parameters in the configuration file using 'demo'
-%       option : InitializeHRVparams('demo').
+%       option : InitializeHRVparams('demo_NSR').
 %
 %   OUTPUT:
 %       HRV Metrics exported to .cvs files

@@ -1,6 +1,6 @@
 %	OVERVIEW:
-%       Demo of HRV Toolbox Analysis on Standardized Data generated using
-%       RRGEN 
+%       This function demonstrates the function of the synthetic RR interval 
+%       generator RRGEN and the calculation of HRV metrics
 %   INPUT:
 %       No input necessary. RRGEN data is generated within this script
 %   OUTPUT:

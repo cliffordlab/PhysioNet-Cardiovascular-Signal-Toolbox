@@ -1,6 +1,7 @@
 %	OVERVIEW:
-%       Demo using 'raw' 5-minutes long ECG signal recoded during  
-%       atrial fibrillation (AF) episodes.%        
+%       This demonstration analyzes a segment of 5-minutes 'raw' data  
+%       with known atrial fibrillation to show the operation of the 
+%       AF detection algorithm.
 %   OUTPUT:
 %       Detected AF and HRV Metrics 
 %   DEPENDENCIES & LIBRARIES:

@@ -1,2 +1,2 @@
-patID,t_win,NNmean,NNmedian,NNmode,NNvar,NNskew,NNkurt,SDNN,NNiqr,RMSSD,pnn50,beatsdetected,WinFlagTime,ulf,vlf,lf,hf,lfhf,ttlpwr,WinFlagFreq,ac,dc,SampEn,ApEn
-TestAFdata,,,,,,,,,,,,,,,,,,,,3,,,,
+patID,NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,NNiqr,SDNN,RMSSD,pnn50,btsdet,avgsqi,tdflag,ulf,vlf,lf,hf,lfhf,ttlpwr,fdflag,ac,dc,SampEn,ApEn
+TestAFdata,,,,,,,,,,,,,3,,,,,,,3,,,,

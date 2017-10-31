@@ -1,5 +1,4 @@
-function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, ...
-          pnn50,btsdet,avgsqi,fdflag] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
+function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 
 % [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,SDNN,NNiqr,RMSSD, pnn50
 % btsdet,avgsqi] = EvalTimeDomainHRVstats(windows_all,NN,tNN,sqi,settings)
@@ -8,32 +7,35 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 %               input NN intervals.
 %
 %   INPUT:      MANDATORY:
-%               NN             : a single row of NN (normal normal) interval data in seconds
-%               OPTIONAL:
-%               tNN            : the time indices of the rr interval data (seconds)
-%               sqi            : Signal Quality Index; Requires a matrix with
-%                                at least two columns. Column 1 should be
-%                                timestamps of each sqi measure, and Column 2
-%                                should be SQI on a scale from 0 to 1.
+%               NN             : a single row of NN (normal normal) interval 
+%                                data in seconds
+%               tNN            : the time indices of the rr interval data 
+%                                (seconds)
+%               sqi            : (Optional )Signal Quality Index; Requires 
+%                                a matrix with at least two columns. Column 
+%                                1 should be timestamps of each sqi measure, 
+%                                and Column 2 should be SQI on a scale from 0 to 1.
 %               HRVparams      : struct of settings for hrv_toolbox analysis
+%               windows_all    : vector containing the starting time of each
+%                                windows (in seconds) 
 %                
 %   OUTPUT:     
-%               NNmean      :  
-%               NNmedian    :
-%               NNmode      :
-%               NNvariace   :
-%               NNskew      : skewness
-%               NNkurt      : kurtosis
-%               SDNN        : standard deviation
-%               NNiqr       :
-%               RMSSD       :
-%               pnn50       : the fraction of consecutive beats that differ by
-%                             more than a specified time.
-%               btsdet      :
-%               avgsqi      :
-%               fdflag      : 2 - Not enough high SQI data
-%                             3 - Not enough data in the window to analyze
-%                             5 - Success
+%               out.NNmean      :  
+%               out.NNmedian    :
+%               out.NNmode      :
+%               out.NNvariace   :
+%               out.NNskew      : skewness
+%               out.NNkurt      : kurtosis
+%               out.SDNN        : standard deviation
+%               out.NNiqr       :
+%               out.RMSSD       :
+%               out.pnn50       : the fraction of consecutive beats that differ by
+%                                 more than a specified time.
+%               out.btsdet      :
+%               out.avgsqi      :
+%               out.tdflag      : 2 - Not enough high SQI data
+%                                 3 - Not enough data in the window to analyze
+%                                 5 - Success
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
@@ -56,22 +58,14 @@ function [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, RMSSD, .
 
 % Verify input arguments
 
-if nargin< 1
+if nargin< 5
     error('no input argument!!!!')
 end
-if nargin<2 || isempty(tNN)
-        tNN = cumsum(NN);
-end
-if nargin<3 || isempty(sqi) 
+if isempty(sqi) 
      sqi(:,1) = tNN;
      sqi(:,2) = ones(length(tNN),1);
 end
-if nargin<4 || isempty(HRVparams) 
-    HRVparams = initialize_HRVparams('demo');
-end
-if nargin<5 || isempty(windows_all)
-    windows_all = CreateWindowRRintervals(tNN, NN, HRVparams);
-end
+
 
 
 % Set Defaults
@@ -83,19 +77,19 @@ threshold2 = HRVparams.timedomain.threshold2;
 
 
 % Preallocate arrays (all NaN) before entering the loop
-NNmean     = nan(1,length(windows_all));
-NNmedian   = nan(1,length(windows_all));
-NNmode     = nan(1,length(windows_all));
-NNvariance = nan(1,length(windows_all));
-NNskew     = nan(1,length(windows_all));
-NNkurt     = nan(1,length(windows_all));
-NNiqr      = nan(1,length(windows_all));
-SDNN       = nan(1,length(windows_all));
-RMSSD      = nan(1,length(windows_all));
-pnn50      = nan(1,length(windows_all));
-btsdet     = nan(1,length(windows_all));
-avgsqi     = nan(1,length(windows_all));
-fdflag     = nan(1,length(windows_all));
+out.NNmean     = nan(1,length(windows_all));
+out.NNmedian   = nan(1,length(windows_all));
+out.NNmode     = nan(1,length(windows_all));
+out.NNvariance = nan(1,length(windows_all));
+out.NNskew     = nan(1,length(windows_all));
+out.NNkurt     = nan(1,length(windows_all));
+out.NNiqr      = nan(1,length(windows_all));
+out.SDNN       = nan(1,length(windows_all));
+out.RMSSD      = nan(1,length(windows_all));
+out.pnn50      = nan(1,length(windows_all));
+out.btsdet     = nan(1,length(windows_all));
+out.avgsqi     = nan(1,length(windows_all));
+out.tdflag     = nan(1,length(windows_all));
 
 %Analyze by Window
 
@@ -117,34 +111,34 @@ for i_win = 1:length(windows_all)
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
 
-            NNmean(i_win) = mean(nn_win) * 1000; % compute and convert to ms
-            NNmedian(i_win) = median(nn_win)* 1000; % compute and convert to ms
-            NNmode(i_win) = mode(nn_win)* 1000; % compute and convert to ms
-            NNvariance(i_win) = var(nn_win)* 1000; % compute and convert to ms
-            NNskew(i_win) = skewness(nn_win)* 1000; % compute and convert to ms
-            NNkurt(i_win) = kurtosis(nn_win)* 1000; % compute and convert to ms
-            NNiqr(i_win) = iqr(nn_win)* 1000; % compute and convert to ms
-            SDNN(i_win) = std(nn_win)* 1000; % compute and convert to ms % SDNN should only be done on longer data segments
+            out.NNmean(i_win) = mean(nn_win) * 1000; % compute and convert to ms
+            out.NNmedian(i_win) = median(nn_win)* 1000; % compute and convert to ms
+            out.NNmode(i_win) = mode(nn_win)* 1000; % compute and convert to ms
+            out.NNvariance(i_win) = var(nn_win)* 1000; % compute and convert to ms
+            out.NNskew(i_win) = skewness(nn_win)* 1000; % compute and convert to ms
+            out.NNkurt(i_win) = kurtosis(nn_win)* 1000; % compute and convert to ms
+            out.NNiqr(i_win) = iqr(nn_win)* 1000; % compute and convert to ms
+            out.SDNN(i_win) = std(nn_win)* 1000; % compute and convert to ms % SDNN should only be done on longer data segments
 
             % RMSSD
-            RMSSD(i_win) = runrmssd(nn_win)* 1000; % compute and convert to ms
+            out.RMSSD(i_win) = runrmssd(nn_win)* 1000; % compute and convert to ms
 
             % pNN50
-            pnn50(i_win) = pnna(nn_win, alpha); % 
+            out.pnn50(i_win) = pnna(nn_win, alpha); % 
 
-            btsdet(i_win) = length(nn_win);
-            avgsqi(i_win) = mean(sqi_win(:,2));
+            out.btsdet(i_win) = length(nn_win);
+            out.avgsqi(i_win) = mean(sqi_win(:,2));
             
-            fdflag(i_win) = 5; % 5 : 'sucess';
+            out.tdflag(i_win) = 5; % 5 : 'sucess';
           
         else
             % 2: low SQI
-            fdflag(i_win) = 2; 
+            out.tdflag(i_win) = 2; 
         end % end of conditional statements that run if SQI is above threshold2
         
     else
         % 3: Not enough data in the window to analyze;
-        fdflag(i_win) = 3; 
+        out.tdflag(i_win) = 3; 
     end % end check for sufficient data
     
 end % end of loop through window

@@ -244,7 +244,7 @@ HRVparams.freq.burg_poles = 15;    % Default: 15, Number of coefficients
                                    % method (not recommended)
 
 % The following settings are only used when the user specifies spectral
-% estimation methods that use resampling : 'welch_rs','fft_rs'
+% estimation methods that use resampling : 'welch','fft', 'burg'
 HRVparams.freq.resampling_freq = 7;             % Default: 7, Hz 
 HRVparams.freq.resample_interp_method = 'cub';  % Default: 'cub'
                                                 % 'cub' = cublic spline method

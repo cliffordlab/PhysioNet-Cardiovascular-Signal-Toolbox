@@ -49,15 +49,12 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, rri, HRVparams, s
 % Make vector a column
 rr = rr(:);
 
-if nargin < 3
+if nargin < 5
     error('no data provided')
 end
-if nargin <4 || isempty(sqi)
+if isempty(sqi)
     sqi(:,1) = rri;
     sqi(:,2) = ones(length(rri),1);
-end
-if nargin<5 || isempty(WinStarIdxs)
-    WinStarIdxs = CreateWindowRRintervals(rri, rr, HRVparams);
 end
 
 time_stamp = rri;
@@ -75,8 +72,10 @@ Anchor_High_th = 1+PRSA_th/100;      % The upper limit for the DC anchor selecti
 
 % Preallocation
 
-ac_results = zeros(length(WinStarIdxs),1);
-dc_results = zeros(length(WinStarIdxs),1);
+ac_results = nan(length(WinStarIdxs),1);
+dc_results = nan(length(WinStarIdxs),1);
+prsa_ac = [];
+prsa_dc = [];
 
 % Run PRSA by Window
 % Loop through each window of RR data
@@ -132,14 +131,10 @@ for i_win = 1:length(WinStarIdxs)
             if ~isnan(prsa_dc) % Edited by Giulia Da Poian
                 dc = (sum(prsa_dc(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_dc(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 dc_results(i_win,1) = dc; % assign output of window
-            else
-                dc_results(i_win,1) = NaN;
             end
             if ~isnan(prsa_ac) % Edited by Giulia Da Poian
                 ac = (sum(prsa_ac(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_ac(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 ac_results(i_win,1) = ac; % assign output of window
-            else
-                ac_results(i_win,1) = NaN;
             end
 
             % Load custom colors
@@ -185,17 +180,10 @@ for i_win = 1:length(WinStarIdxs)
                 title('ac matrix')
             end % end of plotting condition
         else % else, if SQI is not adequate
-            dc_results(i_win,1) = NaN;
-            ac_results(i_win,1) = NaN;
         end % end of conditional statements run when SQI is adequate
     else % else, if window is NaN
-        dc_results(i_win,1) = NaN;
-        ac_results(i_win,1) = NaN;
     end % end of check for sufficient data
 end % end of loop through windows
-
-%prsaout(1).acm = acm;
-%prsaout(1).dcm = dcm;
 
 
 end % end of function

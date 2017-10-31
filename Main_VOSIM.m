@@ -104,7 +104,7 @@ try
             error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
     end
 
-    % 1. Exlude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
+    % 1. Exclude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
     [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
     
@@ -118,34 +118,23 @@ try
    
     % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
     if HRVparams.timedomain.on == 1
-        [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt, SDNN, NNiqr, ...
-        RMSSD,pnn50,btsdet,fdflagTime] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
+        TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
         % Export results
-        results = [ results, RRwindowStartIndices(:), NNmean(:),NNmedian(:),NNmode(:),NNvariance(:),...
-                    NNskew(:),NNkurt(:),SDNN(:), NNiqr(:),RMSSD(:), pnn50(:),...
-                    btsdet(:),fdflagTime(:)];
-        col_titles = [col_titles {'t_win','NNmean','NNmedian','NNmode','NNvar',...
-                      'NNskew','NNkurt','SDNN','NNiqr','RMSSD','pnn50',...
-                      'beatsdetected','WinFlagTime'}];
+        results = [ results cell2mat(struct2cell(TimeMetrics))'];
+        col_titles = [col_titles fieldnames(TimeMetrics)'];
     end
     
     % 4. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
     if HRVparams.freq.on == 1
-        [ulf, vlf, lf, hf, lfhf, ttlpwr, fdflagFreq] = ...
-         EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
-         % Export results
-         results = [results, ulf(:),vlf(:),lf(:),hf(:), lfhf(:),ttlpwr(:),fdflagFreq(:)];
-          col_titles = [col_titles {'ulf','vlf','lf','hf', 'lfhf','ttlpwr','WinFlagFreq'}];
+        FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
+        % Export results
+        results = [results cell2mat(struct2cell(FreqMetrics))'];
+        col_titles = [col_titles fieldnames(FreqMetrics)'];
     end
     
     % 5. PRSA, AC and DC values
     if HRVparams.prsa.on == 1
-        try
-            [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
-        catch
-            ac = NaN; 
-            dc = NaN;
-        end
+        [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
         % Export results
         results = [results, ac(:), dc(:)];
         col_titles = [col_titles {'ac' 'dc'}];
@@ -173,6 +162,8 @@ try
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
+    
+    % Note, MSE and DFA are done on the entair signal not on windows  
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
@@ -186,11 +177,9 @@ try
         col_titles = {'MSE'};
         % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
-    end   
-    
+    end       
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
-        % Note, DFA is done on the entair signal not on windows 
         alpha = dfaScalingExponent(NN, HRVparams.DFA.minBoxSize, HRVparams.DFA.maxBoxSize);   
         % Save Results for DFA
         results = alpha;

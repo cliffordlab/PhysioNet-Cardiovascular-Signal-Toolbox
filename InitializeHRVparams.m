@@ -224,9 +224,8 @@ HRVparams.freq.threshold2 = 0.05;           % Default: 0.05, Amount (%) of data 
                                             % window is considered too low quality for analysis
                                             % (Used only when SQI is provided)
 HRVparams.freq.zero_mean = 1;               % Default: 1, Option for subtracting the mean from the input data
-HRVparams.freq.methods = {'lomb'};          % Default: 'lomb' 
-                                            % Options: 'lomb', 'burg', 'fft', 'welch' or with 
-                                            % resempling 'burg_rs', 'fft_rs', 'welch_rs'
+HRVparams.freq.method = 'lomb';             % Default: 'lomb' 
+                                            % Options: 'lomb', 'burg', 'fft', 'welch' 
 HRVparams.freq.plot_on = 0;
 
 % The following settings are for debugging spectral analysis methods

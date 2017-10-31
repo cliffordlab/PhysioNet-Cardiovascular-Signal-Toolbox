@@ -1,4 +1,4 @@
-# hrv_toolbox
+# HRVToolbox1.0
 
 ------- Quick Start: ---------
 1)  Review InitializeHRVparams.m and optimize the parameters for your 
@@ -21,45 +21,47 @@ The following metrics are output from the HRV Toolbox:
     - t_win     : (s)  Start time of window analyzed
 
 Time domain measures of HRV:
-	- NNmean    : (s) mean value of NN intervals
-	- NNmode    : (s) mode of NN intervals
-	- NNmedian  : (s) median value of NN intervals
-	- NNskew    : (s) skweness of NN intervals
-	- NNkurt    : (s) kurtosis of NN intervals
+	- NNmean    : (ms) mean value of NN intervals
+	- NNmode    : (ms) mode of NN intervals
+	- NNmedian  : (ms) median value of NN intervals
+	- NNskew    : (ms) skweness of NN intervals
+	- NNkurt    : (ms) kurtosis of NN intervals
 	- NNiqr     : interquartile range of NN intervals
-	- SDNN      : (s) Standard deviation of all NN intervals.
-	- RMSSD     : (s) The square root of the mean of the sum of the squares 
+	- SDNN      : (ms) Standard deviation of all NN intervals.
+	- RMSSD     : (ms) The square root of the mean of the sum of the squares 
                    of differences between adjacent NN intervals.
 	- pnn50     : (%) NN50 count divided by the total number of all NN intervals.
                   (Number of pairs of adjacent NN intervals differing by more than 50 ms )
-	- fdflag    :   2 = not enough high SQI data in the window to process
+	- tdflag    :   2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
             	    3 = not enough data in the window 
                     4 = window is missing too much data
                     5 = success
 
 Frequency domain measures of HRV
-	- ulfL        : (s^2) Power in the ultra low frequency range (< 0.003 Hz)
-	- vlfL        : (s^2) Power in very low frequency range (0.003?0.04 Hz)
-	- lfL         : (s^2) Power in low frequency range (0.04?0.15 Hz)
-	- hfL         : (s^2) Power in high frequency range (0.15?0.4 Hz)
+	- ulfL        : (ms^2) Power in the ultra low frequency range (< 0.003 Hz)
+	- vlfL        : (ms^2) Power in very low frequency range (0.003?0.04 Hz)
+	- lfL         : (ms^2) Power in low frequency range (0.04?0.15 Hz)
+	- hfL         : (ms^2) Power in high frequency range (0.15?0.4 Hz)
 	- lfhfL       : Ratio LF [ms^2]/HF [ms^2]
-	- ttlpwrL     : (s^2) Total spectral power (approximately <0.4 Hz)
-	- fdflag      : 1 = Lomb Periodogram Failed   
+	- ttlpwrL     : (ms^2) Total spectral power (approximately <0.4 Hz)
+	- fdflag      : 1 = Lomb Periodogram or other method failed   
                     2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
             	    3 = not enough data in the window 
                     4 = window is missing too much data
                     5 = success
 Others HRV measures 
+    
     PRSA - AC     : (ms) acceleration capacity
     PRSA - DC     : (ms) deceleration capacity
 	
-Long range measures
     SDANN         : (s) Standard deviation of the average of NN intervals 
                     in all 5-minute segments of a long recording
 	SDNNI         : (s) Mean of the standard deviation in all 5-minute 
                     segments of a long recording
+
+Long range measures
     
     MSE           : First column contains the scale factors, and the second 
                     column provides the corresponding entropy values

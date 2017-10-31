@@ -49,9 +49,9 @@ function HRVparams = InitializeHRVparams(project_name)
 %       more information
 %%
 
+
 % Set up input options for a specific project
 switch project_name   
-    
     % Define new project name and parameters
     case 'MyProjectName'                   % Update with your project name
         HRVparams.Fs = Nan;                % Spacify sampling frequency

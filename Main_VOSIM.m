@@ -12,7 +12,7 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %       t           - Time indices of the rr interval data (seconds) or
 %                     ECG time
 %       InputFormat - String that specifiy if the input vector is: 
-%                     'RRInetrvals' for RR interval data 
+%                     'RRIntervals' for RR interval data 
 %                     'ECGWaveform' for ECG waveform
 %                     'PPGWaveform' for PPG signal
 %       HRVparams   - struct of settings for hrv_toolbox analysis that can
@@ -167,7 +167,8 @@ try
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
-            mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength, HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
+            mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength,...
+                  HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
         catch
             mse = NaN;
             fprintf('MSE failed for file ID %s \n', subjectID);
@@ -175,7 +176,6 @@ try
          % Save Results for MSE
         results = mse;
         col_titles = {'MSE'};
-        % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
     end       
     % 9. DetrendedFluctuation Analysis (DFA)
@@ -184,7 +184,6 @@ try
         % Save Results for DFA
         results = alpha;
         col_titles = {'DFA'};
-        % Generates Output - Never comment out
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
     end
     

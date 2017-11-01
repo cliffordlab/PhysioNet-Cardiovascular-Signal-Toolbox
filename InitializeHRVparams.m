@@ -277,17 +277,23 @@ HRVparams.SIGN_FORCE = [];      % Default: []
 HRVparams.debug = 0;            % Default: 0
 
 %% 16. Entropy Settings
+% Multiscale Entropy
 HRVparams.MSE.on = 1;                      % Default: 1, MSE Analysis 1=On or 0=Off
+HRVparams.MSE.windowlength = [];           % Default: [], perform DFA on the entair signal
+HRVparams.MSE.windIncrement = [];          % Default: [];
 HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
 HRVparams.MSE.MSEpatternLength = 2;        % Default: 2, 
 HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 7, Maximum number of coarse-grainings
-%
+% SampEn an ApEn 
 HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)
 HRVparams.Entropy.patternLength = 2;          % Default: 2, 
 
 %% 17. DFA Settings
+
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
+HRVparams.DFA.windowlength = [];    % Default [], perform DFA on the entair signal
+HRVparams.DFA.windIncrement = [];   % Default: [];
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 %

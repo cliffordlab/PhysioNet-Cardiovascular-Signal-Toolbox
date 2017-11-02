@@ -1,0 +1,2 @@
+patID,t_win,NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,NNiqr,SDNN,RMSSD,pnn50,btsdet,avgsqi,tdflag,ulf,vlf,lf,hf,lfhf,ttlpwr,fdflag,ac,dc,SampEn,ApEn
+TestAFdata,,,,,,,,,,,,,,3,,,,,,,3,,,,

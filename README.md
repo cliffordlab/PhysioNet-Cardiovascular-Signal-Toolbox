@@ -71,6 +71,7 @@ Long range measures
     DFA - alpha   : Fractal scaling exponents
 
 Nonlinear HRV measures: 
+
     Poincaré plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
                     on the line perpendicular to the line of identity (y=-x)
@@ -99,6 +100,7 @@ phenotyping.  The package can also analyze the interactions between
 multiple physiological signals.
 
 II. Getting Started
+
 System requirements:
 - Matlab and License    https://www.mathworks.com/
 - WFDB Toolbox          https://physionet.org/physiotools/wfdb.shtml
@@ -110,6 +112,7 @@ System requirements:
 2)  Add the VOSIM toolbox folder and subfolders to your Matlab path
 
 3)  (Optional) rrgen binary - compilation of rrgenV3.c on your system:
+
         1.  Compile rrgen
             Navigate to rrgen in HRV Toolbox & Compile using gcc
             gcc -Wall rrgenV3.c -lm -o rrgen

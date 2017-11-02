@@ -1,4 +1,4 @@
-# HRVToolbox1.0
+# VOSIM-HRVToolbox
 
 ------- Quick Start: ---------
 1)  Review InitializeHRVparams.m and optimize the parameters for your 

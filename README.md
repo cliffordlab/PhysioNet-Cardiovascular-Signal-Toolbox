@@ -17,10 +17,10 @@
 ------ Guide to Output: ------
 The following metrics are output from the HRV Toolbox:
 
-
-    - t_win     : (s)  Start time of window analyzed
+    - t_win     : (s)  Start time of each window analyzed
 
 Time domain measures of HRV:
+
 	- NNmean    : (ms) mean value of NN intervals
 	- NNmode    : (ms) mode of NN intervals
 	- NNmedian  : (ms) median value of NN intervals
@@ -38,7 +38,8 @@ Time domain measures of HRV:
                     4 = window is missing too much data
                     5 = success
 
-Frequency domain measures of HRV
+Frequency domain measures of HRV:
+
 	- ulfL        : (ms^2) Power in the ultra low frequency range (< 0.003 Hz)
 	- vlfL        : (ms^2) Power in very low frequency range (0.003?0.04 Hz)
 	- lfL         : (ms^2) Power in low frequency range (0.04?0.15 Hz)
@@ -51,6 +52,7 @@ Frequency domain measures of HRV
             	    3 = not enough data in the window 
                     4 = window is missing too much data
                     5 = success
+
 Others HRV measures 
     
     PRSA - AC     : (ms) acceleration capacity

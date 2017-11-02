@@ -10,7 +10,8 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 %   m           - pattern length; int
 %   r           - radius of similarity (% of std); double
 %   maxTau      - maximum number of coarse-grainings; int
-%
+%   RRwin       - vector containing the starting time of each windows (in seconds) 
+%                
 % Output
 %   mse          - vector of [max_tau, 1] doubles
 %
@@ -44,6 +45,7 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 % of the BSD license. See the LICENSE file in this repo for details.
 
 
+
 data = zscore(data);  % (introduced by GDP) normalization of the signal that 
                       % replace the common practice of expressing the 
                       % tolerance as r times the standard deviation
@@ -55,6 +57,11 @@ SampEnType = 'Maxim'; % Initialize default SampEn method
 if length(data)<34000
     SampEnType = 'Fast'; 
 end
+
+
+
+
+% Loop through each window
 
 % Loop through each timescale
 % Note: i_tau == 1 is the original time series

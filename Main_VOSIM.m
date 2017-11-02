@@ -81,8 +81,7 @@ elseif length(varargin)  == 4
     extraSig = [varargin{1} varargin{3}];
 end
 
-results = [];
-col_titles = {};
+
 
 if isa(subjectID,'cell'); subjectID = string(subjectID); end
 
@@ -106,15 +105,32 @@ try
 
     % 1. Exclude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
     [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
+    % Create Windows for Time and Frequency domain 
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
+    % Create Windows for MSE and DFA 
+    if HRVparams.MSE.on
+        MSEwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams,'mse');
+    end
+    if HRVparams.DFA.on 
+        DFAwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams,'dfa');
+    end
     
     % 2. Atrial Fibrillation Detection
     if HRVparams.af.on == 1
         [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
-        % Create RRAnalysisWindows contating AF segments
-        [RRwindowStartIndices, AFWindows]= RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
         fprintf('AF analysis completed for patient %s \n', subjectID);
+        % Remove RRAnalysisWindows contating AF segments
+        [RRwindowStartIndices, AFWindows]= RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
+            if HRVparams.MSE.on
+                MSEwindowStartIndices = RemoveAFsegments(MSEwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
+            end
+            if HRVparams.DFA.on 
+                DFAwindowStartIndices = RemoveAFsegments(DFAwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
+            end
     end
+    
+    results = RRwindowStartIndices';
+    col_titles = {'t_win'};
    
     % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
     if HRVparams.timedomain.on == 1
@@ -162,28 +178,32 @@ try
     ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
     fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
 
-    
-    % Note, MSE and DFA are done on the entair signal not on windows  
+     
+
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
-            mse = ComputeMultiscaleEntropy(NN,HRVparams.MSE.MSEpatternLength,...
-                  HRVparams.MSE.RadiusOfSimilarity, HRVparams.MSE.maxCoarseGrainings);  
+            mse = EvalMSE(NN,tNN,sqi,HRVparams,MSEwindowStartIndices);
         catch
             mse = NaN;
             fprintf('MSE failed for file ID %s \n', subjectID);
         end
          % Save Results for MSE
-        results = mse;
-        col_titles = {'MSE'};
+        results = [MSEwindowStartIndices' mse'];
+        for i=1:HRVparams.MSE.maxCoarseGrainings
+            Scales{i}=strcat('Scale', num2str(i));
+        end
+        col_titles = {'t_win' Scales{:}};
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
-    end       
+    end   
+    
+    
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
-        alpha = dfaScalingExponent(NN, HRVparams.DFA.minBoxSize, HRVparams.DFA.maxBoxSize);   
+        alpha = EvalDFA(NN,tNN,sqi,HRVparams,DFAwindowStartIndices);   
         % Save Results for DFA
-        results = alpha;
-        col_titles = {'DFA'};
+        results = [DFAwindowStartIndices' alpha];
+        col_titles = {'t_win' 'alpha'};
         GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
     end
     

@@ -41,12 +41,6 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 if nargin< 1
     error('Need to supply time to create windows')
 end
-if nargin<2 || isempty(NN)
-       NN = [];
-end
-if nargin<3 || isempty(HRVparams) 
-     HRVparams = initialize_HRVparams;
-end
 if nargin<4 || isempty(HRVparams) 
      option = 'normal';
 end
@@ -57,12 +51,27 @@ increment = HRVparams.increment;
 windowlength = HRVparams.windowlength;
 win_tol = HRVparams.win_tol;
 
-if strcmp(option,'af')
-    increment = HRVparams.af.increment;
-    windowlength = HRVparams.af.windowlength;
-elseif strcmp(option,'sqi')
-    increment = HRVparams.sqi.increment;
-    windowlength = HRVparams.sqi.windowlength;
+switch option
+    case 'af'
+        increment = HRVparams.af.increment;
+        windowlength = HRVparams.af.windowlength;
+    case 'mse'
+        increment = HRVparams.MSE.increment;
+        windowlength = HRVparams.MSE.windowlength;
+        if isempty(increment)
+            windowRRintervals = 0;
+            return % no need to crate windows , use entair signal
+        end 
+    case 'dfa'
+        increment = HRVparams.DFA.increment;
+        windowlength = HRVparams.DFA.windowlength;
+        if isempty(increment)
+            windowRRintervals = 0;
+            return  % no need to crate windows , use entair signal
+        end       
+    case 'sqi'
+        increment = HRVparams.sqi.increment;
+        windowlength = HRVparams.sqi.windowlength;
 end
 
 % Initialize output matrix

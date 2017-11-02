@@ -48,7 +48,7 @@ ylabel('SampEn');
 %% 4. Save Results
 results = [windowRRintervals_mse' mse'];
 for i=1:HRVparams.MSE.maxCoarseGrainings; Scales{i}=strcat('Scale', num2str(i));end
-col_titles = {'t_win' Scales{:}};
+col_titles = {'MSE' Scales{:}};
 
 % Generates Output - Never comment out
 resFilenameMSE = GenerateHRVresultsOutput('RRgenData',[],results,...

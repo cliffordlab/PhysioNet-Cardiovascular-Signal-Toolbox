@@ -1,7 +1,7 @@
 function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 
 % [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,SDNN,NNiqr,RMSSD, pnn50
-% btsdet,avgsqi] = EvalTimeDomainHRVstats(windows_all,NN,tNN,sqi,settings)
+% btsdet,avgsqi] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 %
 %   OVERVIEW:   This function returns time domain HRV metrics calculated on
 %               input NN intervals.

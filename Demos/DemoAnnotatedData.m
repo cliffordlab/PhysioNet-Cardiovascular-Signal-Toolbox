@@ -35,7 +35,7 @@ clear; clc; close all;
  % Initialize settings for demo
 HRVparams = InitializeHRVparams('demo_NSR');  
 HRVparams.MSE.on = 0; % No MSE analysis for this demo
-HRVparams.DFA.on = 0; % No DFA analysis for this demo
+HRVparams.DFA.on = 1; % No DFA analysis for this demo
 HRVparams.output.separate = 0;   % For this demo write all the results in one file 
 
 % Check for a list of files to be analyzed in current directory in .dat format

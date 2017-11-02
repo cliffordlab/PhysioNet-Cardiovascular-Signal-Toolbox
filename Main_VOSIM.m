@@ -8,9 +8,9 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %
 %   INPUT:
 %       InputSig    - Vector containing RR intervals data (in seconds) 
-%                     or ECG waveform  
+%                     or ECG/PPG waveform  
 %       t           - Time indices of the rr interval data (seconds) or
-%                     ECG time
+%                     live empty for ECG/PPG input
 %       InputFormat - String that specifiy if the input vector is: 
 %                     'RRIntervals' for RR interval data 
 %                     'ECGWaveform' for ECG waveform

@@ -204,7 +204,7 @@ HRVparams.timedomain.threshold2 = 0.20;                  % Default: 0.20, Amount
 HRVparams.timedomain.dataoutput = 0;                     % 1 = Print results to .txt file
                                                          % Anything else = utputs to return variables only
                                                          % returned variables
-HRVparams.timedomain.alpha = 0.050;                      % Default: 0.05 ,In seconds
+HRVparams.timedomain.alpha = 50   ;                      % Default: 50 ,In msec
 HRVparams.timedomain.win_tol = .15;                      % Default: .15, Maximum percentage of data allowable 
                                                          % to be missing from a window
 

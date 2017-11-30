@@ -96,6 +96,7 @@ try
             GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
         case 'PPGWaveform'
             [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subjectID);
+            sqi=[];
         case 'RRIntervals'
             rr = InputSig; 
             sqi = [];

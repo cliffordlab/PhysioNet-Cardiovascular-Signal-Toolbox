@@ -57,7 +57,9 @@ while i<=length(outputx)-1
 end
 outputxx(j)=outputx(i);
 outputyy(j)=outputy(i);
-y=interp1(outputxx,outputyy,1:(outputxx(length(outputxx))-1)/(length(y1)-1):outputxx(length(outputxx)),'spline');
+% 12-01-2012 added by Giulia Da Poian to solve Error: The grid vectors must contain unique points
+[~, uidx] = unique(outputxx);
+y=interp1(outputxx(uidx),outputyy(uidx),1:(outputxx(length(outputxx))-1)/(length(y1)-1):outputxx(length(outputxx)),'spline');
 y(isnan(y))=0;
 %plot(y,'m');
 y2modify=y;

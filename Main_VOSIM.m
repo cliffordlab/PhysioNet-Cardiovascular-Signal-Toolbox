@@ -129,7 +129,7 @@ try
                 DFAwindowStartIndices = RemoveAFsegments(DFAwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
             end
     else
-        RemovedWindowsStats = 0;
+        AFWindows = 0;
     end
     
     results = RRwindowStartIndices';

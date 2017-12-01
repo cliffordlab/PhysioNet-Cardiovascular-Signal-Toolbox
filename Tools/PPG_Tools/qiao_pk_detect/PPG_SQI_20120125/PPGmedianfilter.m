@@ -1,4 +1,4 @@
-function xfilt = medianfilter(x, freq, freqd)
+function xfilt = PPGmedianfilter(x, freq, freqd)
 % FilterForTWA.m
 % Author: Alexander Khaustov; alexander dot khaustov at gmail dot com 
 % Copyright (C) 2008 St.-Petersburg Institute of Cardiological Technics (Incart), www.incart.ru
@@ -6,9 +6,13 @@ function xfilt = medianfilter(x, freq, freqd)
 % Public License (http://www.gnu.org/copyleft/gpl.html).
 % 
 % Simple median filtration to remove baseline wander
-
 % 12-01-2017 Modified by Giulia Da Poian: freqs as input parameter 
+% Renamed to PPGmedianfilter (was medianfilter) to avoid conflict with
+% other medianfilter functions
+
+
 % freqd = 32; % ECG
+
 if nargin < 3
     freqd = 125; % PPG
 end

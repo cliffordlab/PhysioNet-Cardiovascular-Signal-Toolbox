@@ -1,4 +1,4 @@
-% [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template_ahead,windowlen)
+% [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template_ahead,windowlen,Fs)
 % 
 % PPG_SQI.m - PPG SQI based on beat template correlation.
 % (as an advice, the algorithm get 30 beats at each call and run in loop)
@@ -10,6 +10,7 @@
 %                 But the ann-time is the OFFSET based on wave(1)
 %     template:   Last PPG beat template 
 %     windowlen:  length of window to calculate template(default: 30s)
+%     Fs       :  sampling frequency (default FsHz)
 % output:
 %     annot:      ppg sqi annotation
 %                     E - excellent beat; 
@@ -29,12 +30,15 @@
 % - Changed output variable annot from numeric to cell to preserve
 %   characters
 % - Style changes to align loops and conditional statements
+%
+% 12-01-2017 Modified by Giulia Da Poian: sampling frequency as input
+% parameter instead of fixed fs = Fs
 
 
-function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,windowlen)
+function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,windowlen,Fs)
 
     if nargin < 4
-        windowlen=30*125;
+        windowlen=30*Fs;
     end
     if nargin < 3
         template=[];
@@ -82,8 +86,8 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
             beatbegin=anntime(j);
             beatend=anntime(j+1);
             % 07/11/2011 ADD max beat length <= 3s detection 
-            if beatend-beatbegin>3*125
-                beatend=beatbegin+3*125;
+            if beatend-beatbegin>3*Fs
+                beatend=beatbegin+3*Fs;
             end
             templatelength=length(t);
             if beatbegin+templatelength-1 > length(wave) || beatend > length(wave) || beatbegin < 1

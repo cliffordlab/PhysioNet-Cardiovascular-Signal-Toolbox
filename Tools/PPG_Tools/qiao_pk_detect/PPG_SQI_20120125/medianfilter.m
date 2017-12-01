@@ -1,4 +1,4 @@
-function xfilt = medianfilter(x, freq)
+function xfilt = medianfilter(x, freq, freqd)
 % FilterForTWA.m
 % Author: Alexander Khaustov; alexander dot khaustov at gmail dot com 
 % Copyright (C) 2008 St.-Petersburg Institute of Cardiological Technics (Incart), www.incart.ru
@@ -7,8 +7,11 @@ function xfilt = medianfilter(x, freq)
 % 
 % Simple median filtration to remove baseline wander
 
+% 12-01-2017 Modified by Giulia Da Poian: freqs as input parameter 
 % freqd = 32; % ECG
-freqd=125; % PPG
+if nargin < 3
+    freqd = 125; % PPG
+end
 
 factor = floor(freq / freqd);
 y = x(1:factor:length(x));

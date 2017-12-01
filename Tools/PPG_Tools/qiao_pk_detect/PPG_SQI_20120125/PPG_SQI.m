@@ -1,10 +1,10 @@
-% [template t2 valid] = PPG_SQI(wave,anntime,annot,template_ahead,windowlen)
+% [template t2 valid] = PPG_SQI(wave,anntime,annot,template_ahead,windowlen,Fs)
 % 
 % PPG_SQI.m - PPG SQI based on beat template correlation.
 % (as an advice, the algorithm get 30 beats at each call and run in loop)
 % by Qiao Li 30 Mar 2011
 % 
-% PPG sampling frequency is 125
+% PPG sampling frequency is Fs
 %
 % input: 
 %     wave:       PPG data; 
@@ -14,6 +14,7 @@
 %                 directly
 %     template:   Last PPG beat template 
 %     windowlen:  length of window to calculate template(default: 30s)
+%     Fs       :  sampling frequency (defatult: 125 to work with pervious code)
 % output:
 %     annot:      ppg sqi annotation
 %                     annot.typeMnemonic: E - excellent beat; 
@@ -26,12 +27,16 @@
 %     template:   Current PPG beat template
 %     valid:      1 or greater for valid template, 
 %                 0 for invalid template
+% 12-01-2107 Modified by Giulia Da Poian: replace fixed samplig frequency
+% (125) with a variable Fs
 
+function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen,Fs)
 
-function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen)
-
+    if nargin < 6
+        Fs =125;
+    end
     if nargin < 5
-        windowlen=30*125;
+        windowlen=30*Fs;
     end
     if nargin < 4
         template=[];
@@ -48,7 +53,7 @@ function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen)
 % 19/09/2011 ADD baseline wander filter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    wave=medianfilter(wave, 125);
+    wave=medianfilter(wave, Fs);
     % get PPG template
     [t t2 v]=template_pleth(wave(1:min(windowlen,length(wave))), anntime(find(anntime<min(windowlen,length(wave)))));
 
@@ -84,8 +89,8 @@ function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen)
                 beatbegin=anntime(j);
                 beatend=anntime(j+1);
 % 07/11/2011 ADD max beat length <= 3s detection 
-		if beatend-beatbegin>3*125
-			beatend=beatbegin+3*125;
+		if beatend-beatbegin>3*Fs
+			beatend=beatbegin+3*Fs;
 		end
 		templatelength=length(t);
 		complength=min(templatelength,beatend-beatbegin-1);

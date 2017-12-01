@@ -128,6 +128,8 @@ try
             if HRVparams.DFA.on 
                 DFAwindowStartIndices = RemoveAFsegments(DFAwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
             end
+    else
+        RemovedWindowsStats = 0;
     end
     
     results = RRwindowStartIndices';

@@ -32,11 +32,14 @@
 % - Style changes to align loops and conditional statements
 %
 % 12-01-2017 Modified by Giulia Da Poian: sampling frequency as input
-% parameter instead of fixed fs = Fs
+% parameter instead of fixed fs = 125
 
 
 function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,windowlen,Fs)
 
+    if nargin < 5
+        Fs =125
+    end
     if nargin < 4
         windowlen=30*Fs;
     end

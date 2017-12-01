@@ -38,12 +38,12 @@
 function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,windowlen,Fs)
 
     if nargin < 5
-        Fs =125
+        Fs = 125; 
     end
-    if nargin < 4
+    if nargin < 4 || isempty(windowlen)
         windowlen=30*Fs;
     end
-    if nargin < 3
+    if nargin < 3 || isempty(template)
         template=[];
     end
     if nargin < 2
@@ -59,7 +59,7 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
     sqimatrix=[];
     
     % get PPG template
-    [t t2 v]=template_pleth(wave(1:min(windowlen,length(wave))), anntime(find(anntime<min(windowlen,length(wave)))));
+    [t t2 v]=template_pleth(wave(1:min(windowlen,length(wave))), anntime(find(anntime<min(windowlen,length(wave)))),0, Fs);
 
     if v<1 && length(template)<1 % Current template invalid && no previous template available
         for j=1:length(anntime)

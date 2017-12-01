@@ -53,9 +53,9 @@ function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen,
 % 19/09/2011 ADD baseline wander filter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    wave=medianfilter(wave, Fs);
+    wave = PPGmedianfilter(wave, Fs,Fs);
     % get PPG template
-    [t t2 v]=template_pleth(wave(1:min(windowlen,length(wave))), anntime(find(anntime<min(windowlen,length(wave)))));
+    [t t2 v]=template_pleth(wave(1:min(windowlen,length(wave))), anntime(find(anntime<min(windowlen,length(wave)))), Fs);
 
     if v<1 && length(template)<1 % Current template invalid && no previous template available
         for j=1:length(annot)

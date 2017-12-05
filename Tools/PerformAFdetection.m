@@ -35,7 +35,7 @@ for i = 1:length(AfAnalysisWindows)
         % When the RR interval time series is < 12 or >60 cannot extract feautures
         if (length(NN_afcalc(idx_af)) < 12 || length(NN_afcalc(idx_af)) > 60 )
             features_af = NaN;
-            AFtest(i) = NaN;
+            AFtest(i) = 0;
         else
             features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
             AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);

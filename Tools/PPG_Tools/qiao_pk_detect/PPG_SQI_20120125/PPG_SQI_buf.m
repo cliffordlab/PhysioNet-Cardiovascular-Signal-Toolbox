@@ -10,7 +10,7 @@
 %                 But the ann-time is the OFFSET based on wave(1)
 %     template:   Last PPG beat template 
 %     windowlen:  length of window to calculate template(default: 30s)
-%     Fs       :  sampling frequency (default FsHz)
+%     Fs       :  sampling frequency (default Fs=125Hz)
 % output:
 %     annot:      ppg sqi annotation
 %                     E - excellent beat; 

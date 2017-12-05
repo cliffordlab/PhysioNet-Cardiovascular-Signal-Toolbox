@@ -110,13 +110,13 @@ try
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
    
     % Additional pre-processing to deal with missing data for MSE and DFA analysis     
-    [ NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_for_MSE( NN, tNN );
-    % Create Windows for MSE and DFA 
+    [ NNgapG, tNN] = RR_Preprocessing_for_MSE( NN, tNN );
+     % Create Windows for MSE and DFA 
     if HRVparams.MSE.on
-        MSEwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'mse');
+        MSEwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams,'mse');
     end
     if HRVparams.DFA.on 
-        DFAwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'dfa');
+        DFAwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams,'dfa');
     end
     
     % 2. Atrial Fibrillation Detection
@@ -189,7 +189,7 @@ try
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on == 1
         try
-            mse = EvalMSE(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,MSEwindowStartIndices);
+            mse = EvalMSE(NN,tNN,sqi,HRVparams,MSEwindowStartIndices);
         catch
             mse = NaN;
             fprintf('MSE failed for file ID %s \n', subjectID);
@@ -206,7 +206,7 @@ try
     
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
-        alpha = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
+        alpha = EvalDFA(NN,tNN,sqi,HRVparams,DFAwindowStartIndices);   
         % Save Results for DFA
         results = [DFAwindowStartIndices' alpha];
         col_titles = {'t_win' 'alpha'};

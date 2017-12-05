@@ -85,6 +85,7 @@ plot_on = HRVparams.freq.plot_on;
 debug_sine = HRVparams.freq.debug_sine;   % if use the sine wave to debug
 f_sine = HRVparams.freq.debug_freq;       % the frequency of the added sine wave
 weight = HRVparams.freq.debug_weight;
+sf = HRVparams.freq.resampling_freq;
 
 
 % Preallocate arrays before entering the loop
@@ -96,7 +97,6 @@ out.hf = nan(1,length(windows_all));
 out.lfhf = nan(1,length(windows_all));
 out.ttlpwr = nan(1,length(windows_all));
 out.fdflag = nan(1,length(windows_all));
-
 % Window by Window Analysis
 
 % Loop through each window of RR data

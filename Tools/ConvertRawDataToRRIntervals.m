@@ -18,7 +18,7 @@ function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRInterv
 %       StartIdxSQIwindows_jw  :  Indexes of SQI windows
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) 
-
+% 
 
 if nargin < 3
     error('Wrong number of arguments in ConvertRawDataToRRIntervals')
@@ -71,8 +71,8 @@ write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
 write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs);
-write_ann(AnnFile, HRVparams,'sqijs',100);
-write_ann(AnnFile, HRVparams,'sqijw',100); 
+write_ann(AnnFile, HRVparams,'sqijs',sqijs);
+write_ann(AnnFile, HRVparams,'sqijw',SQIjw); 
 
 
 

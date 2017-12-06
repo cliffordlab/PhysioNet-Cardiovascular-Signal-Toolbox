@@ -18,7 +18,8 @@ function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRInterv
 %       StartIdxSQIwindows_jw  :  Indexes of SQI windows
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) 
-
+% 
+%   12-6-2017 Multiply SQI values x 100 before saving them into wfdb format
 
 
 if nargin < 3
@@ -72,8 +73,10 @@ write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
 write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs);
-write_ann(AnnFile, HRVparams,'sqijs',sqijs);
-write_ann(AnnFile, HRVparams,'sqijw',SQIjw);
+write_ann(AnnFile, HRVparams,'sqijs',100*sqijs); % multiply the value in order to save in wfdb format
+write_ann(AnnFile, HRVparams,'sqijw',100*SQIjw); % multiply the value in order to save in wfdb format
+
+
 
 
 

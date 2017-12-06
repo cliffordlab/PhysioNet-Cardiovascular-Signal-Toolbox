@@ -67,12 +67,11 @@ addpath(WriteAnnotationFolder)
 AnnFile = strcat(WriteAnnotationFolder, filesep, subjectID);
 % Header File
 write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
-% ECG QRS and SQI
+% ECG QRS
 write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs);
-write_ann(AnnFile, HRVparams,'sqijs',sqijs);
-write_ann(AnnFile, HRVparams,'sqijw',SQIjw); 
+
 
 
 

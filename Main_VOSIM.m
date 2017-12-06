@@ -104,6 +104,7 @@ try
             error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
     end
 
+    
     % 1. Exclude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
     [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
     % Create Windows for Time and Frequency domain 

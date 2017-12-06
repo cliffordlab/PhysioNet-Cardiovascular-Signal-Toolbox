@@ -57,8 +57,8 @@ else
     windowlength = HRVparams.MSE.windowlength;
 end
 
-threshold1 = HRVparams.timedomain.threshold1;
-threshold2 = HRVparams.timedomain.threshold2;
+threshold1 = HRVparams.threshold1;
+threshold2 = HRVparams.threshold2;
 
 m = HRVparams.MSE.patternLength;
 r = HRVparams.MSE.RadiusOfSimilarity;

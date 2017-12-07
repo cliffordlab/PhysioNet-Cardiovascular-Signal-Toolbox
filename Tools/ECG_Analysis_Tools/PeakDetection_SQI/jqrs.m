@@ -5,7 +5,7 @@ function [qrs_pos,sign,en_thres] = jqrs(ecg,HRVparams)
 % inputs
 %   ecg             : one ecg channel on which to run the detector (required)
 %                     in [mV]
-%   HRVparams       : project settings)
+%   HRVparams       : project settings
 %
 % outputs
 %   qrs_pos:        indexes of detected peaks (in samples)
@@ -61,13 +61,15 @@ function [qrs_pos,sign,en_thres] = jqrs(ecg,HRVparams)
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 % Public License for more details.
 
+
+
 % == managing inputs
-REF_PERIOD = HRVparams.REF_PERIOD; 
-THRES = HRVparams.THRES; 
+REF_PERIOD = HRVparams.PeakDetect.REF_PERIOD; 
+THRES = HRVparams.PeakDetect.THRES; 
 fs = HRVparams.Fs; 
-fid_vec = HRVparams.fid_vec;
-SIGN_FORCE = HRVparams.SIGN_FORCE;
-debug = HRVparams.debug;
+fid_vec = HRVparams.PeakDetect.fid_vec;
+SIGN_FORCE = HRVparams.PeakDetect.SIGN_FORCE;
+debug = HRVparams.PeakDetect.debug;
 
 % switch nargin
 %     case 2

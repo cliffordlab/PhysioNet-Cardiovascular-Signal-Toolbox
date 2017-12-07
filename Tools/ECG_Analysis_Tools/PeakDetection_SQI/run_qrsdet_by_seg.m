@@ -43,7 +43,7 @@ if nargin<2; error('run_qrsdet_by_seg: wrong number of input arguments \n'); end
 
 fs = HRVparams.Fs;
 window = HRVparams.PeakDetect.windows;
-thres = HRVparams.PeakDetect.threshold;
+thres = HRVparams.PeakDetect.THRES;
 ecgType = HRVparams.PeakDetect.ecgType;
 
 

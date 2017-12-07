@@ -270,11 +270,14 @@ HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet ana
 
 % The following settings are for jqrs.m
 
-HRVparams.REF_PERIOD = 0.250;   % Default: 0.25
-HRVparams.THRES = .6;           % Default: 0.6
-HRVparams.fid_vec = [];         % Default: []
-HRVparams.SIGN_FORCE = [];      % Default: []
-HRVparams.debug = 0;            % Default: 0
+HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25
+HRVparams.PeakDetect.threshold = .6;       % Default: 0.6
+HRVparams.PeakDetect.fid_vec = [];         % Default: []
+HRVparams.PeakDetect.SIGN_FORCE = [];      % Default: []
+HRVparams.PeakDetect.debug = 0;            % Default: 0
+HRVparams.PeakDetect.ecgType = 'MECG';     % Default : MECG, options (adult MECG) or featl ECG (fECG) 
+HRVparams.PeakDetect.windows = 15;          % Befautl: 15,(in seconds)size of the window onto which to perform QRS detection
+
 
 %% 16. Entropy Settings
 % Multiscale Entropy

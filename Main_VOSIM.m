@@ -81,8 +81,6 @@ elseif length(varargin)  == 4
     extraSig = [varargin{1} varargin{3}];
 end
 
-
-
 if isa(subjectID,'cell'); subjectID = string(subjectID); end
 
 
@@ -92,8 +90,7 @@ try
         case 'ECGWaveform'
             % Convert ECG waveform in rr intervals
             [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
-            sqi = [SQIidx', SQIvalue'];
-            GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
+            sqi = [SQIidx', SQIvalue'];            
         case 'PPGWaveform'
             [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subjectID);
             sqi=[];

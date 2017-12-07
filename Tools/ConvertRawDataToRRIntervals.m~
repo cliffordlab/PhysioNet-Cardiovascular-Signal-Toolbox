@@ -46,7 +46,7 @@ sqrs = run_sqrs(ECG_RawData*GainQrsDetect,HRVparams,0);
 wqrs = wqrsm(ECG_RawData*GainQrsDetect);
 
 % QRS SQI analysis
-[SQIjs, StartIdxSQIwindows_js] = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
+[sqijs, StartIdxSQIwindows_js] = bsqi(jqrs_ann(:),sqrs(:),HRVparams);
 [SQIjw, StartIdxSQIwindows_jw] = bsqi(jqrs_ann(:),wqrs(:),HRVparams);
 
 
@@ -73,10 +73,8 @@ write_ann(AnnFile, HRVparams,'sqrs',sqrs);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs);
 
 % Save SQI 
-sqijw = [StartIdxSQIwindows_jw', SQIjw'];   
-GenerateHRVresultsOutput(strcat(subjectID, '_sqijw'),[], sqijw ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]); 
-sqijs = [StartIdxSQIwindows_js', SQIjs']; 
-GenerateHRVresultsOutput(strcat(subjectID, '_sqijs'),[], sqijs ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
+sqi = [StartIdxSQIwindows_jw', SQIjw'];   
+GenerateHRVresultsOutput(subjectID,[], sqi ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
 
 
 

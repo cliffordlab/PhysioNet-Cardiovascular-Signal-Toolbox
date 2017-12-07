@@ -37,7 +37,7 @@ end
 ECG_RawData = ECG_RawData(:,1); % If more the one leads use only the first
 
 % QRS Dection 1 - jqrs
-jqrs_ann = run_qrsdet_by_seg(ecg,HRVparams);
+jqrs_ann = run_qrsdet_by_seg(ECG_RawData,HRVparams);
 
 % QRS Detection 2 - sqrs (need single channel of ECG in digital values)
 sqrs = run_sqrs(ECG_RawData*GainQrsDetect,HRVparams,0);

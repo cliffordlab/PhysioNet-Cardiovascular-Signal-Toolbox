@@ -270,8 +270,8 @@ HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet ana
 
 % The following settings are for jqrs.m
 
-HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25
-HRVparams.PeakDetect.threshold = .6;       % Default: 0.6
+HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25 (should be 0.15 for FECG)
+HRVparams.PeakDetect.THRES = .6;           % Default: 0.6
 HRVparams.PeakDetect.fid_vec = [];         % Default: []
 HRVparams.PeakDetect.SIGN_FORCE = [];      % Default: []
 HRVparams.PeakDetect.debug = 0;            % Default: 0

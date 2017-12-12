@@ -46,8 +46,8 @@ testHRV = CompareOutput(currentFile,referenceFile);
 
 % 3. Load QRS annotation saved by Main_VOSIM 
 annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,subjectIDs(i_patient));
-jqrs_ann = rdann( annotName{1} , 'jqrs');
-wqrs_ann = rdann( annotName{1} , 'wqrs');
+jqrs_ann = read_ann( annotName{1} , 'jqrs');
+wqrs_ann = read_ann( annotName{1} , 'wqrs');
 
 % For demo pourpose recompute bsqi
 [sqijw, StartIdxSQIwindows] = bsqi(jqrs_ann,wqrs_ann,HRVparams);

@@ -44,13 +44,13 @@ load(filesTBA{i_patient});
 
 % 3. Load annotations ans SQI for plot
 AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
-jqrs_ann = rdann(AnnFile,'jqrs');
+jqrs_ann = read_ann(AnnFile,'jqrs');
 
 ppg_ann = rdann(AnnFile,'ppg');
 qppg(signal(:,5),HRVparams.Fs);
-[ppgsqi,~,~,~] = rdann(AnnFile,'ppgsqi');
+[~,ppgsqi,~] = read_ann(AnnFile,'sqippg');
 
-abpann = rdann(AnnFile,'abpm');
+abpann = read_ann(AnnFile,'abpm');
 features =  abpfeature(signal(:,3), abpann, HRVparams.Fs);
 [BeatQ, goodbeats] = jSQI(features, abpann, signal(:,3));
 
@@ -115,7 +115,7 @@ end
 ptt = pulsetransit(jqrs_ann, abpann);
 
 % 7. Plot BP vs PTT
-syst = features(:,2);
+syst = features(1:length(ptt),2);
 
 if HRVparams.gen_figs
     figure;

@@ -30,7 +30,7 @@ if nargin < 3
 end
 
 windowlength = HRVparams.sqi.windowlength;
-threshold = HRVparams.sqi.threshold;
+threshold = HRVparams.sqi.TimeThreshold;
 margin = HRVparams.sqi.margin;
 fs = HRVparams.Fs;
 

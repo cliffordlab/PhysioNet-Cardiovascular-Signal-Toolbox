@@ -57,8 +57,8 @@ else
     windowlength = HRVparams.DFA.windowlength;
 end
 
-threshold1 = HRVparams.timedomain.threshold1;
-threshold2 = HRVparams.timedomain.threshold2;
+SQI_LowQualityThresh = HRVparams.sqi.LowQualityThreshold;
+RejectionThreshold = HRVparams.RejectionThreshold;
 
 minBox = HRVparams.DFA.minBoxSize;
 maxBox = HRVparams.DFA.maxBoxSize;
@@ -82,10 +82,10 @@ for i_win = 1:length(windows_all)
         nn_win = NN(idx_NN_in_win);
 
         % Analysis of SQI for the window
-        lowqual_idx = find(sqi_win(:,2) < threshold1);
+        lowqual_idx = find(sqi_win(:,2) < SQI_LowQualityThresh);
 
         % If enough data has an adequate SQI, perform the calculations
-        if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
+        if numel(lowqual_idx)/length(sqi_win(:,2)) < RejectionThreshold
             alpha(i_win) = dfaScalingExponent(nn_win, minBox, maxBox, 0);
         end
         

@@ -72,8 +72,8 @@ end
 
 windowlength = HRVparams.windowlength;
 alpha = HRVparams.timedomain.alpha;
-threshold1 = HRVparams.timedomain.threshold1;
-threshold2 = HRVparams.timedomain.threshold2;
+threshold1 = HRVparams.sqi.LowQualityThreshold;
+threshold2 = HRVparams.RejectionThreshold;
 
 
 % Preallocate arrays (all NaN) before entering the loop

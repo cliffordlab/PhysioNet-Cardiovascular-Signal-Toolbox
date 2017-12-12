@@ -44,8 +44,8 @@ if nargin <5 || isempty(sqi)
 end
 
 windowlength = HRVparams.windowlength;
-SQI_th = HRVparams.threshold1;        % SQI threshold
-WinQuality_th = HRVparams.threshold2; % Low quality windows threshold
+SQI_th = HRVparams.sqi.LowQualityThreshold;        % SQI threshold
+WinQuality_th = HRVparams.RejectionThreshold; % Low quality windows threshold
 
 % Preallocation (all NaN)
 

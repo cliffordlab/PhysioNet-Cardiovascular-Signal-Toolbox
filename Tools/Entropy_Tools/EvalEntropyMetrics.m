@@ -38,8 +38,8 @@ if nargin<4 || isempty(HRVparams)
     WinQuality_th = 0.20;  % Low quality windows threshold
 else
     windowlength = HRVparams.windowlength;
-    SQI_th = HRVparams.threshold1;        % SQI threshold
-    WinQuality_th = HRVparams.threshold2; % Low quality windows threshold
+    SQI_th = HRVparams.LowQualityThreshold;        % SQI threshold
+    WinQuality_th = HRVparams.RejectionThreshold;  % Low quality windows threshold
 end
 if nargin<5 || isempty(WinStarIdxs)
     WinStarIdxs = 0;

@@ -49,7 +49,7 @@ end
 
 increment = HRVparams.increment;
 windowlength = HRVparams.windowlength;
-win_tol = HRVparams.win_tol;
+win_tol = HRVparams.MissingDataThreshold;
 
 switch option
     case 'af'

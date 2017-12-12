@@ -77,8 +77,8 @@ end
 
 % Set Defaults
 windowlength = HRVparams.windowlength;
-fd_threshold1 = HRVparams.freq.threshold1;
-fd_threshold2 = HRVparams.freq.threshold2;
+fd_threshold1 = HRVparams.sqi.LowQualityThreshold;
+fd_threshold2 = HRVparams.RejectionThreshold;
 limits = HRVparams.freq.limits;
 method = HRVparams.freq.method;
 plot_on = HRVparams.freq.plot_on;

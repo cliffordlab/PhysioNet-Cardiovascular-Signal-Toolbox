@@ -64,8 +64,8 @@ s = HRVparams.prsa.scale;
 PRSA_th = HRVparams.prsa.thresh_per; 
 plot_results = HRVparams.prsa.plot_results;
 windowlength = HRVparams.windowlength;
-SQI_th = HRVparams.threshold1;        % SQI threshold
-WinQuality_th = HRVparams.threshold2; % Low quality windows threshold
+SQI_th = HRVparams.sqi.LowQualityThreshold;        % SQI threshold
+WinQuality_th = HRVparams.RejectionThreshold; % Low quality windows threshold
 
 Anchor_Low_th = 1-PRSA_th/100-.0001; % The lower limit for the AC anchor selection
 Anchor_High_th = 1+PRSA_th/100;      % The upper limit for the DC anchor selection

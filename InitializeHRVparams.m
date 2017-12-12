@@ -120,27 +120,24 @@ HRVparams.data_confidence_level = 1;
 
 %% 3. Global Settings (Window Size)
 
-HRVparams.windowlength = 300;	% Default: 300, seconds
-HRVparams.increment = 30;       % Default: 30, seconds increment
-HRVparams.numsegs = 5;          % Default: 5, number of segments to collect with lowest HR
-
-%% 4. Quality Threshold Settings
-HRVparams.threshold1 = 0.9;       % Default: 0.9, Threshold for which SQI represents good data
-HRVparams.threshold2 = .20;       % Default: 0.2, amount (%) of data that can be rejected before a
-                                  % window is considered too low quality for analysis
-HRVparams.win_tol = .15;          % Default: 0.15, maximum percentage of data allowable to be missing
-                                  % from a window .15 = 15%
+HRVparams.windowlength = 300;	      % Default: 300, seconds
+HRVparams.increment = 30;             % Default: 30, seconds increment
+HRVparams.numsegs = 5;                % Default: 5, number of segments to collect with lowest HR
+HRVparams.RejectionThreshold = .20;   % Default: 0.2, amount (%) of data that can be rejected before a
+                                      % window is considered too low quality for analysis
+HRVparams.MissingDataThreshold = .15; % Default: 0.15, maximum percentage of data allowable to be missing
+                                      % from a window .15 = 15%
 %% 5. Debug Settings
 
 HRVparams.rawsig = 0;           % Load raw signal if it is available for debugging
 HRVparams.debug = 0;
 
 %% 6. SQI Settings
-
-HRVparams.sqi.windowlength = 10; % Default: 10, seconds
-HRVparams.sqi.increment = 1;     % Default: 1, seconds
-HRVparams.sqi.threshold = 0.1;   % Default: 0.1, seconds
-HRVparams.sqi.margin = 2;        % Default: 2, seconds
+HRVparams.sqi.LowQualityThreshold = 0.9; % Default: 0.9, Threshold for which SQI represents good data
+HRVparams.sqi.windowlength = 10;         % Default: 10, seconds
+HRVparams.sqi.increment = 1;             % Default: 1, seconds
+HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
+HRVparams.sqi.margin = 2;                % Default: 2, seconds
 
 %% 7. Output Settings
 
@@ -196,17 +193,15 @@ HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat
 
 %% 11. Time Domain Analysis Settings
 
-HRVparams.timedomain.on = 1;                             % Default: 1, Time Domain Analysis 1=On or 0=Off
-
-HRVparams.timedomain.threshold1 = 0.9;                   % Default: 0.9, Threshold for which SQI represents good data
-HRVparams.timedomain.threshold2 = 0.20;                  % Default: 0.20, Amount (%) of data that can be rejected before a
-                                                         % window is considered too low quality for analysis
-HRVparams.timedomain.dataoutput = 0;                     % 1 = Print results to .txt file
-                                                         % Anything else = utputs to return variables only
-                                                         % returned variables
-HRVparams.timedomain.alpha = 50   ;                      % Default: 50 ,In msec
-HRVparams.timedomain.win_tol = .15;                      % Default: .15, Maximum percentage of data allowable 
-                                                         % to be missing from a window
+HRVparams.timedomain.on = 1;             % Default: 1, Time Domain Analysis 1=On or 0=Off
+HRVparams.timedomain.dataoutput = 0;     % 1 = Print results to .txt file
+                                         % Anything else = utputs to return variables only
+                                         % returned variables
+HRVparams.prsa.thresh_per = 20;          % Default: 20%, Percent difference that one beat can 
+                                         % differ from the next in the prsa code
+HRVparams.timedomain.alpha = 50   ;      % Default: 50 ,In msec
+HRVparams.timedomain.win_tol = .15;      % Default: .15, Maximum percentage of data allowable 
+                                         % to be missing from a window
 
 %% 12. Frequency Domain Analysis Settings
 
@@ -218,11 +213,6 @@ LF = [.04 .15];                     % Requires at least 25 s window
 HF = [0.15 0.4];                    % Requires at least 7 s window
 
 HRVparams.freq.limits = [ULF; VLF; LF; HF];
-HRVparams.freq.threshold1 = 0.9;	        % Default: 0.9, Threshold for which SQI represents good data
-                                            % (Used only when SQI is provided)
-HRVparams.freq.threshold2 = 0.05;           % Default: 0.05, Amount (%) of data that can be rejected before a
-                                            % window is considered too low quality for analysis
-                                            % (Used only when SQI is provided)
 HRVparams.freq.zero_mean = 1;               % Default: 1, Option for subtracting the mean from the input data
 HRVparams.freq.method = 'lomb';             % Default: 'lomb' 
                                             % Options: 'lomb', 'burg', 'fft', 'welch' 
@@ -261,8 +251,6 @@ HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
 HRVparams.prsa.win_length = 30;    % Default: 30, The length of the PRSA signal 
                                    % before and after the anchor points
                                    % (the resulting PRSA has length 2*L)
-HRVparams.prsa.thresh_per = 20;    % Default: 20%, Percent difference that one beat can 
-                                   % differ from the next in the prsa code
 HRVparams.prsa.plot_results = 0;   % Default: 0                            
 HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet analysis (to compute AC and DC)
 
@@ -276,7 +264,7 @@ HRVparams.PeakDetect.fid_vec = [];         % Default: []
 HRVparams.PeakDetect.SIGN_FORCE = [];      % Default: []
 HRVparams.PeakDetect.debug = 0;            % Default: 0
 HRVparams.PeakDetect.ecgType = 'MECG';     % Default : MECG, options (adult MECG) or featl ECG (fECG) 
-HRVparams.PeakDetect.windows = 15;          % Befautl: 15,(in seconds)size of the window onto which to perform QRS detection
+HRVparams.PeakDetect.windows = 15;         % Befautl: 15,(in seconds)size of the window onto which to perform QRS detection
 
 
 %% 16. Entropy Settings

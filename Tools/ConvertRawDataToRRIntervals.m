@@ -71,12 +71,8 @@ write_hea(AnnFile, HRVparams.Fs, length(ECG_RawData), 'jqrs', 1, 0,'mV')
 write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs);
-
-% Save SQI 
-sqijw = [StartIdxSQIwindows_jw', SQIjw'];   
-GenerateHRVresultsOutput(strcat(subjectID, '_sqijw'),[], sqijw ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]); 
-sqijs = [StartIdxSQIwindows_js', SQIjs']; 
-GenerateHRVresultsOutput(strcat(subjectID, '_sqijs'),[], sqijs ,{'WinSQI','SQI'},'SQI',HRVparams,[],[]);  
+write_ann(AnnFile, HRVparams,'sqijw', StartIdxSQIwindows_jw, [],round(SQIjw*100)); 
+write_ann(AnnFile, HRVparams,'sqijs', StartIdxSQIwindows_js, [],round(SQIjs*100)); 
 
 
 

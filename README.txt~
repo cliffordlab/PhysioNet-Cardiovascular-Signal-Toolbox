@@ -120,7 +120,7 @@ in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
 read these files as follow:
 
-[ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
+[ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqip')
   
 
 

@@ -10,11 +10,13 @@ function [Min_numerator,r]=ReGet_min_numerator(x1,x2,N,m,r,fs)
 % r is changed threshold value
 % fs sample rate
 %
-% $ Author:  Chengyu Liu (bestlcy@sdu.edu.cn) 
+% $ Author: Chengyu Liu (bestlcy@sdu.edu.cn) 
 %           Institute of Biomedical Engineering,
 %           Shandong University
 % $Last updated:  2015.10.10
+% Las updated: 2017.19.12 (by Giulia Da Poian) d2max preallocation
 
+d2max = zeros(N-m, N-m);
 
 for i=1:N-m
     Min_numerator=0;

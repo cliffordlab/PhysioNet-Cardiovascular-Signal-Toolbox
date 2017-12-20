@@ -74,7 +74,7 @@ write_ann(AnnFile, HRVparams,'wqrs',wqrs_ann);
 fakeAnnType = repmat('S',[length(SQIjs), 1]);
 write_ann(AnnFile, HRVparams,'sqijw', StartIdxSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
 fakeAnnType = repmat('S',[length(SQIjw), 1]);
-write_ann(AnnFile, HRVparams,'sqijw', StartIdxSQIwindows_jw,fakeAnnType ,SQIjw); 
+write_ann(AnnFile, HRVparams,'sqijw', StartIdxSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
 
 
 

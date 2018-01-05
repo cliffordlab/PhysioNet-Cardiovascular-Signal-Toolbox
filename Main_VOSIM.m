@@ -19,6 +19,10 @@ function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVpara
 %                     be obtained using InitializeHRVparams.m function 
 %                     HRVparams = InitializeHRVparams();
 %       subjectID   - (optional) string to identify current subject
+%       sqi         - (optional) Signal Quality Index; Requires a 
+%                     matrix with at least two columns. Column 1 
+%                     should be timestamps of each sqi measure, and 
+%                     Column 2 should be SQI on a scale from 0 to 1.
 %       annotations - (optional) annotations of the RR data at each point
 %                     indicating the quality of the beat 
 %   OPTIONAL INPUTS:

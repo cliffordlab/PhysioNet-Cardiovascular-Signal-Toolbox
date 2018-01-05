@@ -235,5 +235,5 @@ function typei=ann2int(ann_Type)
 Typestr='NLRaVFJASEj/Q~|sT*D"=pB^t+u?![]en@xf(`)''r';
 codeint=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,39,40,40,41];
 
-typei=codeint(findstr(Typestr,ann_Type));
+typei=codeint(strfind(Typestr,ann_Type));
 end

@@ -33,7 +33,10 @@ while (point<=l)
         if length(xx)<=1
             y=yy(end);
         else
-            y=interp1(x1,yy,xx,'spline');
+            y = griddedInterpolant(x1,yy,'spline');
+            y = y(xx);
+            % y = interp1(x1,yy,xx,'spline'); % 12-19-2017 Modified by Giulia Da Poian
+            % replaced interp1 with griddedInterpolant for speed
         end
 %        plot(xx,y,'k');
         outputx=[outputx,xx];
@@ -57,9 +60,10 @@ while i<=length(outputx)-1
 end
 outputxx(j)=outputx(i);
 outputyy(j)=outputy(i);
-% 12-01-2012 added by Giulia Da Poian to solve Error: The grid vectors must contain unique points
+% 12-01-2017 added by Giulia Da Poian to solve Error: The grid vectors must contain unique points
 [~, uidx] = unique(outputxx);
-y=interp1(outputxx(uidx),outputyy(uidx),1:(outputxx(length(outputxx))-1)/(length(y1)-1):outputxx(length(outputxx)),'spline');
+y=interp1(outputxx(uidx),outputyy,1:(outputxx(length(outputxx(uidx)))-1)/(length(y1)-1):outputxx(length(outputxx(uidx))),'spline');
+
 y(isnan(y))=0;
 %plot(y,'m');
 y2modify=y;

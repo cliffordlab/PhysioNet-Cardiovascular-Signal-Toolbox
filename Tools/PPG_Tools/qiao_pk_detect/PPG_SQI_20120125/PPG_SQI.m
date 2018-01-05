@@ -135,7 +135,7 @@ function [annot template valid] = PPG_SQI(wave,anntime,annot,template,windowlen,
                    [y2 pla2]=PLA(d2,1,1);
             
                    [w ta tb] = simmx_dtw(y1,pla1,y2,pla2);
-                   [p,q,Dm] = dp_dtw2(w,ta,tb);
+                   [p,q,Dm] = dp_dwt2(w,ta,tb);
                    [ym1 ym2 yout1]=draw_dtw(y1,pla1,p,y2,pla2,q);
                     cc=corrcoef(y1,ym2);
                     c3(j)=cc(1,2);

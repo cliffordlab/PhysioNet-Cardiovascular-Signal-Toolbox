@@ -50,6 +50,10 @@ function HRVparams = InitializeHRVparams(project_name)
 %%
 
 
+if isempty(project_name)
+    project_name = 'none';
+end
+
 % Set up input options for a specific project
 switch project_name   
     % Define new project name and parameters
@@ -84,7 +88,7 @@ switch project_name
         HRVparams.ext = 'mat';
         HRVparams.Fs = 128;
     otherwise                  % Default
-        HRVparams.Fs = NaN;                % Spacify sampling frequency
+        HRVparams.Fs = NaN;                          % Spacify sampling frequency
         HRVparams.writedata = 'HRV_Output';          % (Optional) Specify name for data output folder
            
 end

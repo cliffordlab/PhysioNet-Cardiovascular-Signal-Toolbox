@@ -1,4 +1,4 @@
-function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations,varargin)
+function [results, ResultsFileName ] = Main_VOSIM(InputSig,t,InputFormat,HRVparams,subjectID,annotations,sqi,varargin)
 %  ====================== VOSIM Toolbox Main Script ======================
 %
 %   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -70,6 +70,9 @@ end
 if nargin < 6
     annotations = [];
 end
+if nargin < 7
+    sqi = [];
+end
 
 if length(varargin) == 1 || length(varargin) == 3
     error('Incomplete Signal-Type pair')
@@ -93,10 +96,8 @@ try
             sqi = [SQIidx', SQIvalue'];            
         case 'PPGWaveform'
             [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subjectID);
-            sqi=[];
         case 'RRIntervals'
             rr = InputSig; 
-            sqi = [];
         otherwise
             error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
     end

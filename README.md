@@ -24,8 +24,8 @@ Time domain measures of HRV:
 	- NNmean    : (ms) mean value of NN intervals
 	- NNmode    : (ms) mode of NN intervals
 	- NNmedian  : (ms) median value of NN intervals
-	- NNskew    : (ms) skweness of NN intervals
-	- NNkurt    : (ms) kurtosis of NN intervals
+	- NNskew    : skweness of NN intervals
+	- NNkurt    : kurtosis of NN intervals
 	- NNiqr     : interquartile range of NN intervals
 	- SDNN      : (ms) Standard deviation of all NN intervals.
 	- RMSSD     : (ms) The square root of the mean of the sum of the squares 
@@ -58,9 +58,9 @@ Others HRV measures
     PRSA - AC     : (ms) acceleration capacity
     PRSA - DC     : (ms) deceleration capacity
 	
-    SDANN         : (s) Standard deviation of the average of NN intervals 
+    SDANN         : (ms) Standard deviation of the average of NN intervals 
                     in all 5-minute segments of a long recording
-	SDNNI         : (s) Mean of the standard deviation in all 5-minute 
+	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                     segments of a long recording
 
 Long range measures
@@ -79,6 +79,51 @@ Nonlinear HRV measures:
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
     
+
+----- Detection Annotation Files -------
+
+Using Main_VOSIM.m function or Analyze_ABP_PPG_Waveforms.m or 
+ConvertRawDataToRRIntervals.m fucntion the ECG, PPG and/or ABP detection 
+returns an annotation filese with the locations of QRS peaks or PPG/ABP onset 
+ECG : *.jqrs (for jqrs detector)
+      *.wqrs (for wqrs detector)
+      *.sqrs (for sqrs detector)
+
+PPG : *.ppg (for PPG onset)
+
+ABP : *.abp (for ABP onset)
+
+To read these files use the read_ann.m function included in the VOSIM 
+toolbox, e.g.,
+
+QRS_locations = read_ann('fileName', 'jqrs')
+PPG_onsets = read_ann('fileName','ppg') 
+
+Note that QRS locations and PPG/ABP onstets are in samples not in seconds
+
+----- SQI Annotation Files -------
+
+The SQI values are also saved as annotations files both for ECG and PPG/ABP
+
+For ECG the SQI value is saved as a number from 0 to 100 in a file with extansion
+*.sqijw : comparison of jqrs wrt wqrs detection
+*.sqijs : comparison of jqrs wrt sqrs detection
+
+read these files as follow:
+
+[sqiTime, sqiValue] = read_ann('fileName' , 'sqijw')
+
+For PPG and ABP two different values of SQI are seved in each annotation files
+and they are related to a specific 'beat', one is a char value (E: excellent 
+beat, A: acceptable beat, Q: unaceptable beat) and the other value is an integer 
+in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
+
+read these files as follow:
+
+[ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
+  
+
+
 
 ----- Full Instructions: -----
 I. Introduction
@@ -100,8 +145,8 @@ phenotyping.  The package can also analyze the interactions between
 multiple physiological signals.
 
 II. Getting Started
-
 System requirements:
+
 - Matlab and License    https://www.mathworks.com/
 - WFDB Toolbox          https://physionet.org/physiotools/wfdb.shtml
 - WFDB Matlab Toolbox   https://www.physionet.org/physiotools/matlab/wfdb-app-matlab/

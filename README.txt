@@ -24,8 +24,8 @@ Time domain measures of HRV:
 	- NNmean    : (ms) mean value of NN intervals
 	- NNmode    : (ms) mode of NN intervals
 	- NNmedian  : (ms) median value of NN intervals
-	- NNskew    : (ms) skweness of NN intervals
-	- NNkurt    : (ms) kurtosis of NN intervals
+	- NNskew    : skweness of NN intervals
+	- NNkurt    : kurtosis of NN intervals
 	- NNiqr     : interquartile range of NN intervals
 	- SDNN      : (ms) Standard deviation of all NN intervals.
 	- RMSSD     : (ms) The square root of the mean of the sum of the squares 
@@ -58,9 +58,9 @@ Others HRV measures
     PRSA - AC     : (ms) acceleration capacity
     PRSA - DC     : (ms) deceleration capacity
 	
-    SDANN         : (s) Standard deviation of the average of NN intervals 
+    SDANN         : (ms) Standard deviation of the average of NN intervals 
                     in all 5-minute segments of a long recording
-	SDNNI         : (s) Mean of the standard deviation in all 5-minute 
+	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                     segments of a long recording
 
 Long range measures

@@ -40,13 +40,13 @@ i_patient = idx;
 load(filesTBA{i_patient});
 
 % 2. Analyze data using HRV VOSIM toolbox
-[~, resFilenameHRV] = Main_VOSIM(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient),[],signal(:,5),'PPG',signal(:,3),'ABP');
+[~, resFilenameHRV] = Main_VOSIM(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient),[],[],signal(:,5),'PPG',signal(:,3),'ABP');
 
 % 3. Load annotations ans SQI for plot
 AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
 jqrs_ann = read_ann(AnnFile,'jqrs');
 
-ppg_ann = rdann(AnnFile,'ppg');
+ppg_ann = read_ann(AnnFile,'ppg');
 qppg(signal(:,5),HRVparams.Fs);
 [~,ppgsqi,~] = read_ann(AnnFile,'sqippg');
 

@@ -101,7 +101,7 @@ HR = 60.0 ./ (rr_samp./Fs);
 time = samples./Fs;
 rr_sec = rr_samp./Fs; 
 % RRTachogram = [time',rr_sec,ann];
-fclose('all');
+fclose(fid);
 end
     
 

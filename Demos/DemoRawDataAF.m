@@ -26,6 +26,7 @@ clear; clc; close all;
 HRVparams = InitializeHRVparams('demoAF'); % include the project name
 HRVparams.poincare.on = 0; % Poincare analysis off for this demo
 HRVparams.DFA.on = 0; % DFA analysis off for this demo
+HRVparams.MSE.on = 0; % DFA analysis off for this demo
 
 [subjectIDs,filesTBA] = GenerateListOfFilesTBA(HRVparams.ext,HRVparams.readdata,0);
 idx = find(strcmp(subjectIDs,'TestAFdata'));

@@ -1,12 +1,16 @@
 function test = CompareOutput(file1,file2)
     
 % This function returns test=1 if the two files are equal test=0 otherwise
-    
-referenceFile = javaObject('java.io.File', file1 );
-currentFile = javaObject('java.io.File', file2);
-test = javaMethod('contentEquals','org.apache.commons.io.FileUtils', ...
-    referenceFile, currentFile);
-
+  
+if isempy(file1) || isempty(file2)
+    test=0;
+    return;
+else
+    currentFile = javaObject('java.io.File', file1 );
+    referenceFile = javaObject('java.io.File', file2);
+    test = javaMethod('contentEquals','org.apache.commons.io.FileUtils', ...
+        referenceFile, currentFile);
+end
 
 % Windows system return test = 0 when the two files are equal so we need to
 % invert the results for cross-.platform compatibility

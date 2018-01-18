@@ -2,7 +2,7 @@ function test = CompareOutput(file1,file2)
     
 % This function returns test=1 if the two files are equal test=0 otherwise
   
-if isempy(file1) || isempty(file2)
+if isempty(file1) || isempty(file2)
     test=0;
     return;
 else

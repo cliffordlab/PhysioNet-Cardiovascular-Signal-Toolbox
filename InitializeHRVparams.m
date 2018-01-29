@@ -304,7 +304,7 @@ HRVparams.poincare.on = 1;     % Default: 1, Poincare Analysis 1=On or 0=Off
 % Note that if you change the order of the parameters or add parameters 
 % this might not work
 
-ExportHRVparams2Latex(HRVparams);
+ExportHRVparams(HRVparams);
 
 
 end

@@ -12,6 +12,9 @@ function varargout = dfaScalingExponent(x, minBoxSize, maxBoxSize, midBoxSize, p
 %         pflag      : (Optional) pflag=1 plot,  pflag=0 
 % OUTPUTS     
 %         alpha      : estimate of scaling exponent 
+%            lF      : 10 logarithms of F(n), i.e. average fluctuation at
+%                      each scale
+%           lns      : 10 logarithms of each scale 
 %
 % The raw time series x(i) is first integrated to give y(i); i=1,...,N. 
 % For each length scale, n, y(i) is divided into segments of equal length, n.
@@ -72,13 +75,11 @@ if isempty(midBoxSize)
     A = ones(nn,2);
     A(:,2) = lns;
     a = pinv(A)*lF;
-    alpha = a(2);  
+    alpha = a(2);
     lFpred = A*a;
     Fpred = 10.^(lFpred);
     
-    % output
-    varargout{1} = alpha;
-
+    varargout = {alpha};
 else    % Introduced by GDP to include the possibility of computing alpha1 and alpha2 
     nMid = round(log2(midBoxSize-minBoxSize));
     % alpha1 from minBoxSize to midBoxSize
@@ -87,19 +88,16 @@ else    % Introduced by GDP to include the possibility of computing alpha1 and a
     A1 = ones(length(ns(1:nMid)),2);
     A1(:,2) = lns1;
     a1 = pinv(A1)*lF1;
-    alpha1 = a1(2); % alpha1  
+    varargout{1} = a1(2);    
     % alpha2 from midBoxSize to maxBoxSize
     lns2 = log10(ns(nMid:end));
     lF2 = log10(F(nMid:end));
     A2 = ones(length(ns(nMid:end)),2);
     A2(:,2) = lns2;
     a2 = pinv(A2)*lF2;
-    alpha2 = a2(2); % alpha2
+    alpha2 = a2(2);
 
-    % output
-    varargout{1} = alpha1;
-    varargout{2} = alpha2;   
-    
+    varargout{1} = {alpha1;alpha2};
 end
     
 

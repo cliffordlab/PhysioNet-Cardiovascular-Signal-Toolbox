@@ -27,7 +27,7 @@ function alpha = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
 %   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Giulia Da Poian    
 %	COPYRIGHT (C) 2016 

@@ -29,7 +29,7 @@ end
 M=floor(length(RR)/3);
 RR=RR(1:3*M);
 N=3*M;
-if N<12 | N>60
+if N<12 || N>60
     fprintf('Please input a RR interval time series with beat number between 12 and 60 \n');
 end
 m=1;

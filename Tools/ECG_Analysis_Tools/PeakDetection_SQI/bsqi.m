@@ -13,7 +13,7 @@ function [F1, StartIdxSQIwindows] = bsqi(ann1,ann2,HRVparams)
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
 %   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/tree/master/Tools
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Adriana N. Vest
 %       Dependent scripts written by various authors 
@@ -23,6 +23,9 @@ function [F1, StartIdxSQIwindows] = bsqi(ann1,ann2,HRVparams)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
+%
+%   01-30-2018 - Modified by Giulia Da Poian (GDP): initialize F1 vector 
+%               (vector of NaN), removed unused variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if nargin < 3
@@ -40,6 +43,10 @@ ann2 = ann2(:)./fs;
 endtime = max([ann1(end), ann2(end)]);
 time = (1/HRVparams.Fs):(1/HRVparams.Fs):endtime;
 
+%% Initialize Vectors
+
+F1 = nan(length(StartIdxSQIwindows),1);
+
 %% 1. Create Windows
 StartIdxSQIwindows = CreateWindowRRintervals(time, [], HRVparams,'sqi');
 
@@ -56,11 +63,8 @@ for seg = 1:length(StartIdxSQIwindows)
             a1 = ann1(idx_ann1_in_win) - StartIdxSQIwindows(seg);
             a2 = ann2 - StartIdxSQIwindows(seg);
         
-            [F1(seg),Se,PPV,Nb] = run_sqi(a1,a2,threshold,margin,windowlength,fs);
+            F1(seg) = run_sqi(a1,a2,threshold,margin,windowlength,fs); % GDP : remove unused variables Se,PPV,Nb
         catch
-            F1(seg) = NaN; 
         end
-    else
-        F1(seg) = NaN; 
     end
 end

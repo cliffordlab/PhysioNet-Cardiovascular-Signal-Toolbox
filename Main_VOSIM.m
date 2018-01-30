@@ -112,13 +112,16 @@ try
     % Create Windows for Time and Frequency domain 
     RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
    
-    % Additional pre-processing to deal with missing data for MSE and DFA analysis     
-    [ NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_for_MSE( NN, tNN );
+
     % Create Windows for MSE and DFA 
     if HRVparams.MSE.on
+       % Additional pre-processing to deal with missing data for MSE and DFA analysis     
+       [NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_for_MSE_DFA( NN, tNN );
         MSEwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'mse');
     end
-    if HRVparams.DFA.on 
+    if HRVparams.DFA.on
+        % Additional pre-processing to deal with missing data for MSE and DFA analysis     
+        [ NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_MSE_DFA( NN, tNN );
         DFAwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'dfa');
     end
     
@@ -209,11 +212,19 @@ try
     
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on == 1
-        alpha = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
-        % Save Results for DFA
-        results = [DFAwindowStartIndices' alpha];
-        col_titles = {'t_win' 'alpha'};
-        GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+        if isempty(HRVparams.DFA.midBoxSize)
+            alpha = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
+            % Save Results for DFA
+            results = [DFAwindowStartIndices' alpha];
+            col_titles = {'t_win' 'alpha'};
+            GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+        else
+            [alpha, alpha1, alpha2] = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
+            % Save Results for DFA
+            results = [DFAwindowStartIndices' alpha alpha1 alpha2];
+            col_titles = {'t_win' 'alpha' 'alpha1' 'alpha2'};
+            GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+        end  
     end
     
     % 10. Analyze additional signals (ABP, PPG or both)

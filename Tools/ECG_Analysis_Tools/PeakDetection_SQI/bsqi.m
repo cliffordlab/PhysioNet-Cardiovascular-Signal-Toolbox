@@ -43,12 +43,12 @@ ann2 = ann2(:)./fs;
 endtime = max([ann1(end), ann2(end)]);
 time = (1/HRVparams.Fs):(1/HRVparams.Fs):endtime;
 
-%% Initialize Vectors
-
-F1 = nan(length(StartIdxSQIwindows),1);
 
 %% 1. Create Windows
 StartIdxSQIwindows = CreateWindowRRintervals(time, [], HRVparams,'sqi');
+
+% Initialize Vectors
+F1 = nan(1,length(StartIdxSQIwindows));
 
 %% 2. Calculate SQI for Window
 for seg = 1:length(StartIdxSQIwindows)

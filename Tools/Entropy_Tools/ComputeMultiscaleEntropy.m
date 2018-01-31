@@ -1,4 +1,4 @@
-function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
+function mse = ComputeMultiscaleEntropy(data, m, r, maxTau, maxVecSize)
 
 % mse = ComputeMultiscaleEntropy(data, m, r, max_tau)
 %
@@ -10,7 +10,7 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 %   m           - pattern length; int
 %   r           - radius of similarity (% of std); double
 %   maxTau      - maximum number of coarse-grainings; int
-%   RRwin       - vector containing the starting time of each windows (in seconds) 
+%   maxVecSize  - optional, parameter to switch from SampEn to FastSempEn        
 %                
 % Output
 %   mse          - vector of [max_tau, 1] doubles
@@ -44,17 +44,20 @@ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau)
 % This software may be modified and distributed under the terms
 % of the BSD license. See the LICENSE file in this repo for details.
 
-
+if nargin<5 || isempty(maxVecSize)
+    maxVecSize = 34000;
+end
 
 data = zscore(data);  % (introduced by GDP) normalization of the signal that 
                       % replace the common practice of expressing the 
                       % tolerance as r times the standard deviation
  
 mse = NaN(maxTau, 1); % Initialize output vector
+
 SampEnType = 'Maxim'; % Initialize default SampEn method 
 
 % Check data length, if < 34000 use Fast Implementation (introduced GDP) 
-if length(data)<34000
+if length(data) < maxVecSize
     SampEnType = 'Fast'; 
 end
 
@@ -68,6 +71,7 @@ end
 for i_tau = 1:maxTau
     % Coarse-grain data (using scale in Costa's paper)
     scaledData = coarsegrain(data,i_tau); % Changed by GDP
+    scaledData = zscore(scaledData); % normalization of the signal 
     
     switch SampEnType
         case 'Fast'

@@ -29,10 +29,10 @@ if size(y, 1) > size(y,2)
     y = y';
 end
 
-xx = convert_to_lagged_form(y, m)';  % replaced m-1 with m
+xx = convert_to_lagged_form(y, m)';   % Giulia: replaced m-1 with m
 Dxx = pdist(xx,'chebychev');
 
-yy = convert_to_lagged_form(y, m+1)'; % replaced m with m+1
+yy = convert_to_lagged_form(y, m+1)'; % Giulia: replaced m with m+1
 Dyy = pdist(yy,'chebychev');
 
 A = mean( Dxx < r ) ;

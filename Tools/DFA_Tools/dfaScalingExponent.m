@@ -65,21 +65,20 @@ for n=1:nn
  
 end
 
-if isempty(midBoxSize)
-% Modified by GDP to include the possibility of computing alpha1 and alpha2if isempty(midBoxSize) % only compute one alpha exponent 
-    lns = log10(ns);
-    lF = log10(F);
-    A = ones(nn,2);
-    A(:,2) = lns;
-    a = pinv(A)*lF;
-    alpha = a(2);  
-    lFpred = A*a;
-    Fpred = 10.^(lFpred);
-    
-    % output
-    varargout{1} = alpha;
+lns = log10(ns);
+lF = log10(F);
+A = ones(nn,2);
+A(:,2) = lns;
+a = pinv(A)*lF;
+alpha = a(2);  
+lFpred = A*a;
+Fpred = 10.^(lFpred);
 
-else    % Introduced by GDP to include the possibility of computing alpha1 and alpha2 
+% output
+varargout{1} = alpha;
+
+% Introduced by GDP to include the possibility of computing alpha1 and alpha2 
+if ~isempty(midBoxSize)   
     nMid = round(log2(midBoxSize-minBoxSize));
     % alpha1 from minBoxSize to midBoxSize
     lns1 = log10(ns(1:nMid));
@@ -97,9 +96,8 @@ else    % Introduced by GDP to include the possibility of computing alpha1 and a
     alpha2 = a2(2); % alpha2
 
     % output
-    varargout{1} = alpha1;
-    varargout{2} = alpha2;   
-    
+    varargout{2} = alpha1;
+    varargout{3} = alpha2;       
 end
     
 

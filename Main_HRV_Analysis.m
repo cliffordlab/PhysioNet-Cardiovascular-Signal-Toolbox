@@ -1,7 +1,7 @@
 function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subjectID,annotations,sqi,varargin)
-%  ====================== VOSIM Toolbox Main Script ======================
+%  ================= HRV Toolbox for Matlab Main Script ===================
 %
-%   Main_VOSIM(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
+%   Main_HRV_Analysis(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
 %	OVERVIEW:
 %       Main "Validated Open-Source Integrated Matlab" VOSIM Toolbox script
 %       Configured to accept RR intervals as well as raw data as input file
@@ -19,12 +19,13 @@ function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,
 %                     be obtained using InitializeHRVparams.m function 
 %                     HRVparams = InitializeHRVparams();
 %       subjectID   - (optional) string to identify current subject
+%       annotations - (optional) annotations of the RR data at each point
+%                     indicating the quality of the beat 
 %       sqi         - (optional) Signal Quality Index; Requires a 
 %                     matrix with at least two columns. Column 1 
 %                     should be timestamps of each sqi measure, and 
 %                     Column 2 should be SQI on a scale from 0 to 1.
-%       annotations - (optional) annotations of the RR data at each point
-%                     indicating the quality of the beat 
+%      
 %   OPTIONAL INPUTS:
 %       Use InputSig, Type pairs for additional signals such as ABP 
 %       or PPG signal. The input signal must be a vector containing
@@ -41,21 +42,21 @@ function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,
 %             of the new project (see the readme.txt file for further details)   
 %   EXAMPLES
 %       - rr interval input
-%       Main_VOSIM(RR,t,'RRIntervals',HRVparams)
+%       Main_HRV_Analysis(RR,t,'RRIntervals',HRVparams)
 %       - ECG wavefrom input
-%       Main_VOSIM(ECGsig,t,'ECGWavefrom',HRVparams,'101')
+%       Main_HRV_Analysis(ECGsig,t,'ECGWavefrom',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
-%       Main_VOSIM(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
+%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Giulia Da Poian
 %       Dependent scripts written by various authors 
 %       (see functions for details)       
-%	COPYRIGHT (C) 2016 
+%	COPYRIGHT (C) 2018 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for

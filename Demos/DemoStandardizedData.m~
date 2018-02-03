@@ -36,7 +36,7 @@ end
 HRVparams = InitializeHRVparams('demo_RRgen');  
 HRVparams.MSE.on = 0; % No MSE analysis for this demo
 HRVparams.DFA.on = 0; % No DFA analysis for this demo
-HRVparams.HRT.on = 0; % No HRT analysis for this demo
+HRVparams.HRT.on = 0; % No DFA analysis for this demo
 
 
 

@@ -49,13 +49,13 @@ t = cumsum(rr);
 
 fprintf('Computing MSE...this may take a few minutes...\n')
 fprintf('Parameters used to calculate SempEntropy: m=%i r=%.2f \n', HRVparams.MSE.patternLength, HRVparams.MSE.RadiusOfSimilarity);
-WindIdxs = CreateWindowRRintervals(tNN, NN, HRVparams,'mse');
-mse = EvalMSE(NN,tNN,[],HRVparams,WindIdxs);
+windowRRintervals_mse = CreateWindowRRintervals(tNN, NN, HRVparams,'mse');
+mse = EvalMSE(NN,tNN,[],HRVparams,windowRRintervals_mse);
 fprintf('MSE completed!\n')
 
 % 4. Plot 
 fig = figure();
-ax = axes('Parent',fig, 'Position',[0.15 0.15 0.7 0.7]);
+ax = axes('Parent',fig, 'Position',[0.1 0.1 0.8 0.8]);
 plot(mse,'LineWidth',2);
 xlabel('Scale Factor');
 ylabel('H_{s}');
@@ -63,12 +63,10 @@ title('Multiscale Entropy')
 set(ax,'FontSize',18);
 grid on
 
-
 % 5. Save Results
-Scales = 1:HRVparams.MSE.maxCoarseGrainings;
-results =  [Scales' mse];
-for i=1:length(WindIdxs); W{i}=strcat('t_', num2str(WindIdxs(i)));end
-col_titles = {'Scales' {W}};
+results = [windowRRintervals_mse' mse'];
+for i=1:HRVparams.MSE.maxCoarseGrainings; Scales{i}=strcat('Scale', num2str(i));end
+col_titles = {'t_win' Scales{:}};
 
 % Generates Output - Never comment out
 resFilenameMSE = SaveHRVoutput('RRgenData',[],results,...

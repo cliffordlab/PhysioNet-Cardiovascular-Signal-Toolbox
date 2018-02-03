@@ -1,4 +1,4 @@
-function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subjectID,annotations,sqi,varargin)
+function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subjectID,annotations,sqi,varargin)
 %  ================= HRV Toolbox for Matlab Main Script ===================
 %
 %   Main_HRV_Analysis(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
@@ -20,7 +20,7 @@ function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,
 %                     HRVparams = InitializeHRVparams();
 %       subjectID   - (optional) string to identify current subject
 %       annotations - (optional) annotations of the RR data at each point
-%                     indicating the quality of the beat 
+%                     indicating the type of the beat 
 %       sqi         - (optional) Signal Quality Index; Requires a 
 %                     matrix with at least two columns. Column 1 
 %                     should be timestamps of each sqi measure, and 
@@ -46,7 +46,8 @@ function [results, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,
 %       - ECG wavefrom input
 %       Main_HRV_Analysis(ECGsig,t,'ECGWavefrom',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
-%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 'ABP', ppgSig, 'PPG')
+%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 
+%                         'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
@@ -76,6 +77,7 @@ if nargin < 7
     sqi = [];
 end
 
+
 if length(varargin) == 1 || length(varargin) == 3
     error('Incomplete Signal-Type pair')
 elseif length(varargin)  == 2
@@ -104,143 +106,125 @@ try
             error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
     end
 
+    % 1. Preprocess Data, AF detection, create Windows Indexes  
+    [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,HRVparams,subjectID);
     
-    % 1. Exclude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
-    [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);
-    % Create Windows for Time and Frequency domain 
-    RRwindowStartIndices = CreateWindowRRintervals(tNN, NN, HRVparams);
-   
-
-    % Create Windows for MSE and DFA 
-    if HRVparams.MSE.on
-       % Additional pre-processing to deal with missing data for MSE and DFA analysis     
-       [NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_for_MSE_DFA( NN, tNN );
-        MSEwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'mse');
-    end
-    if HRVparams.DFA.on
-        % Additional pre-processing to deal with missing data for MSE and DFA analysis     
-        [ NN_gapFilled, tNN_gapFilled] = RR_Preprocessing_MSE_DFA( NN, tNN );
-        DFAwindowStartIndices = CreateWindowRRintervals(tNN_gapFilled, NN_gapFilled, HRVparams,'dfa');
-    end
-    
-    % 2. Atrial Fibrillation Detection
-    if HRVparams.af.on == 1
-        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
-        fprintf('AF analysis completed for patient %s \n', subjectID);
-        % Remove RRAnalysisWindows contating AF segments
-        [RRwindowStartIndices, AFWindows]= RemoveAFsegments(RRwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
-            if HRVparams.MSE.on
-                MSEwindowStartIndices = RemoveAFsegments(MSEwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
-            end
-            if HRVparams.DFA.on 
-                DFAwindowStartIndices = RemoveAFsegments(DFAwindowStartIndices,AfAnalysisWindows, AFtest,HRVparams);
-            end
-    else
-        AFWindows = [];
-    end
-    
-    results = RRwindowStartIndices';
-    col_titles = {'t_win'};
+    HRVout = WinIdxs';
+    HRVtitle = {'t_win'};
    
     % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
-    if HRVparams.timedomain.on == 1
-        TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
+    if HRVparams.timedomain.on 
+        TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
-        results = [ results cell2mat(struct2cell(TimeMetrics))'];
-        col_titles = [col_titles fieldnames(TimeMetrics)'];
+        HRVout = [HRVout cell2mat(struct2cell(TimeMetrics))'];
+        HRVtitle = [HRVtitle fieldnames(TimeMetrics)'];
     end
     
     % 4. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
-    if HRVparams.freq.on == 1
-        FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,RRwindowStartIndices);
+    if HRVparams.freq.on 
+        FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
-        results = [results cell2mat(struct2cell(FreqMetrics))'];
-        col_titles = [col_titles fieldnames(FreqMetrics)'];
+        HRVout = [HRVout cell2mat(struct2cell(FreqMetrics))'];
+        HRVtitle = [HRVtitle fieldnames(FreqMetrics)'];
     end
     
     % 5. PRSA, AC and DC values
-    if HRVparams.prsa.on == 1
-        [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, RRwindowStartIndices );
+    if HRVparams.prsa.on 
+        [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, WinIdxs );
         % Export results
-        results = [results, ac(:), dc(:)];
-        col_titles = [col_titles {'ac' 'dc'}];
+        HRVout = [HRVout, ac(:), dc(:)];
+        HRVtitle = [HRVtitle {'ac' 'dc'}];
     end
     
     % 6.Poincare Features
-    if HRVparams.poincare.on==1
-         [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, RRwindowStartIndices, sqi);
+    if HRVparams.poincare.on
+         [SD1, SD2, SD12Ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, WinIdxs, sqi);
          % Export results
-         results = [results, SD1(:),SD2(:),SD1_SD2_ratio(:)];
-         col_titles = [col_titles {'SD1', 'SD2', 'SD1SD2'}];
+         HRVout = [HRVout, SD1(:),SD2(:),SD12Ratio(:)];
+         HRVtitle = [HRVtitle {'SD1', 'SD2', 'SD1SD2'}];
     end
     
     % 7.Entropy Features
-    if HRVparams.Entropy.on==1
+    if HRVparams.Entropy.on
         m = HRVparams.Entropy.patternLength;
         r = HRVparams.Entropy.RadiusOfSimilarity;
-        [SampEn, ApEn] = EvalEntropyMetrics(NN, tNN, m,r, HRVparams, RRwindowStartIndices, sqi);
+        [SampEn, ApEn] = EvalEntropyMetrics(NN, tNN, m ,r, HRVparams, WinIdxs, sqi);
         % Export results
-        results = [results, SampEn(:),ApEn(:)];
-        col_titles = [col_titles {'SampEn', 'ApEn'}];
+        HRVout = [HRVout, SampEn(:),ApEn(:)];
+        HRVtitle = [HRVtitle {'SampEn', 'ApEn'}];
     end
     
     % Generates Output - Never comment out
-    ResultsFileName = GenerateHRVresultsOutput(subjectID,RRwindowStartIndices,results,col_titles, [],HRVparams, tNN, NN);
-    fprintf('HRV metrics for file ID %s saved in the output folder \n File name: %s \n', subjectID, ResultsFileName);
+    ResultsFileName.HRV = SaveHRVoutput(subjectID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
+    fprintf('File %s saved in the output folder \n', ResultsFileName.HRV); 
 
 
     
     % 8. Multiscale Entropy (MSE)
-    if HRVparams.MSE.on == 1
+    if HRVparams.MSE.on 
         try
-            mse = EvalMSE(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,MSEwindowStartIndices);
+            mse = EvalMSE(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsMSE);
         catch
             mse = NaN;
             fprintf('MSE failed for file ID %s \n', subjectID);
         end
          % Save Results for MSE
-        results = [MSEwindowStartIndices' mse'];
-        for i=1:HRVparams.MSE.maxCoarseGrainings
-            Scales{i}=strcat('Scale', num2str(i));
+        Scales = 1:HRVparams.MSE.maxCoarseGrainings;
+        HRVout = [Scales' mse];
+        for i=1:length(out.WinIdxsMSE)
+            Windows{i} = strcat('t_', num2str(WindIdxs(i)));
         end
-        col_titles = {'t_win' Scales{:}};
-        GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'MSE', HRVparams, tNN, NN);
+        HRVtitle = {'Scales' Windows{:}'};
+        ResultsFileName.MSE = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'MSE', HRVparams, tNN, NN);
     end   
+
+    
     
     
     % 9. DetrendedFluctuation Analysis (DFA)
-    if HRVparams.DFA.on == 1
+    if HRVparams.DFA.on
         if isempty(HRVparams.DFA.midBoxSize)
-            alpha = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
+            alpha = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
             % Save Results for DFA
-            results = [DFAwindowStartIndices' alpha];
-            col_titles = {'t_win' 'alpha'};
-            GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+            HRVout = [out.WinIdxsDFA' alpha];
+            HRVtitle = {'t_win' 'alpha'};
+            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
         else
-            [alpha, alpha1, alpha2] = EvalDFA(NN_gapFilled,tNN_gapFilled,sqi,HRVparams,DFAwindowStartIndices);   
+            [alpha, alpha1, alpha2] = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
             % Save Results for DFA
-            results = [DFAwindowStartIndices' alpha alpha1 alpha2];
-            col_titles = {'t_win' 'alpha' 'alpha1' 'alpha2'};
-            GenerateHRVresultsOutput(subjectID,[],results,col_titles, 'DFA', HRVparams, tNN, NN);
+            HRVout = [out.WinIdxsDFA' alpha alpha1 alpha2];
+            HRVtitle = {'t_win' 'alpha' 'alpha1' 'alpha2'};
+            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
         end  
     end
     
-    % 10. Analyze additional signals (ABP, PPG or both)
+    % 10. Heart Rate Turbulence Analysis (HRT)
+    if HRVparams.HRT.on
+        % Create analysis windows from original rr intervals
+        WinIdxsHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
+        [TO, TS] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
+        % Save Results for DFA
+        HRVout = [WinIdxsHRT' TO TS];
+        HRVtitle = {'t_win' 'TO' 'TS'};
+        ResultsFileName.HRT = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
+    end
+    
+    % 11. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
         fprintf('Analyizing %s \n', extraSigType{:});
         Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
     end
         
-    % 11. Some statistics on %ages windows removed (poor quality and AF)
+    % 12. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
-    RemovedWindowsStats(RRwindowStartIndices,AFWindows,HRVparams,subjectID);
+    RemovedWindowsStats(WinIdxs,AFWindows,HRVparams,subjectID);
     
-    fprintf('HRV Analysis completed for file ID %s \n',subjectID )
+    fprintf('HRV Analysis completed for subject ID %s \n',subjectID )
   
 catch
     % Write subjectID on log file
     fid = fopen(strcat(HRVparams.writedata,filesep,'Error.txt'),'a');
-    results = NaN;
+    HRVout = NaN;
     ResultsFileName = '';
     fprintf(fid, 'Analysis faild for subject: %s \n', subjectID);
     fclose(fid); 
@@ -248,14 +232,44 @@ catch
 end % end of HRV analysis
 
 
-
-
-
-
-
 end %== function ================================================================
 %
 
+function [NN, tNN, WinIdxs,AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,HRVparams,subjectID)
 
-
+    out = []; % Struct used to save DFA and MSE preprocessed data
+ 
+    % Exclude undesiderable data from RR series (i.e., arrhytmia, low SQI, ectopy, artefact, noise)
+    [NN, tNN] = RRIntervalPreprocess(rr,t,annotations, HRVparams);  
+    WinIdxs = CreateWindowRRintervals(tNN, NN, HRVparams);    % Create Windows for Time and Frequency domain 
+    
+    % Create Windows for MSE and DFA and preprocess
+    if HRVparams.MSE.on
+       % Additional pre-processing to deal with missing data for MSE and DFA analysis     
+       [out.NN_gapFilled, out.tNN_gapFilled] = RR_Preprocessing_for_MSE_DFA( NN, tNN );
+       out.WinIdxsMSE = CreateWindowRRintervals(out.tNN_gapFilled, out.NN_gapFilled, HRVparams,'mse');
+    end
+    if HRVparams.DFA.on
+        % Additional pre-processing to deal with missing data for MSE and DFA analysis     
+        [ out.NN_gapFilled, out.tNN_gapFilled] = RR_Preprocessing_MSE_DFA( NN, tNN );
+        out.WinIdxsDFA = CreateWindowRRintervals(out.tNN_gapFilled, out.NN_gapFilled, HRVparams,'dfa');
+    end    
+    
+    % 2. Atrial Fibrillation Detection
+    if HRVparams.af.on 
+        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
+        fprintf('AF analysis completed for subject %s \n', subjectID);
+        % Remove RRAnalysisWindows contating AF segments
+        [WinIdxs, AFWindows]= RemoveAFsegments(WinIdxs,AfAnalysisWindows, AFtest,HRVparams);
+        if HRVparams.MSE.on
+            out.WinIdxsMSE = RemoveAFsegments(out.WinIdxsMSE,AfAnalysisWindows, AFtest,HRVparams);
+        end
+        if HRVparams.DFA.on 
+            out.WinIdxsDFA = RemoveAFsegments(out.WinIdxsDFA,AfAnalysisWindows, AFtest,HRVparams);
+        end
+    else
+        AFWindows = [];
+    end
+    
+end
 

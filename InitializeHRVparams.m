@@ -23,6 +23,7 @@ function HRVparams = InitializeHRVparams(project_name)
 %       16. Entropy  and Multiscale Entropy - MSE - Settings
 %       17. Detrended Fluctuation Analysis - DFA - Settings
 %       18. Poincaré plot - Settings
+%       19. Heart Rate Turbulence (HRT) - Settings
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
@@ -32,17 +33,16 @@ function HRVparams = InitializeHRVparams(project_name)
 %       HRVparams - struct of various settings for the hrv_toolbox analysis
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
+%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       This script written by Adriana N. Vest
+%       Adriana N. Vest
+%       Giulia Da Poian
 %       Dependent scripts written by various authors 
 %       (see functions for details)       
-%	COPYRIGHT (C) 2016 
+%	COPYRIGHT (C) 2018 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
@@ -87,6 +87,10 @@ switch project_name
         HRVparams.writedata = strcat('OutputData', filesep, 'ResultsAFData');
         HRVparams.ext = 'mat';
         HRVparams.Fs = 128;
+    case 'demoHRT'      % Parameters for HRT demo 
+        HRVparams.readdata = strcat('TestData');
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsHRT');
+        HRVparams.Fs = 360;
     otherwise                  % Default
         HRVparams.Fs = NaN;                          % Spacify sampling frequency
         HRVparams.writedata = 'HRV_Output';          % (Optional) Specify name for data output folder
@@ -165,7 +169,6 @@ HRVparams.output.num_win = [];          % Specify number of lowest hr windows re
 HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file generated
                                         % 'csv'     = ASCII CSV file generated
                             
-
 %% 8. Filename to Save Data
 HRVparams.time = datestr(now, 'yyyymmdd');              % Setup time for filename of output
 HRVparams.filename = [HRVparams.time '_' project_name];
@@ -281,7 +284,7 @@ HRVparams.MSE.windowlength = [];           % Default: [], windows size in second
 HRVparams.MSE.increment = [];              % Default: [];
 HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
 HRVparams.MSE.patternLength = 2;           % Default: 2, 
-HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 7, Maximum number of coarse-grainings
+HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 20, Maximum number of coarse-grainings
 % SampEn an ApEn 
 HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)
@@ -306,11 +309,21 @@ HRVparams.DFA.midBoxSize = [];      % Medium time scale box  (default in DFA cod
 
 HRVparams.poincare.on = 1;     % Default: 1, Poincare Analysis 1=On or 0=Off
 
+%% 19. Heart Rate Turbulence (HRT) - Settings
+
+HRVparams.HRT.on = 1;             % Default: 1, HRT Analysis 1=On or 0=Off
+HRVparams.HRT.BeatsBefore = 2;    % Default: 2, # of beats before PVC 
+HRVparams.HRT.BeatsAfter = 16;    % Default: 16, # of beats after PVC and CP
+HRVparams.HRT.GraphOn = 0;        % Default: 0, do not plot 
+HRVparams.HRT.windowlength = 24;  % Default 24h, windows size in seconds, default perform DFA on the entair signal
+HRVparams.HRT.increment = 24;     % Default 24h, windows size in seconds, default perform DFA on the entair signal
+
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 
 % this might not work
 
 ExportHRVparams(HRVparams);
+
 
 
 end

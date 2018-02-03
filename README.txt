@@ -78,7 +78,10 @@ Nonlinear HRV measures:
      - SD2        : (ms) standard deviation of the projection of the PP on 
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
-    
+
+Heart Rate Turbulence HRT:
+     - TO         : (%) turbulence onset
+     - TS         : turbulence slope    
 
 ----- Detection Annotation Files -------
 
@@ -148,8 +151,6 @@ II. Getting Started
 System requirements:
 
 - Matlab and License    https://www.mathworks.com/
-- WFDB Toolbox          https://physionet.org/physiotools/wfdb.shtml
-- WFDB Matlab Toolbox   https://www.physionet.org/physiotools/matlab/wfdb-app-matlab/
 
 1)  Download and install Matlab, the WFDB Toolbox, and the WFDB Toolbox
     for Matlab.

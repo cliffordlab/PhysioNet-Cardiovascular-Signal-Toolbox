@@ -50,5 +50,5 @@ afresults = AFtest(:);
 afcol_titles = {'AFtest'};
 
 outputType = 'AF';
-AFfile = GenerateHRVresultsOutput(subjectID,AfAnalysisWindows,afresults, ...
+AFfile = SaveHRVoutput(subjectID,AfAnalysisWindows,afresults, ...
     afcol_titles, outputType, HRVparams, tNN, NN);

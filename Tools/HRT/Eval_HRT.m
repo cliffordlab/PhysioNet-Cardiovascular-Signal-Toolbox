@@ -1,6 +1,6 @@
-function [TO, TS] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, WindIdxs)
+function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, WindIdxs)
 
-%   [TO, TS] = Eval_HRT(RRInts,Labels, HRVparams, WindIdxs)
+%   [TO, TSn, PVCs] = Eval_HRT(RRInts,Labels, HRVparams, WindIdxs)
 %   OVERVIEW:
 %       This function return TO and TS, i.e., the basic parameters of 
 %       heart rate turbulence (HRT) used to quantify the return to 
@@ -19,7 +19,9 @@ function [TO, TS] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, WindIdxs)
 %
 %   OUTPUTS:
 %       TO         : average turbulence onset (TO) 
-%       TS         : turbulence slop (TS) of the average tachogram 
+%       TS         : turbulence slop (TS) of the average tachogram
+%       nPVCs      : numer of PVCs used to build the average tachogram and
+%                    compute the mean TO
 %
 %	REPO:       
 %       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
@@ -44,6 +46,7 @@ end
 % Preallocate arrays (all NaN) before entering the loop
 TO = nan(length(WindIdxs),1);
 TS = nan(length(WindIdxs),1);
+nPVCs = nan(length(WindIdxs),1);
 
 BeatsBefore = HRVparams.HRT.BeatsBefore;
 BeatsAfter = HRVparams.HRT.BeatsAfter;
@@ -51,7 +54,7 @@ GraphOn = HRVparams.HRT.GraphOn;
 windowlength = HRVparams.HRT.windowlength*3600; % Convert hours in seconds
 SQI_LowQualityThresh = HRVparams.sqi.LowQualityThreshold;
 RejectionThreshold = HRVparams.RejectionThreshold;
-
+filterMethod = HRVparams.HRT.filterMethod;
 
 %Analyze by Window
 
@@ -71,7 +74,7 @@ for iWin = 1:length(WindIdxs)
 
         % If enough data has an adequate SQI, perform the calculations
         if numel(LowQualityIdxs)/length(SQIinWin(:,2)) < RejectionThreshold
-            [TO(iWin), TS(iWin)] = HRT_Analysis(RRinWin,LabelsinWin,BeatsBefore, BeatsAfter, GraphOn);
+            [TO(iWin), TS(iWin), nPVCs(iWin)] = HRT_Analysis(RRinWin,LabelsinWin,BeatsBefore, BeatsAfter, filterMethod, GraphOn);
         end     
 
     end % end check for sufficient data

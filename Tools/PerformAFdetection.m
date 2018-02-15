@@ -1,4 +1,4 @@
-function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,tNN,NN,HRVparams)    
+function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,tNN,NN,sqi,HRVparams)    
 %   PerformAFdetection(subjectID,tNN,NN,HRVparams)  
 %
 %	OVERVIEW:
@@ -10,6 +10,10 @@ function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,t
 %                   data (seconds)
 %       NN        : a single row of NN (normal normal) interval
 %                   data in seconds
+%       sqi       : Signal Quality Index; Requires a matrix with
+%                   at least two columns. Column 1 should be timestamps 
+%                   should be timestamps of each sqi measure, and Column 2 
+%                   should be SQI on a scale from 0 to 1.
 %       HRVparam  : struct of settings for hrv_toolbox analysis
 %
 %   OUTPUT:
@@ -18,27 +22,43 @@ function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,t
 %
 %
 %   Written by Giulia Da Poian (giulia.dap@gmail.com)
+%
+%   Modified on 02.14.2018 to include SQI check before evaluating AF; if a
+%   windows contains low SQI signal do not compute AF and mark the window
+%   as NaN
 
 
+if isempty(sqi) 
+     sqi(:,1) = tNN;
+     sqi(:,2) = ones(length(tNN),1);
+end
 
 % 1. Calculate AF Features
 AfAnalysisWindows = CreateWindowRRintervals(tNN,NN,HRVparams,'af');
-NN_afcalc = NN .* HRVparams.Fs;
+NNsamps = NN .* HRVparams.Fs;
 
-for i = 1:length(AfAnalysisWindows)
-    tstart = AfAnalysisWindows(i);
-    if isnan(tstart) 
-        features_af = NaN;
-        AFtest(i) = NaN;
-    else
-        idx_af = find(tNN >= tstart & tNN < tstart + HRVparams.af.windowlength);
-        % When the RR interval time series is < 12 or >60 cannot extract feautures
-        if (length(NN_afcalc(idx_af)) < 12 || length(NN_afcalc(idx_af)) > 60 )
-            features_af = NaN;
-            AFtest(i) = 0;
-        else
-            features_af = AF_features(NN_afcalc(idx_af),HRVparams.Fs);
-            AFtest(i) = SVM_AFdetection_withoutTrainingModel(features_af,1);
+AFtest = nan(length(AfAnalysisWindows),1);
+
+for idx = 1:length(AfAnalysisWindows)
+    tstart = AfAnalysisWindows(idx);
+    
+    if ~isnan(tstart)  
+      
+        idxInWin = find(tNN >= tstart & tNN< tstart + HRVparams.af.windowlength);
+       
+        % Added by Giulia: exclude from the Analysis low quality
+        % segments (SQI< SQI_threshold)
+        sqiWin = sqi(sqi(:,1) >= tstart & sqi(:,1) < tstart + HRVparams.af.windowlength,2);
+        LowQualityIdxs = find(sqiWin < HRVparams.sqi.LowQualityThreshold); 
+        
+        % If enough data has an adequate SQI, perform the calculations
+        cond1 = (numel(LowQualityIdxs)/length(sqiWin)) <  HRVparams.RejectionThreshold;        
+        % RR interval time series must be > 12 ans <60 to extract feautures
+        cond2 = (length(NNsamps(idxInWin)) > 12 && length(NNsamps(idxInWin)) < 60);
+  
+        if (cond1 && cond2)
+            features_af = AF_features(NNsamps(idxInWin),HRVparams.Fs);
+            AFtest(idx) = SVM_AFdetection_withoutTrainingModel(features_af,1);            
         end
     end    
 end

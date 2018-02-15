@@ -68,7 +68,7 @@ grid on
 Scales = 1:HRVparams.MSE.maxCoarseGrainings;
 results =  [Scales' mse];
 for i=1:length(WindIdxs); W{i}=strcat('t_', num2str(WindIdxs(i)));end
-col_titles = {'Scales' {W}};
+col_titles = {'Scales' W{:}};
 
 % Generates Output - Never comment out
 resFilenameMSE = SaveHRVoutput('RRgenData',[],results,...

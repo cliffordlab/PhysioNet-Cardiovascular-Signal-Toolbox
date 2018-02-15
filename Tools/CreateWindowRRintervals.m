@@ -33,8 +33,7 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%%
-
+%
 
 % Verify input arguments
 
@@ -72,10 +71,21 @@ switch option
     case 'sqi'
         increment = HRVparams.sqi.increment;
         windowlength = HRVparams.sqi.windowlength;
+    case 'HRT'
+        increment = HRVparams.HRT.increment;
+        windowlength = HRVparams.HRT.windowlength * 3600;
+        if windowlength > tNN(end) 
+            windowRRintervals = 0;
+            return;
+        end
+            
 end
 
+nx = floor(tNN(end));               % length of sequence
+overlap = windowlength-increment;   % number of overlapping elements
+Nwinds = fix((nx-overlap)/(windowlength-overlap));    % number of sliding windows
 % Initialize output matrix
-windowRRintervals = 0: increment: floor( (tNN(end) - windowlength + increment));
+windowRRintervals = (0:(Nwinds-1))*(windowlength-overlap);  % starting index of each windows
 
 % Initialize loop variables
 t_window_start = 0;     % Window Start Time

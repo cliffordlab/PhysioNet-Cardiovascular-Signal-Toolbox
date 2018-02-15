@@ -107,7 +107,7 @@ try
     end
 
     % 1. Preprocess Data, AF detection, create Windows Indexes  
-    [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,HRVparams,subjectID);
+    [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,sqi,HRVparams,subjectID);
     
     HRVout = WinIdxs';
     HRVtitle = {'t_win'};
@@ -178,9 +178,7 @@ try
         ResultsFileName.MSE = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'MSE', HRVparams, tNN, NN);
     end   
 
-    
-    
-    
+       
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on
         if isempty(HRVparams.DFA.midBoxSize)
@@ -202,10 +200,10 @@ try
     if HRVparams.HRT.on
         % Create analysis windows from original rr intervals
         WinIdxsHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
-        [TO, TS] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
+        [TO, TS, nPVCs] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
         % Save Results for DFA
-        HRVout = [WinIdxsHRT' TO TS];
-        HRVtitle = {'t_win' 'TO' 'TS'};
+        HRVout = [WinIdxsHRT' TO TS nPVCs];
+        HRVtitle = {'t_win' 'TO' 'TS' 'nPVCs'};
         ResultsFileName.HRT = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
     end
     
@@ -235,7 +233,7 @@ end % end of HRV analysis
 end %== function ================================================================
 %
 
-function [NN, tNN, WinIdxs,AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,HRVparams,subjectID)
+function [NN, tNN, WinIdxs,AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,sqi,HRVparams,subjectID)
 
     out = []; % Struct used to save DFA and MSE preprocessed data
  
@@ -257,7 +255,7 @@ function [NN, tNN, WinIdxs,AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotat
     
     % 2. Atrial Fibrillation Detection
     if HRVparams.af.on 
-        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,HRVparams);
+        [AFtest, AfAnalysisWindows] = PerformAFdetection(subjectID,t,rr,sqi,HRVparams);
         fprintf('AF analysis completed for subject %s \n', subjectID);
         % Remove RRAnalysisWindows contating AF segments
         [WinIdxs, AFWindows]= RemoveAFsegments(WinIdxs,AfAnalysisWindows, AFtest,HRVparams);

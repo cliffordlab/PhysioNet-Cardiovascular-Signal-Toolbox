@@ -88,9 +88,9 @@ switch project_name
         HRVparams.ext = 'mat';
         HRVparams.Fs = 128;
     case 'demoHRT'      % Parameters for HRT demo 
-        HRVparams.readdata = strcat('TestData');
+        HRVparams.readdata = strcat('TestData', filesep, 'Physionet_nsr2db');
         HRVparams.writedata = strcat('OutputData', filesep, 'ResultsHRT');
-        HRVparams.Fs = 360;
+        HRVparams.Fs = 128;
     otherwise                  % Default
         HRVparams.Fs = NaN;                          % Spacify sampling frequency
         HRVparams.writedata = 'HRV_Output';          % (Optional) Specify name for data output folder
@@ -311,12 +311,13 @@ HRVparams.poincare.on = 1;     % Default: 1, Poincare Analysis 1=On or 0=Off
 
 %% 19. Heart Rate Turbulence (HRT) - Settings
 
-HRVparams.HRT.on = 1;             % Default: 1, HRT Analysis 1=On or 0=Off
-HRVparams.HRT.BeatsBefore = 2;    % Default: 2, # of beats before PVC 
-HRVparams.HRT.BeatsAfter = 16;    % Default: 16, # of beats after PVC and CP
-HRVparams.HRT.GraphOn = 0;        % Default: 0, do not plot 
-HRVparams.HRT.windowlength = 24;  % Default 24h, windows size in seconds, default perform DFA on the entair signal
-HRVparams.HRT.increment = 24;     % Default 24h, windows size in seconds, default perform DFA on the entair signal
+HRVparams.HRT.on = 1;                        % Default: 1, HRT Analysis 1=On or 0=Off
+HRVparams.HRT.BeatsBefore = 2;               % Default: 2, # of beats before PVC 
+HRVparams.HRT.BeatsAfter = 16;               % Default: 16, # of beats after PVC and CP
+HRVparams.HRT.GraphOn = 0;                   % Default: 0, do not plot 
+HRVparams.HRT.windowlength = 24;             % Default 24h, windows size in seconds, default perform DFA on the entair signal
+HRVparams.HRT.increment = 24;                % Default 24h, windows size in seconds, default perform DFA on the entair signal
+HRVparams.HRT.filterMethod = 'mean5before';  % Default mean5before
 
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 

@@ -1,18 +1,19 @@
 function s = fastSampen(y,m,r)
 % INPUTS
 %  y     num_var x num_samples
-%  m     max template length
+%  m     template length
 %  r     radius
 % OUTPUTS
 %  s     Sample Entropy
 %
 % Written by Shamim Nemati <shamim.nemati@alum.mit.edu>
+%
 % 01-31-2018 : modified by Giulia Da Poian <giulia.dap@gmail.com>, see
 %              comments in the code 
 %              NOTE : Sample entropy quantifies the likelihood that a 
-%              sequence of m consecutive data points?that matches another
+%              sequence of m consecutive data points that matches another
 %              sequence of the same length (match within a tolerance of r) 
-%              ? will still match the other sequence when their length is 
+%              will still match the other sequence when their length is 
 %              increased of one sample (sequences of length m + 1); 
 %              References : 
 %              1. Richman JS, Moorman JR. Physiological time-series 
@@ -29,10 +30,10 @@ if size(y, 1) > size(y,2)
     y = y';
 end
 
-xx = convert_to_lagged_form(y, m)';   % Giulia: replaced m-1 with m
+xx = convert_to_lagged_form(y, m)';   % Giulia: replaced m-1 with m to match SampEn definition
 Dxx = pdist(xx,'chebychev');
 
-yy = convert_to_lagged_form(y, m+1)'; % Giulia: replaced m with m+1
+yy = convert_to_lagged_form(y, m+1)'; % Giulia: replaced m with m+1 to match SampEn definition
 Dyy = pdist(yy,'chebychev');
 
 A = mean( Dxx < r ) ;

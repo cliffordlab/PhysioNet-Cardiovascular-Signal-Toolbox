@@ -7,11 +7,11 @@ function scaledData = coarsegrain(data,tau)
 %     data  : Vector containing the original seires
 %     tau   : scale factor (if tau = 1 returs the original series)
 %   OUTPUTS:
-%       scaledData : the coarse-grained time series at the scale factor tau
+%     scaledData : the coarse-grained time series at the scale factor tau
 %
 %   Written by: Giulia Da Poian <giulia.dap@gmail.com>
 %   REPO:       
-%       https://github.com/cliffordlab/HRVToolbox1.0  
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB  
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

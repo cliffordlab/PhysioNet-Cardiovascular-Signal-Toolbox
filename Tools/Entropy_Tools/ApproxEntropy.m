@@ -1,16 +1,16 @@
 function ApEn = ApproxEntropy( data, m, r)
-% OVERVIEW: This function calculaes approximate entropy for the input
+% OVERVIEW: This function calculates the approximate entropy for the input
 % vector data
 %
 % INPUTS
 %   data : time-series data
 %   m    : Template length
-%   r    :  tolerance (typically 0.2 * std)
+%   r    : tolerance (typically 0.2 * std)
 % OUTPUT
 %   ApEn : approximate entropy value
 %
 % Written by Giulia Da Poian <giulia.dap@gmail.com>
-%   REPO: https://github.com/cliffordlab/HRVToolbox1.0  
+%   REPO: https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

@@ -17,14 +17,17 @@ function [filtdata]  = smp50Hzfilt(data, Fs, Fnotch)
 % or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
 % for more details.
 
-% Data should be zeromeaned before calling this function
-
 if nargin < 3
 Fnotch  = 50.0;  % Hz    
 end
 
 if nargin < 2
 Fs      = 256;  % Hz    
+end
+
+% Data should be zeromeaned before calling this function, check:
+if mean(data)~=0
+    data = data-mean(data);
 end
 
 denominator = 1;

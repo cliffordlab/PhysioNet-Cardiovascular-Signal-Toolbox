@@ -108,7 +108,7 @@ try
 
     % 1. Preprocess Data, AF detection, create Windows Indexes  
     [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,sqi,HRVparams,subjectID);
-    
+        
     HRVout = WinIdxs';
     HRVtitle = {'t_win'};
    
@@ -242,14 +242,14 @@ function [NN, tNN, WinIdxs,AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotat
     WinIdxs = CreateWindowRRintervals(tNN, NN, HRVparams);    % Create Windows for Time and Frequency domain 
     
     % Create Windows for MSE and DFA and preprocess
-    if HRVparams.MSE.on
+    if HRVparams.MSE.on || HRVparams.DFA.on
        % Additional pre-processing to deal with missing data for MSE and DFA analysis     
        [out.NN_gapFilled, out.tNN_gapFilled] = RR_Preprocessing_for_MSE_DFA( NN, tNN );
+    end
+    if HRVparams.MSE.on
        out.WinIdxsMSE = CreateWindowRRintervals(out.tNN_gapFilled, out.NN_gapFilled, HRVparams,'mse');
     end
     if HRVparams.DFA.on
-        % Additional pre-processing to deal with missing data for MSE and DFA analysis     
-        [ out.NN_gapFilled, out.tNN_gapFilled] = RR_Preprocessing_MSE_DFA( NN, tNN );
         out.WinIdxsDFA = CreateWindowRRintervals(out.tNN_gapFilled, out.NN_gapFilled, HRVparams,'dfa');
     end    
     

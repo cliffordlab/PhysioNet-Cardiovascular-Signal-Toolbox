@@ -1,6 +1,6 @@
-function alpha = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+function [alpha, alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 
-% alpha = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+% [alpha, alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %
 %   OVERVIEW:   This function returns DFA scaling coefficients calculated on
 %               input NN intervals for each window.
@@ -19,8 +19,13 @@ function alpha = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %                                windows (in seconds) 
 %                
 %   OUTPUT:     
-%               mse            : vector of [max_tau, 1] doubles for each
-%                                window
+%                   alpha     : estimate of scaling exponent, 
+%                               minBoxSize <= n <= maxBoxSize
+%                  alpha1     : estimate of scaling exponent for short-term 
+%                               fluctuations, minBoxSize <= n < midBoxSize
+%                  alpha2     : estimate of scaling exponent for long-term 
+%                              fluctuations, midBoxSize <= n <= maxBoxSize
+%
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
 %       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
@@ -62,21 +67,22 @@ RejectionThreshold = HRVparams.RejectionThreshold;
 
 minBox = HRVparams.DFA.minBoxSize;
 maxBox = HRVparams.DFA.maxBoxSize;
-
+midBox = HRVparams.DFA.midBoxSize;
 
 % Preallocate arrays (all NaN) before entering the loop
 alpha = nan(length(windows_all),1);
-
+alpha1 = nan(length(windows_all),1);
+alpha2 = nan(length(windows_all),1);
 
 %Analyze by Window
 
 % Loop through each window of RR data
-for i_win = 1:length(windows_all)
+for idxWin = 1:length(windows_all)
     % Check window for sufficient data
-    if ~isnan(windows_all(i_win))
+    if ~isnan(windows_all(idxWin))
         % Isolate data in this window
-        idx_NN_in_win = find(tNN >= windows_all(i_win) & tNN < windows_all(i_win) + windowlength);
-        idx_sqi_win = find(sqi(:,1) >= windows_all(i_win) & sqi(:,1) < windows_all(i_win) + windowlength);
+        idx_NN_in_win = find(tNN >= windows_all(idxWin) & tNN < windows_all(idxWin) + windowlength);
+        idx_sqi_win = find(sqi(:,1) >= windows_all(idxWin) & sqi(:,1) < windows_all(idxWin) + windowlength);
         
         sqi_win = sqi(idx_sqi_win,:);
         nn_win = NN(idx_NN_in_win);
@@ -86,7 +92,11 @@ for i_win = 1:length(windows_all)
 
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < RejectionThreshold
-            alpha(i_win) = dfaScalingExponent(nn_win, minBox, maxBox, 0);
+            if isempty(midBox)
+                alpha(idxWin) = dfaScalingExponent(nn_win, minBox, maxBox, midBox, 0);
+            else
+                [alpha(idxWin), alpha1(idxWin),  alpha2(idxWin)] = dfaScalingExponent(nn_win, minBox, maxBox, midBox, 0);
+            end
         end
         
 

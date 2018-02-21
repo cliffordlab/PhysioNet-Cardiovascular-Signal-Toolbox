@@ -11,7 +11,12 @@ function varargout = dfaScalingExponent(x, minBoxSize, maxBoxSize, midBoxSize, p
 %         midBoxSize : Medium time scale  (default: empty)
 %         pflag      : (Optional) pflag=1 plot,  pflag=0 
 % OUTPUTS     
-%         alpha      : estimate of scaling exponent 
+%         alpha      : estimate of scaling exponent, +
+%                      minBoxSize <= n <= maxBoxSize
+%         alpha1     : estimate of scaling exponent for short-term 
+%                      fluctuations, minBoxSize <= n < midBoxSize
+%         alpha2     : estimate of scaling exponent for long-term 
+%                      fluctuations, midBoxSize <= n <= maxBoxSize
 %
 % The raw time series x(i) is first integrated to give y(i); i=1,...,N. 
 % For each length scale, n, y(i) is divided into segments of equal length, n.
@@ -72,7 +77,6 @@ A(:,2) = lns;
 a = pinv(A)*lF;
 alpha = a(2);  
 lFpred = A*a;
-Fpred = 10.^(lFpred);
 
 % output
 varargout{1} = alpha;
@@ -80,14 +84,14 @@ varargout{1} = alpha;
 % Introduced by GDP to include the possibility of computing alpha1 and alpha2 
 if ~isempty(midBoxSize)   
     nMid = round(log2(midBoxSize-minBoxSize));
-    % alpha1 from minBoxSize to midBoxSize
-    lns1 = log10(ns(1:nMid));
-    lF1 = log10(F(1:nMid));
-    A1 = ones(length(ns(1:nMid)),2);
+    % alpha1 from minBoxSize to midBoxSize (excluded)
+    lns1 = log10(ns(1:nMid-1));
+    lF1 = log10(F(1:nMid-1));
+    A1 = ones(length(ns(1:nMid-1)),2);
     A1(:,2) = lns1;
     a1 = pinv(A1)*lF1;
     alpha1 = a1(2); % alpha1  
-    % alpha2 from midBoxSize to maxBoxSize
+    % alpha2 from midBoxSize (included) to maxBoxSize
     lns2 = log10(ns(nMid:end));
     lF2 = log10(F(nMid:end));
     A2 = ones(length(ns(nMid:end)),2);

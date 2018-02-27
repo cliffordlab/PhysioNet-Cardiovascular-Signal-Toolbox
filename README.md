@@ -38,14 +38,14 @@ Time domain measures of HRV:
                     4 = window is missing too much data
                     5 = success
 
-Frequency domain measures of HRV:
+Frequency domain measures of HRV (default using Lomb Periodogram or method ):
 
-	- ulfL        : (ms^2) Power in the ultra low frequency range (< 0.003 Hz)
-	- vlfL        : (ms^2) Power in very low frequency range (0.003?0.04 Hz)
-	- lfL         : (ms^2) Power in low frequency range (0.04?0.15 Hz)
-	- hfL         : (ms^2) Power in high frequency range (0.15?0.4 Hz)
-	- lfhfL       : Ratio LF [ms^2]/HF [ms^2]
-	- ttlpwrL     : (ms^2) Total spectral power (approximately <0.4 Hz)
+	- ulf         : (ms^2) Power in the ultra low frequency range (< 0.003 Hz)
+	- vlf         : (ms^2) Power in very low frequency range (0.003 <= vlf < 0.04 Hz)
+	- lf          : (ms^2) Power in low frequency range (0.04Hz  <= lf < 0.15 Hz)
+	- hf          : (ms^2) Power in high frequency range (0.15 <= hf < 0.4 Hz)
+	- lfhf        : Ratio LF [ms^2]/HF [ms^2]
+	- ttlpwr      : (ms^2) Total spectral power (approximately <0.4 Hz)
 	- fdflag      : 1 = Lomb Periodogram or other method failed   
                     2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
@@ -68,7 +68,8 @@ Long range measures
     MSE           : First column contains the scale factors, and the second 
                     column provides the corresponding entropy values
      
-    DFA - alpha   : Fractal scaling exponents
+    DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
+    DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
 
 Nonlinear HRV measures: 
 
@@ -78,10 +79,10 @@ Nonlinear HRV measures:
      - SD2        : (ms) standard deviation of the projection of the PP on 
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
-    
+
 Heart Rate Turbulence HRT:
      - TO         : (%) turbulence onset
-     - TS         : turbulence slope
+     - TS         : turbulence slope    
 
 ----- Detection Annotation Files -------
 
@@ -152,10 +153,10 @@ System requirements:
 
 - Matlab and License    https://www.mathworks.com/
 
-1)  Download and install Matlab, the WFDB Toolbox, and the WFDB Toolbox
-    for Matlab.
+1)  Download and install Matlab (required Matlab Toolboxes )
 
-2)  Add the VOSIM toolbox folder and subfolders to your Matlab path
+2)  Add the Physionet HRV Toolkit for Matlab folder and subfolders to your
+    Matlab path
 
 3)  (Optional) rrgen binary - compilation of rrgenV3.c on your system:
 

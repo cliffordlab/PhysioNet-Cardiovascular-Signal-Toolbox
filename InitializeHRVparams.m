@@ -292,16 +292,12 @@ HRVparams.Entropy.patternLength = 2;          % Default: 2,
 
 %% 17. DFA Settings
 
-% Note: by default DFA computes only one parameter alpha. By setting a
-% value for midBoxSize it will compute alpha1 (minBoxSize:midBoxSize) and
-% alpha2 (midBoxSize:maxBoxSize)
-
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
 HRVparams.DFA.windowlength = [];    % Default [], windows size in seconds, default perform DFA on the entair signal
 HRVparams.DFA.increment = [];       % Default: [];
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
-HRVparams.DFA.midBoxSize = [];      % Medium time scale box  (default in DFA code: empty), compute only one parameter 
+HRVparams.DFA.midBoxSize = 16;      % Medium time scale box width (default in DFA code: 16)
 
 %
 

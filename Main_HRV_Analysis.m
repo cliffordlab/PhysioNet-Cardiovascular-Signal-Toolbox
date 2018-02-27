@@ -181,19 +181,11 @@ try
        
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on
-        if isempty(HRVparams.DFA.midBoxSize)
-            alpha = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
-            % Save Results for DFA
-            HRVout = [out.WinIdxsDFA' alpha];
-            HRVtitle = {'t_win' 'alpha'};
-            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
-        else
-            [alpha, alpha1, alpha2] = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
-            % Save Results for DFA
-            HRVout = [out.WinIdxsDFA' alpha alpha1 alpha2];
-            HRVtitle = {'t_win' 'alpha' 'alpha1' 'alpha2'};
-            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
-        end  
+        [alpha1, alpha2] = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
+        % Save Results for DFA
+        HRVout = [out.WinIdxsDFA' alpha1 alpha2];
+        HRVtitle = {'t_win' 'alpha1' 'alpha2'};
+        ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
     end
     
     % 10. Heart Rate Turbulence Analysis (HRT)

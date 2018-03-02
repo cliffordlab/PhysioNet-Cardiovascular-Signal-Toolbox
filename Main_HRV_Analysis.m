@@ -156,9 +156,6 @@ try
     
     % Generates Output - Never comment out
     ResultsFileName.HRV = SaveHRVoutput(subjectID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
-    fprintf('File %s saved in the output folder \n', ResultsFileName.HRV); 
-
-
     
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on 
@@ -166,7 +163,9 @@ try
             mse = EvalMSE(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsMSE);
         catch
             mse = NaN;
-            fprintf('MSE failed for file ID %s \n', subjectID);
+            fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt','a']);
+            fprintf(fid, 'MSE analysis error for subject %s \n',subjectID );
+            fclose(fid);
         end
          % Save Results for MSE
         Scales = 1:HRVparams.MSE.maxCoarseGrainings;
@@ -181,44 +180,66 @@ try
        
     % 9. DetrendedFluctuation Analysis (DFA)
     if HRVparams.DFA.on
-        [alpha1, alpha2] = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
-        % Save Results for DFA
-        HRVout = [out.WinIdxsDFA' alpha1 alpha2];
-        HRVtitle = {'t_win' 'alpha1' 'alpha2'};
-        ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
+        try
+            [alpha1, alpha2] = EvalDFA(out.NN_gapFilled,out.tNN_gapFilled,sqi,HRVparams,out.WinIdxsDFA);   
+            % Save Results for DFA
+            HRVout = [out.WinIdxsDFA' alpha1 alpha2];
+            HRVtitle = {'t_win' 'alpha1' 'alpha2'};
+            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
+        catch
+            fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
+            fprintf(fid, 'DFA analysis error for subject %s \n',subjectID );
+            fclose(fid);
+        end
     end
     
     % 10. Heart Rate Turbulence Analysis (HRT)
     if HRVparams.HRT.on
-        % Create analysis windows from original rr intervals
-        WinIdxsHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
-        [TO, TS, nPVCs] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
-        % Save Results for DFA
-        HRVout = [WinIdxsHRT' TO TS nPVCs];
-        HRVtitle = {'t_win' 'TO' 'TS' 'nPVCs'};
-        ResultsFileName.HRT = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
+        try
+            % Create analysis windows from original rr intervals
+            WinIdxsHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
+            [TO, TS, nPVCs] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
+            % Save Results for DFA
+            HRVout = [WinIdxsHRT' TO TS nPVCs];
+            HRVtitle = {'t_win' 'TO' 'TS' 'nPVCs'};
+            ResultsFileName.HRT = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
+        catch
+            fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
+            fprintf(fid, 'HRT analysis error for subject %s \n',subjectID );
+            fclose(fid);
+        end
     end
     
     % 11. Analyze additional signals (ABP, PPG or both)
     if ~isempty(varargin)
-        fprintf('Analyizing %s \n', extraSigType{:});
-        Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
+        try
+            fprintf('Analyizing %s \n', extraSigType{:});
+            Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
+        catch
+            fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
+            fprintf(fid, 'ABP/PPG analysis error for subject %s \n',subjectID );
+            fclose(fid);
+        end
     end
         
     % 12. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
     RemovedWindowsStats(WinIdxs,AFWindows,HRVparams,subjectID);
     
-    fprintf('HRV Analysis completed for subject ID %s \n',subjectID )
+    fprintf('HRV Analysis completed for subject ID %s \n',subjectID);
+    
+    fid = fopen([HRVparams.writedata filesep 'FileSuccessfullyAnalyzed.txt'],'a');
+    fprintf(fid, '%s \n',subjectID );
+    fclose(fid);
   
 catch
     % Write subjectID on log file
-    fid = fopen(strcat(HRVparams.writedata,filesep,'Error.txt'),'a');
+    fid = fopen(strcat(HRVparams.writedata,filesep,'AnalysisError.txt'),'a');
     HRVout = NaN;
     ResultsFileName = '';
-    fprintf(fid, 'Analysis faild for subject: %s \n', subjectID);
+    fprintf(fid, 'Basic HRV Analysis faild for subject: %s \n', subjectID);
     fclose(fid); 
-    fprintf('Analysis not performed for file ID %s \n', subjectID);
+    %fprintf('Analysis not performed for file ID %s \n', subjectID);
 end % end of HRV analysis
 
 

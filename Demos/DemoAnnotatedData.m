@@ -33,7 +33,7 @@ clear; clc; close all;
 OldFolder = [pwd,filesep, 'OutputData', filesep, 'ResultsNSR'];
 if exist(OldFolder, 'dir')
     rmdir(OldFolder, 's');
-    fprintf('Old Demo Folder deleted \n');
+    fprintf('Old Demo Folder deleted \n \n');
 end
 
 
@@ -77,7 +77,7 @@ for i_patient = 1:numsub
         [results, resFilenameHRV] = Main_HRV_Analysis(rr,t,'RRIntervals',HRVparams,subjectIDs(i_patient),annotations);
         currentFile = [HRVparams.writedata filesep resFilenameHRV.HRV '.csv'];
 
-        
+        fprintf('\n');
     catch
        
         results = NaN;
@@ -97,11 +97,11 @@ referenceFile = ['ReferenceOutput' filesep 'NSR_HRV_allwindows_allpatients.csv']
 testHRV = CompareOutput(currentFile,referenceFile);
 
 if testHRV
-    fprintf('** DemoAnnotatedData: TEST SUCCEEDED ** \n ')
+    fprintf('\n ** DemoAnnotatedData: TEST SUCCEEDED ** \n ')
 elseif notAnalyzed == 0
-    fprintf('** DemoAnnotatedData: TEST FAILED ** \n')
+    fprintf('\n ** DemoAnnotatedData: TEST FAILED ** \n')
     fprintf('Error: generated output does not match reference \n')
 elseif notAnalyzed == 1
-    fprintf('** DemoAnnotatedData: TEST FAILED ** \n')
+    fprintf('\n** DemoAnnotatedData: TEST FAILED ** \n')
     fprintf('Error: analysis not performed \n');    
 end

@@ -176,7 +176,7 @@ HRVparams.filename = [HRVparams.time '_' project_name];
 %% 9. Preprocess Settings
 
 HRVparams.preprocess.figures = HRVparams.gen_figs;  % Figures on = 1, Figures off = 0
-HRVparams.preprocess.gaplimit = 4;                  % Default: 2, seconds; maximum believable gap in rr intervals
+HRVparams.preprocess.gaplimit = 2;                  % Default: 2, seconds; maximum believable gap in rr intervals
 HRVparams.preprocess.per_limit = 0.2;               % Default: 0.2, Percent limit of change from one interval to the next
 HRVparams.preprocess.forward_gap = 3;	            % Default: 3, Maximum tolerable gap at beginning of timeseries in seconds
 HRVparams.preprocess.method_outliers = 'rem';       % Default: 'rem', Method of dealing with outliers

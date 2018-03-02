@@ -1,4 +1,48 @@
-# VOSIM-HRVToolbox
+# Physionet HRV Toolkit for Matlab
+
+----- Full Instructions: -----
+I. Introduction
+The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
+to meet the need in the clinical and scientific community for a validated, 
+standardized, well-documented open-source toolkit to evaluate the 
+relationships between physiological signals and disease. The package not 
+only includes standard HRV tools to generate time and frequency domain 
+metrics from ECG or pulsatile waveforms (like the blood pressure or 
+photoplethysmographic waveforms), but more recent metrics such as 
+acceleration and deceleration capacity and pulse transit time. The package
+is designed to accommodate a variety of input data, from raw unprocessed 
+and unannotated waveforms, to fully annotated tachogram data. In general, 
+abnormal beat and noise removal and methods for dealing with the missing 
+data are poorly described and highly variant in most of the literature. 
+Therefore, we have included signal processing methods that include state 
+of the art peak detectors, signal quality processing units, and beat/rhythm 
+phenotyping.  The package can also analyze the interactions between 
+multiple physiological signals.
+
+II. Getting Started
+System requirements:
+
+- Matlab and License    https://www.mathworks.com/
+
+1)  Download and install Matlab 2017b (v9.3) (required Matlab Toolboxes: 
+    Signal Processing Toolbox, and Statistics and Machine Learning Toolbox, 
+    Neural Network Toolbox)
+
+2)  Add the Physionet HRV Toolkit for Matlab folder and subfolders to your
+    Matlab path
+
+3)  (Optional) rrgen binary - compilation of rrgenV3.c on your system:
+
+        1.  Compile rrgen
+            Navigate to rrgen in HRV Toolbox & Compile using gcc
+            gcc -Wall rrgenV3.c -lm -o rrgen
+                or
+            gcc -Wall -o rrgenV3 rrgenV3.c 
+        2.  Ensure executable is on the system path, or move executable to
+            usr/local/bin or similar location on the path
+        3.  Ensure executable is on Matlab's path using the addpath fn
+
+III. Starting Analysis
 
 ------- Quick Start: ---------
 1)  Review InitializeHRVparams.m and optimize the parameters for your 
@@ -126,49 +170,5 @@ read these files as follow:
 
 [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   
-
-
-
------ Full Instructions: -----
-I. Introduction
-The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
-to meet the need in the clinical and scientific community for a validated, 
-standardized, well-documented open-source toolkit to evaluate the 
-relationships between physiological signals and disease. The package not 
-only includes standard HRV tools to generate time and frequency domain 
-metrics from ECG or pulsatile waveforms (like the blood pressure or 
-photoplethysmographic waveforms), but more recent metrics such as 
-acceleration and deceleration capacity and pulse transit time. The package
-is designed to accommodate a variety of input data, from raw unprocessed 
-and unannotated waveforms, to fully annotated tachogram data. In general, 
-abnormal beat and noise removal and methods for dealing with the missing 
-data are poorly described and highly variant in most of the literature. 
-Therefore, we have included signal processing methods that include state 
-of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.  The package can also analyze the interactions between 
-multiple physiological signals.
-
-II. Getting Started
-System requirements:
-
-- Matlab and License    https://www.mathworks.com/
-
-1)  Download and install Matlab (required Matlab Toolboxes )
-
-2)  Add the Physionet HRV Toolkit for Matlab folder and subfolders to your
-    Matlab path
-
-3)  (Optional) rrgen binary - compilation of rrgenV3.c on your system:
-
-        1.  Compile rrgen
-            Navigate to rrgen in HRV Toolbox & Compile using gcc
-            gcc -Wall rrgenV3.c -lm -o rrgen
-                or
-            gcc -Wall -o rrgenV3 rrgenV3.c 
-        2.  Ensure executable is on the system path, or move executable to
-            usr/local/bin or similar location on the path
-        3.  Ensure executable is on Matlab's path using the addpath fn
-
-III. Starting Analysis
 
 IV. FAQ

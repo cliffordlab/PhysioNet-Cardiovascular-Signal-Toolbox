@@ -20,12 +20,12 @@ function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
 %               windows_all : vector containing the starting time of each
 %                             windows (in seconds) 
 %
-%   OUTPUT:     out.ulf        :
-%               out.vlf        :
-%               out.lf         :
-%               out.hf         :
-%               out.lfhf       :
-%               out.ttlpwr     :
+%   OUTPUT:     out.ulf        : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
+%               out.vlf        : (ms^2) Power in very low frequency range (default 0.003 <= vlf < 0.04 Hz)
+%               out.lf         : (ms^2) Power in low frequency range (default 0.04Hz  <= lf < 0.15 Hz)
+%               out.hf         : (ms^2) Power in high frequency range (default 0.15 <= hf < 0.4 Hz)
+%               out.lfhf       : Ratio LF [ms^2]/HF [ms^2]
+%               out.ttlpwr     : (ms^2) Total spectral power (approximately <0.4 Hz)
 %               out.fdflag     : 1 - Lomb Periodogram or other method failed
 %                                2 - Not enough high SQI data
 %                                3 - Not enough data in the window to analyze

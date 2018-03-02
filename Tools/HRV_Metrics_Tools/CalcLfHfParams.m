@@ -1,12 +1,23 @@
 function [ulf, vlf, lf, hf, lfhf, ttlpwr] = CalcLfHfParams(PSD, F, limits,plot_on)
 % [ulf, vlf, lf, hf, lfhf, ttlpwr] = CalcLfHfParams(PSD, F, limits,plot_on)
 %
-%   OVERVIEW:  
-%
+%   OVERVIEW: Compute the frequency domain features for a given PSD and
+%             frequency bans limits
+%         
 %   INPUT:      
+%        PSD     - power spectral density 
+%        F       - frequency vector
+%        limits  - frequency domain analysis limits
+%        plot_on - 
 %
 %   OUTPUT:     
-%
+%	- ulf     : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
+%	- vlf     : (ms^2) Power in very low frequency range (default 0.003 <= vlf < 0.04 Hz)
+%	- lf      : (ms^2) Power in low frequency range (default 0.04Hz  <= lf < 0.15 Hz)
+%	- hf      : (ms^2) Power in high frequency range (default 0.15 <= hf < 0.4 Hz)
+%	- lfhf    : Ratio LF [ms^2]/HF [ms^2]
+%	- ttlpwr  : (ms^2) Total spectral power (approximately <0.4 Hz)
+%     
 %   DEPENDENCIES & LIBRARIES:
 %       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
 %       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox

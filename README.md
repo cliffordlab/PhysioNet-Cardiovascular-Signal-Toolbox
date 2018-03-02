@@ -72,7 +72,7 @@ The following metrics are output from the HRV Toolbox:
 	- NNiqr     : interquartile range of NN intervals
 	- SDNN      : (ms) Standard deviation of all NN intervals.
 	- RMSSD     : (ms) The square root of the mean of the sum of the squares 
-                   of differences between adjacent NN intervals.
+                       of differences between adjacent NN intervals.
 	- pnn50     : (%) NN50 count divided by the total number of all NN intervals.
                   (Number of pairs of adjacent NN intervals differing by more than 50 ms )
 	- tdflag    :   2 = not enough high SQI data in the window to process
@@ -98,21 +98,20 @@ The following metrics are output from the HRV Toolbox:
 
 #### Other HRV measures: 
     
-    PRSA - AC     : (ms) acceleration capacity
-    PRSA - DC     : (ms) deceleration capacity
-	
-    SDANN         : (ms) Standard deviation of the average of NN intervals 
-                    in all 5-minute segments of a long recording
-	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
-                    segments of a long recording
+    - PRSA - AC     : (ms) acceleration capacity
+    - PRSA - DC     : (ms) deceleration capacity
+    - SDANN         : (ms) Standard deviation of the average of NN intervals 
+                       in all 5-minute segments of a long recording
+    - SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
+                      segments of a long recording
 
 #### Long range measures:
     
-    MSE           : First column contains the scale factors, and the second 
-                    column provides the corresponding entropy values
+    - MSE           : First column contains the scale factors, and the second 
+                      column provides the corresponding entropy values
      
-    DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
-    DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
+    - DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
+    - DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
 
 #### Nonlinear HRV measures: 
 

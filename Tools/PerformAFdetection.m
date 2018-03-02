@@ -20,9 +20,20 @@ function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,t
 %       afresults : a single row containing a flag (1) when AF is
 %                   dettected in a window and 0 if no AF 
 %
-%
-%   Written by Giulia Da Poian (giulia.dap@gmail.com)
-%
+%   DEPENDENCIES & LIBRARIES:
+%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%	REPO:       
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%   ORIGINAL SOURCE AND AUTHORS:     
+%       Written by Giulia Da Poian (giulia.dap@gmail.com) on Sep 6, 2017.
+%       Dependent scripts written by various authors 
+%       (see functions for details)       
+%	COPYRIGHT (C) 2018 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %   Modified on 02.14.2018 to include SQI check before evaluating AF; if a
 %   windows contains low SQI signal do not compute AF and mark the window
 %   as NaN

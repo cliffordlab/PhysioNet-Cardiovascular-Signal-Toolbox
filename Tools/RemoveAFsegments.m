@@ -21,8 +21,20 @@ function [cleanRRAnalysisWindows,idx_af] = RemoveAFsegments(RRAnalysisWindows,Af
 %                                analysis
 %       idx_af                 : indexes of the AF windows
 %
-%
-%   Written by Giulia Da Poian (giulia.dap@gmail.com) 
+%   DEPENDENCIES & LIBRARIES:
+%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%	REPO:       
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%   ORIGINAL SOURCE AND AUTHORS:     
+%       Written by Giulia Da Poian (giulia.dap@gmail.com) on Sep 6, 2017.
+%       Dependent scripts written by various authors 
+%       (see functions for details)       
+%	COPYRIGHT (C) 2018 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 
 cleanRRAnalysisWindows = RRAnalysisWindows;

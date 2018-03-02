@@ -17,8 +17,20 @@ function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRInterv
 %       SQIjs                  :  Signal Quality Index values comparing jqrs and wqrsm 
 %       StartIdxSQIwindows_jw  :  Indexes of SQI windows
 %
-%   Written by Giulia Da Poian (giulia.dap@gmail.com) 
-% 
+%   DEPENDENCIES & LIBRARIES:
+%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%	REPO:       
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%   ORIGINAL SOURCE AND AUTHORS:     
+%       Written by Giulia Da Poian (giulia.dap@gmail.com) 
+%       Dependent scripts written by various authors 
+%       (see functions for details)       
+%	COPYRIGHT (C) 2018 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 if nargin < 3
     error('Wrong number of arguments in ConvertRawDataToRRIntervals')

@@ -45,10 +45,10 @@ System requirements:
 ## II. Starting Analysis
 
 ### Quick Start: 
-1)  Review InitializeHRVparams.m and optimize the parameters for your 
+1)  Review [InitializeHRVparams.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master/InitializeHRVparams.m) and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
-    of the Main_VOSIM.m fucntion are a two equal length vectors: RR interval
+    of the [Main_HRV_Analysis.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master  /Main_HRV_Analysis.m) fucntion are a two equal length vectors: RR interval
     and time in units of seconds or the 'raw' ECG signal (physical units,mV) 
     and time. 
     Additionaly, blood pressure waveform and photoplethysmographic/pulsatile
@@ -82,7 +82,7 @@ Time domain measures of HRV:
                     4 = window is missing too much data
                     5 = success
 
-Frequency domain measures of HRV (default using Lomb Periodogram or method ):
+Frequency domain measures of HRV (default using Lomb Periodogram method):
 
 	- ulf         : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
 	- vlf         : (ms^2) Power in very low frequency range (default 0.003 <= vlf < 0.04 Hz)
@@ -97,7 +97,7 @@ Frequency domain measures of HRV (default using Lomb Periodogram or method ):
                     4 = window is missing too much data
                     5 = success
 
-Others HRV measures 
+Other HRV measures: 
     
     PRSA - AC     : (ms) acceleration capacity
     PRSA - DC     : (ms) deceleration capacity
@@ -107,7 +107,7 @@ Others HRV measures
 	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                     segments of a long recording
 
-Long range measures
+Long range measures:
     
     MSE           : First column contains the scale factors, and the second 
                     column provides the corresponding entropy values
@@ -124,7 +124,7 @@ Nonlinear HRV measures:
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
 
-Heart Rate Turbulence HRT:
+Heart Rate Turbulence HRT Analysis:
 
      - TO         : (%) turbulence onset
      - TS         : turbulence slope    
@@ -134,18 +134,18 @@ Heart Rate Turbulence HRT:
 Using [Main_HRV_Analysis.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master/Main_HRV_Analysis.m), [Analyze_ABP_PPG_Waveforms.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master/Tools/Analyze_ABP_PPG_Waveforms.m) to analyze the ECG, PPG and/or ABP the function 
 will return an annotation file with the locations of detected QRS peaks or PPG/ABP onsets:
 
-ECG : *.jqrs (for jqrs detector)
-      *.wqrs (for wqrs detector)
-      *.sqrs (for sqrs detector)
+    ECG : *.jqrs (for jqrs detector)
+          *.wqrs (for wqrs detector)
+          *.sqrs (for sqrs detector)
 
-PPG : *.ppg (for PPG onset)
+    PPG : *.ppg (for PPG onset)
 
-ABP : *.abp (for ABP onset)
+    ABP : *.abp (for ABP onset)
 
 To read these files use the [read_ann.m] function included in the toolbox:
 
-QRS_locations = read_ann('fileName', 'jqrs')
-PPG_onsets = read_ann('fileName','ppg') 
+    QRS_locations = read_ann('fileName', 'jqrs')
+    PPG_onsets = read_ann('fileName','ppg') 
 
 Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
@@ -153,13 +153,14 @@ Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI value is saved as a number from 0 to 100 in a file with extansion
-*.sqijw : comparison of jqrs wrt wqrs detection
-*.sqijs : comparison of jqrs wrt sqrs detection
+For ECG the SQI value is saved as a number from 0 to 100 in a file with extansion:
+
+    *.sqijw : comparison of jqrs wrt wqrs detection
+    *.sqijs : comparison of jqrs wrt sqrs detection
 
 read these files as follow:
 
-[sqiTime, sqiValue] = read_ann('fileName' , 'sqijw')
+    [sqiTime, sqiValue] = read_ann('fileName' , 'sqijw')
 
 For PPG and ABP two different values of SQI are seved in each annotation files
 and they are related to a specific 'beat', one is a char value (E: excellent 
@@ -168,7 +169,7 @@ in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
 read these files as follow:
 
-[ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
+    [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   
 
 ## IV. FAQ

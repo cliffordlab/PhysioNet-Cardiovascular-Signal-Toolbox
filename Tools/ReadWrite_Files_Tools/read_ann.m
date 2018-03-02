@@ -34,7 +34,17 @@ function  [anntime,type,subtype,chan,num,comments]=read_ann(recordName,annotator
 % annotator
 %        String specifying the name of the annotation file 
 %
-% 
+%   ORIGINAL SOURCE AND AUTHORS:     
+%       Qiao Li 
+%       
+%       Dependent scripts written by various authors 
+%       (see functions for details)       
+%	COPYRIGHT (C) 2016 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%
 if isnumeric(recordName)
     recordName = num2str(recordName);
 end

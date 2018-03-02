@@ -40,11 +40,7 @@ function write_ann(recordName,HRVparams,annotator,ann,annType,subType,chan,num,c
 %       Default is ''.
 % OUTPUT:
 %       Binary (WFDB COMPATIBLE) or CSV formatted annotation file
-% DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-% REFERENCE: 
-% REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%
 % ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Qiao Li March 2,2017
 %       Dependent scripts written by various authors 

@@ -23,7 +23,7 @@ function [T, Tab] = ExportHRVparams(HRVparams)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%%
+%
 
 % Note that if you change the order of the parameters or add parameters 
 % this might not work

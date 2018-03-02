@@ -30,13 +30,7 @@ function [samples, time, rr_sec, rr_samp, HR, annotations, Fs, tstart, date] = r
 %                   ? 02 = noise on channel 2
 %                   ? 03 = noise on both channels (unreadable)
 %               Fs - sampling frequency
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
-%	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Qiao Li 
 %       

@@ -1,4 +1,15 @@
 function write_hea(recordName, fs, datapoints, annotator, gain, offset,unit)
+
+% write_hea(recordName, fs, datapoints, annotator, gain, offset,unit)
+%
+% ORIGINAL SOURCE AND AUTHORS:     
+%       This script written by Qiao Li  
+% COPYRIGHT (C) 2016 
+% LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+
 numsig = 1;
 %fs = 125;
 %datapoints = 75000;

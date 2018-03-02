@@ -1,9 +1,29 @@
 function test = CompareOutput(file1,file2)
     
-% This function returns test=1 if the two files are equal test=0 otherwise
-  
+%   test = CompareOutput(file1,file2)
+%	OVERVIEW: This function returns test=1 if the two files are equal 
+%             test=0 otherwise
+%   INPUT:
+%       file1    - string with the reference file name 
+%       file2    - string with the test file name 
+%   OUTPUT 
+%       test      - return 0 if the two files are different, 1 if they are
+%                   the same
+%
+%   DEPENDENCIES & LIBRARIES:
+%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%	REPO:       
+%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%   ORIGINAL SOURCE AND AUTHORS:     
+%       This script written by Giulia Da Poian
+%	COPYRIGHT (C) 2018 
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+% 
 if isempty(file1) || isempty(file2)
-    test=0;
+    test = 0;
     return;
 else
     currentFile = javaObject('java.io.File', file1 );

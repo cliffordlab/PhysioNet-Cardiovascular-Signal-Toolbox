@@ -33,7 +33,7 @@ function [ids,fullfilenames] = GenerateListOfFilesTBA(ext,datadir,recursive)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-%%
+%
 
 % Check for folders inside the data directory so that a decision can be
 % made about whether to include subfolders or not

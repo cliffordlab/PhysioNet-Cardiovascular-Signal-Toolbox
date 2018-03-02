@@ -217,7 +217,7 @@ HRVparams.timedomain.win_tol = .15;      % Default: .15, Maximum percentage of d
 
 HRVparams.freq.on = 1;              % Default: 1, Frequency Domain Analysis 1=On or 0=Off
 
-ULF = [0 .0033];                    % 
+ULF = [0 .0033];                    % Requires window > 300 s
 VLF = [0.0033 .04];                 % Requires at least 300 s window
 LF = [.04 .15];                     % Requires at least 25 s window
 HF = [0.15 0.4];                    % Requires at least 7 s window

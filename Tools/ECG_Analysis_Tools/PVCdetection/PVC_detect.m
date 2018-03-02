@@ -14,7 +14,10 @@ function PVC_detect(path,record,FS,wrann_text,th)
 % Modified July 21, 2017 to update for compatibility with the HRV toolbox
 % Modifications include all things commented with ANV
 %
-%
+% LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 qrs_times=[];
 pvc_outputs=[];

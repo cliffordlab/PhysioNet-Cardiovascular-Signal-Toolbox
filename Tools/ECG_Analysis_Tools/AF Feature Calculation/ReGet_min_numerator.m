@@ -15,6 +15,11 @@ function [Min_numerator,r]=ReGet_min_numerator(x1,x2,N,m,r,fs)
 %           Shandong University
 % $Last updated:  2015.10.10
 % Las updated: 2017.19.12 (by Giulia Da Poian) vectorized
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 dim = N-m;
 

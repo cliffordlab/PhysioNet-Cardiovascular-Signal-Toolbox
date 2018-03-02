@@ -14,6 +14,10 @@ function [Min_numerator,r]=ReGet_min_numerator2(x1,x2,N,m,r,fs)
 %           Institute of Biomedical Engineering,
 %           Shandong University
 % $Last updated:  2015.10.11
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 r=r-1;
 for i=1:N-m

@@ -23,6 +23,11 @@ function Index = SVM_AFdetection_withTrainingModel(training_feature,training_cla
 % metrix, 1 for AF and 0 for non-AF
 % Output:
 % Index: AF detection indices output, with the defined order of indices of TP FN FP TN Se Sp Acc PPV NPV J in turn. 
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 
 addpath('E:\My algorithms\Matlab_SVM_tool\libsvm-3.20\matlab');

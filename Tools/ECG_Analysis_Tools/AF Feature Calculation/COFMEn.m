@@ -19,7 +19,11 @@ function COFMEn = COFMEn(data, m, r,fs)
 %           Institute of Biomedical Engineering,
 %           Shandong University
 % $Last updated:  2015.10.15
-
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 % data=[108,108,109,109,108,108,110,107,109,109,109,109,108,109,108,108,108,108,107,108,108,108,108,107,109,107,108,107,108,108,108,108,108,108,108,109,108,109,108,108,109,108,108,108,109,107,108,107,107,108,108,108,109,107,108,108,108,108,108,108]*4;
 % data=[109,108,108,109,109,109,108,109,108,108,109,108,108,109,108,108,108,109,108,109,109,109,108,108,109,108,108,109,109,109]*4;

@@ -20,6 +20,11 @@ function features = AF_features(RR,fs)
 % $ Author:  Chengyu Liu (chengyu.liu@emory.edu)
 %           Department of Biomedical Informatics, Emory University, US
 % $Last updated:  2016.10.28
+% 
+% %   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 %%
 [nr,nc]=size(RR);
 if nr<nc

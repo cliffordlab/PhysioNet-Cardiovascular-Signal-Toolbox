@@ -6,6 +6,10 @@ function COSEn = COSEn(data, m, r,fs)
 % 
 % $ Modified:2015.10.10 by Chengyu Liu
 %           @ Emory
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 
 % data=[179,185,184,183,184,184,185,185,180,178,177,176]*4;

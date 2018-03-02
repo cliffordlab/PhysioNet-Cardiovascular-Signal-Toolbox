@@ -23,7 +23,10 @@ function s = fastSampen(y,m,r)
 %              2. Humeau-Heurtier A. The multiscale entropy 
 %              algorithm and its variants: A review. Entropy. 2015 May 
 %              12;17(5):3110-23.
-
+% LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 % Ensure y is a row vector
 if size(y, 1) > size(y,2)

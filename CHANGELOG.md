@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## 1.0.0  - 2018-18-01
 ### Added
-- Physioney HRV Toolkit for Matlab 
+- Public version of the Physioney HRV Toolkit for Matlab 
 
 [Unreleased]: https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/edit/master/compare/v1.0.0...HEAD
 

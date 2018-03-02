@@ -1,8 +1,8 @@
 # Physionet HRV Toolkit for Matlab
 
------ Full Instructions: -----
-I. Introduction
-The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
+## Full Instructions: 
+### I. Introduction
+The HRV Toolbox is a aÂ cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -16,10 +16,10 @@ abnormal beat and noise removal and methods for dealing with the missing
 data are poorly described and highly variant in most of the literature. 
 Therefore, we have included signal processing methods that include state 
 of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.  The package can also analyze the interactions between 
+phenotyping.Â  The package can also analyze the interactions between 
 multiple physiological signals.
 
-II. Getting Started
+### II. Getting Started
 System requirements:
 
 - Matlab and License    https://www.mathworks.com/
@@ -42,9 +42,9 @@ System requirements:
             usr/local/bin or similar location on the path
         3.  Ensure executable is on Matlab's path using the addpath fn
 
-III. Starting Analysis
+### III. Starting Analysis
 
-------- Quick Start: ---------
+#### ------- Quick Start: ---------
 1)  Review InitializeHRVparams.m and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
@@ -58,7 +58,7 @@ III. Starting Analysis
     in a folder called as indicated in the InitializeHRVparams.m. 
     If the folder does not exist, it will be created.
 
------- Guide to Output: ------
+#### ------ Guide to Output: ------
 The following metrics are output from the HRV Toolbox:
 
     - t_win     : (s)  Start time of each window analyzed
@@ -117,7 +117,7 @@ Long range measures
 
 Nonlinear HRV measures: 
 
-    Poincaré plot (PP)
+    PoincarÃ© plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
                     on the line perpendicular to the line of identity (y=-x)
      - SD2        : (ms) standard deviation of the projection of the PP on 
@@ -128,7 +128,7 @@ Heart Rate Turbulence HRT:
      - TO         : (%) turbulence onset
      - TS         : turbulence slope    
 
------ Detection Annotation Files -------
+#### ----- Detection Annotation Files -------
 
 Using Main_VOSIM.m function or Analyze_ABP_PPG_Waveforms.m or 
 ConvertRawDataToRRIntervals.m fucntion the ECG, PPG and/or ABP detection 
@@ -149,7 +149,7 @@ PPG_onsets = read_ann('fileName','ppg')
 
 Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
------ SQI Annotation Files -------
+#### ----- SQI Annotation Files -------
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
@@ -171,4 +171,4 @@ read these files as follow:
 [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   
 
-IV. FAQ
+## IV. FAQ

@@ -15,6 +15,11 @@ function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 %
 % Written by Giulia Da Poian (giulia.dap@gmail.com), 09-13-2017
 %
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%
 
 
 if size(RR,1)>size(RR,2)

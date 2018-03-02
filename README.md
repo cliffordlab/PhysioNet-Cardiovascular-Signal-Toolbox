@@ -1,7 +1,5 @@
 # Physionet HRV Toolkit for Matlab
-
-## Full Instructions: 
-### I. Introduction
+## Introduction
 The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
@@ -19,7 +17,9 @@ of the art peak detectors, signal quality processing units, and beat/rhythm
 phenotyping.  The package can also analyze the interactions between 
 multiple physiological signals.
 
-### II. Getting Started
+## Full Instructions: 
+
+### I. Getting Started
 System requirements:
 
 - Matlab and License    https://www.mathworks.com/
@@ -42,9 +42,9 @@ System requirements:
             usr/local/bin or similar location on the path
         3.  Ensure executable is on Matlab's path using the addpath fn
 
-### III. Starting Analysis
+## II. Starting Analysis
 
-#### ------- Quick Start: ---------
+### Quick Start: 
 1)  Review InitializeHRVparams.m and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
@@ -58,7 +58,7 @@ System requirements:
     in a folder called as indicated in the InitializeHRVparams.m. 
     If the folder does not exist, it will be created.
 
-#### ------ Guide to Output: ------
+## III. Guide to Output:
 The following metrics are output from the HRV Toolbox:
 
     - t_win     : (s)  Start time of each window analyzed

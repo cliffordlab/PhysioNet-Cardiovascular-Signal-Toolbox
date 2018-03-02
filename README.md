@@ -131,9 +131,8 @@ Heart Rate Turbulence HRT:
 
 #### Detection Annotation Files 
 
-Using [Main_Analyze_HRV.m](), [Analyze_ABP_PPG_Waveforms.m]() or 
-[ConvertRawDataToRRIntervals.m]() to analyze the ECG, PPG and/or ABP the function 
-returns an annotation filese with the locations of detected QRS peaks or PPG/ABP onsets 
+Using [Main_HRV_Analysis.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master/Main_HRV_Analysis.m), [Analyze_ABP_PPG_Waveforms.m](https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/blob/master/Tools/Analyze_ABP_PPG_Waveforms.m) to analyze the ECG, PPG and/or ABP the function 
+will return an annotation file with the locations of detected QRS peaks or PPG/ABP onsets:
 
 ECG : *.jqrs (for jqrs detector)
       *.wqrs (for wqrs detector)

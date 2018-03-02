@@ -125,10 +125,11 @@ Nonlinear HRV measures:
      - SD2/SD1    : (ms) SD1/SD2 ratio
 
 Heart Rate Turbulence HRT:
+
      - TO         : (%) turbulence onset
      - TS         : turbulence slope    
 
-#### ----- Detection Annotation Files -------
+#### Detection Annotation Files 
 
 Using Main_VOSIM.m function or Analyze_ABP_PPG_Waveforms.m or 
 ConvertRawDataToRRIntervals.m fucntion the ECG, PPG and/or ABP detection 
@@ -149,7 +150,7 @@ PPG_onsets = read_ann('fileName','ppg')
 
 Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
-#### ----- SQI Annotation Files -------
+#### SQI Annotation Files
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 

@@ -32,10 +32,17 @@ function varargout = dfaScalingExponent(x, minBoxSize, maxBoxSize, midBoxSize, p
 % A log-log plot of F(n) against n is provided when pflag=1.  Default: plag=0.
 % Peng C-K, Buldyrev SV, Havlin S, Simons M, Stanley HE, Goldberger AL. 
 % Mosaic organization of DNA nucleotides. Phys Rev E 1994;49:1685-1689.
-% Copyright (c) 2005 Patrick E. McSharry (patrick@mcsharry.net)
+%
 %
 % 09-20-2017 Modified by Giulia Da Poian (GDP) to be included in the VOSIM 
 %            HRV toolbox. (Original function name: dfa)
+%
+% Copyright (c) 2005 Patrick E. McSharry (patrick@mcsharry.net)
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 if nargin < 2 || isempty(maxBoxSize)
     minBoxSize = 4;

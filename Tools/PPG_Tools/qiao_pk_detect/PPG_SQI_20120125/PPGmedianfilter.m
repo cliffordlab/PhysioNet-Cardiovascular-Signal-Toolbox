@@ -9,7 +9,12 @@ function xfilt = PPGmedianfilter(x, freq, freqd)
 % 12-01-2017 Modified by Giulia Da Poian: freqs as input parameter 
 % Renamed to PPGmedianfilter (was medianfilter) to avoid conflict with
 % other medianfilter functions
-
+%	
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%
 
 % freqd = 32; % ECG
 

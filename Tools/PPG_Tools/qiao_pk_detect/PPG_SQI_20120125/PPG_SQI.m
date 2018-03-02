@@ -27,6 +27,12 @@
 %     template:   Current PPG beat template
 %     valid:      1 or greater for valid template, 
 %                 0 for invalid template
+%	
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%
 % 12-01-2107 Modified by Giulia Da Poian: replace fixed samplig frequency
 % (125) with a variable Fs
 

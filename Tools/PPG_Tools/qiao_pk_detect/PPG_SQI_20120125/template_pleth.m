@@ -17,6 +17,12 @@
 %                 good correlation with the template
 %     valid:      1 for valid template, 2 for valid t2, 3 for both valid,
 %                 0 for invalid template and t2
+%	
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+%
 
 function [template t2 valid] = template_pleth(wave,anntime,temp_ahead,samp_freq)
 

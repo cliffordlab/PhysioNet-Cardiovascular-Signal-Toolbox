@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## 1.0.0 - 2018-18-01
+## [1.0.0]  - 2018-18-01
 ### Added
 - Physioney HRV Toolkit for Matlab 
 

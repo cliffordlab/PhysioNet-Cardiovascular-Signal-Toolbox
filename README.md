@@ -1,6 +1,6 @@
 # Physionet HRV Toolkit for Matlab
 ## Introduction
-The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
+The **Physionet HRV Toolkit For MATLAB** is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -42,9 +42,9 @@ System requirements:
             usr/local/bin or similar location on the path
         3.  Ensure executable is on Matlab's path using the addpath fn
 
-## II. Starting Analysis
+### II. Starting Analysis
 
-### Quick Start: 
+#### Quick Start: 
 1)  Review [InitializeHRVparams.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/InitializeHRVparams.m) and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
@@ -63,7 +63,7 @@ The following metrics are output from the HRV Toolbox:
 
     - t_win     : (s)  Start time of each window analyzed
 
-Time domain measures of HRV:
+#### Time domain measures of HRV:
 
 	- NNmean    : (ms) mean value of NN intervals
 	- NNmode    : (ms) mode of NN intervals
@@ -82,7 +82,7 @@ Time domain measures of HRV:
                     4 = window is missing too much data
                     5 = success
 
-Frequency domain measures of HRV (default using Lomb Periodogram method):
+#### Frequency domain measures of HRV (default using Lomb Periodogram method):
 
 	- ulf         : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
 	- vlf         : (ms^2) Power in very low frequency range (default 0.003 <= vlf < 0.04 Hz)
@@ -97,7 +97,7 @@ Frequency domain measures of HRV (default using Lomb Periodogram method):
                     4 = window is missing too much data
                     5 = success
 
-Other HRV measures: 
+#### Other HRV measures: 
     
     PRSA - AC     : (ms) acceleration capacity
     PRSA - DC     : (ms) deceleration capacity
@@ -107,7 +107,7 @@ Other HRV measures:
 	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                     segments of a long recording
 
-Long range measures:
+#### Long range measures:
     
     MSE           : First column contains the scale factors, and the second 
                     column provides the corresponding entropy values
@@ -115,7 +115,7 @@ Long range measures:
     DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
     DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
 
-Nonlinear HRV measures: 
+#### Nonlinear HRV measures: 
 
     Poincaré plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
@@ -124,7 +124,7 @@ Nonlinear HRV measures:
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
 
-Heart Rate Turbulence HRT Analysis:
+#### Heart Rate Turbulence HRT Analysis:
 
      - TO         : (%) turbulence onset
      - TS         : turbulence slope    

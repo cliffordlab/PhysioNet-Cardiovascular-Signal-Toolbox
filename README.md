@@ -131,9 +131,10 @@ Heart Rate Turbulence HRT:
 
 #### Detection Annotation Files 
 
-Using Main_VOSIM.m function or Analyze_ABP_PPG_Waveforms.m or 
-ConvertRawDataToRRIntervals.m fucntion the ECG, PPG and/or ABP detection 
-returns an annotation filese with the locations of QRS peaks or PPG/ABP onset 
+Using [Main_Analyze_HRV.m](), [Analyze_ABP_PPG_Waveforms.m]() or 
+[ConvertRawDataToRRIntervals.m]() to analyze the ECG, PPG and/or ABP the function 
+returns an annotation filese with the locations of detected QRS peaks or PPG/ABP onsets 
+
 ECG : *.jqrs (for jqrs detector)
       *.wqrs (for wqrs detector)
       *.sqrs (for sqrs detector)
@@ -142,8 +143,7 @@ PPG : *.ppg (for PPG onset)
 
 ABP : *.abp (for ABP onset)
 
-To read these files use the read_ann.m function included in the VOSIM 
-toolbox, e.g.,
+To read these files use the [read_ann.m] function included in the toolbox:
 
 QRS_locations = read_ann('fileName', 'jqrs')
 PPG_onsets = read_ann('fileName','ppg') 

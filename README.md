@@ -54,8 +54,7 @@ System requirements:
     Additionaly, blood pressure waveform and photoplethysmographic/pulsatile
     data can be analyzed and they should be in the standard physical units 
     (mmHg or normalized units respectively). 
-3)  Results will be stored in a subdirectory of the project's data file
-    in a folder called as indicated in the InitializeHRVparams.m. 
+3)  Results will be stored in folder called as indicated in the [InitializeHRVparams.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/InitializeHRVparams.m)
     If the folder does not exist, it will be created.
 
 ## III. Guide to Output:

@@ -29,6 +29,11 @@ function [BeatQ, r] = jSQI(features, onset, abp)
 %   - v2.0 - 1/18/06 - thresholds updated to reduce false positives
 %   - v3.0 - 2/10/06 - added "..101..." detection - see lines 92-96
 %
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 
 if length(onset)<30

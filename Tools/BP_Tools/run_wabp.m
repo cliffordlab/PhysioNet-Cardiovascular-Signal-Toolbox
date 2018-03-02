@@ -11,6 +11,11 @@ function r = run_wabp(abp)
 %
 %   Written by James Sun (xinsun@mit.edu) on Nov 19, 2005.  This ABP onset
 %   detector is adapted from Dr. Wei Zong's wabp.c.
+%
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
 
 %% Input checks
 if nargin ~=1

@@ -12,10 +12,6 @@ function alpha = dfaScalingExponent(x, minBoxSize, maxBoxSize, pflag)
 % OUTPUTS     
 %         alpha      : estimate of scaling exponent, +
 %                      minBoxSize <= n <= maxBoxSize
-%         alpha1     : estimate of scaling exponent for short-term 
-%                      fluctuations, minBoxSize <= n < midBoxSize
-%         alpha2     : estimate of scaling exponent for long-term 
-%                      fluctuations, midBoxSize <= n <= maxBoxSize
 %
 % The raw time series x(i) is first integrated to give y(i); i=1,...,N. 
 % For each length scale, n, y(i) is divided into segments of equal length, n.

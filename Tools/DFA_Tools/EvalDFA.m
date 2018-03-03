@@ -1,6 +1,6 @@
-function [alpha, alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 
-% [alpha, alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+% [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %
 %   OVERVIEW:   This function returns DFA scaling coefficients calculated on
 %               input NN intervals for each window.
@@ -19,8 +19,6 @@ function [alpha, alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %                                windows (in seconds) 
 %                
 %   OUTPUT:     
-%                   alpha     : estimate of scaling exponent, 
-%                               minBoxSize <= n <= maxBoxSize
 %                  alpha1     : estimate of scaling exponent for short-term 
 %                               fluctuations, minBoxSize <= n < midBoxSize
 %                  alpha2     : estimate of scaling exponent for long-term 
@@ -70,7 +68,6 @@ maxBox = HRVparams.DFA.maxBoxSize;
 midBox = HRVparams.DFA.midBoxSize;
 
 % Preallocate arrays (all NaN) before entering the loop
-alpha = nan(length(windows_all),1);
 alpha1 = nan(length(windows_all),1);
 alpha2 = nan(length(windows_all),1);
 
@@ -92,11 +89,8 @@ for idxWin = 1:length(windows_all)
 
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < RejectionThreshold
-            if isempty(midBox)
-                alpha(idxWin) = dfaScalingExponent(nn_win, minBox, maxBox, midBox, 0);
-            else
-                [alpha(idxWin), alpha1(idxWin),  alpha2(idxWin)] = dfaScalingExponent(nn_win, minBox, maxBox, midBox, 0);
-            end
+                alpha1(idxWin) = dfaScalingExponent(nn_win, minBox, midBox, 0);
+                alpha2(idxWin) = dfaScalingExponent(nn_win, midBox, maxBox, 0);
         end
         
 

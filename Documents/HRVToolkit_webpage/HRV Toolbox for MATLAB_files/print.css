@@ -1,0 +1,9 @@
+body {margin:0; padding:0; line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px; font: 13px "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000;}
+h2 {color:#000; font-size:25px;}
+a[href] {color:#000;} 
+a:link, a:visited {background: transparent; color:#333; text-decoration:none;}
+a:link[href]:after, a[href]:visited:after {content: " [" attr(href) "]" ;
+ font-size: 11px; color: #00f;}
+img, img a { border:none; }
+.banner, .footer, a[href^='#top'] { display:none; }
+.pbanner { display: inline; font-size: 20px; color: #0d0; }

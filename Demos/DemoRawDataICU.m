@@ -55,7 +55,7 @@ jqrs_ann = read_ann(AnnFile,'jqrs');
 
 ppg_ann = read_ann(AnnFile,'ppg');
 qppg(signal(:,5),HRVparams.Fs);
-[~,ppgsqi,~] = read_ann(AnnFile,'sqippg');
+[~,ppgsqi,ppgNumSqi] = read_ann(AnnFile,'sqippg');
 
 abpann = read_ann(AnnFile,'abpm');
 features =  abpfeature(signal(:,3), abpann, HRVparams.Fs);
@@ -76,14 +76,7 @@ if HRVparams.gen_figs
     title('Respiration')
     
     % PLETH	
-    for j = 1:length(ppg_ann)-1
-        if (strcmp(ppgsqi(j),'A') || strcmp(ppgsqi(j),'E'))
-            numsqi(j) = 1;
-        else
-            numsqi(j) = 0;
-        end
-    end
-    Plot_SignalDetection_SQI(time, signal(:,5), ppg_ann, numsqi,'PPG')
+    Plot_SignalDetection_SQI(time, signal(:,5), ppg_ann, ppgNumSqi'./100,'PPG')
 
 end
 

@@ -1,6 +1,6 @@
-** Key Contributions:
+** Key Contributions:**
 
-You might ask, why `another` HRV toolbox? The following is a list of key contributions this toolbox and 
+You might ask, why 'another' HRV toolbox? The following is a list of key contributions this toolbox and 
 accompanying publication makes to the field, and why you might want to use this in preference to other 
 toolboxes and software out there.
 

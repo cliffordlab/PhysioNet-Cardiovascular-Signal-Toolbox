@@ -1,0 +1,70 @@
+#page {max-width: 9in; margin: 0 auto; padding-top: .25em;} /* padding and margin at top to line up with toc */
+div.notice {margin-top: 1.25em; }
+h1 { padding-top: .4em;}
+h2 { clear: none; }
+
+/* center video: see http://stackoverflow.com/questions/3300660/how-do-i-center-an-image-if-its-wider-than-its-container */
+div.outer {
+    width: 900px; /* some width amount needed */
+    margin: 0 auto; 
+    overflow: visible;
+    width: 100%;  
+}
+div.inner {
+    position:relative;
+    float: right; /* this was added and display removed */
+    right: 50%;
+}
+div.inner img {
+    position: relative; 
+    right:-50%; /* this was changed from "left" in original */
+    padding-bottom: 2em;
+    z-index: 0;
+}
+/* local index listing on software index page */
+#index {
+    padding: 1em 0 4em 0;
+}
+#index dl {
+    padding: .4em 0;
+}
+#index dt {
+    padding: .2em 0;
+}
+#index th {
+    padding: .6em 1em .6em 0;
+    text-align: left;
+}
+/* styles for table of contents (which is auto-generated) */
+#tocwrapper {
+    max-width: 15in;
+    margin: 0 auto;
+    float: right;
+}
+#toc { float: right; font-size: 10pt; max-width: 200px; width: auto;
+       padding: 10px 30px 10px 20px; background: #efffb1; background: #dfd; background: #fff0e8; background: #fff9f6;
+       border: solid 2px #a44; margin: 0 .2em 10px 15px; border-radius: 5px; border-radius: 10px; } /* overrides */
+#toc:before {
+    content: "On this page:";
+}
+#toc li:first-child {
+    margin-top: .5em;
+}
+#toc a {
+    text-decoration: none;
+}
+/***/
+/* styles for breadcrumbs (top of page) */
+.crumb {
+    font-size: .9em;
+}
+.breadcrumbs {
+    background: #fff9f6;
+    border-radius: 2px;
+    padding: .25em 1em;
+}
+/***/
+
+pre {
+    overflow: auto;
+}

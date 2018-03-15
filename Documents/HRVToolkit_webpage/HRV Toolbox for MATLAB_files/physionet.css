@@ -1,0 +1,543 @@
+/* file: physionet.css */
+/* new styles for superfish menus -- May 2016 */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite, del, dfn, em, font, img,
+ins, kbd, q, s, samp, small, strike, strong, tt, code, var, b, u, i,
+center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+tbody, tfoot, thead, tr, th, td {
+ margin: 0; padding: 0; font-size: 100%; vertical-align: baseline;  border: 0;
+ background: transparent;
+} /* "code" added to list 24 Nov 2015  - KP */
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+       color: #444; font-size: 100%; background: #fff; margin: 0; }
+a:link, a:visited { color: #369; }
+a:hover { color: #39c; }
+
+.hide, .pbanner { display: none; text-align: center; } /* text-align attribute added by KP, 24 Nov 2015 */
+a img { border: none; }
+.group:after { content: "."; display: block; height: 0; clear: both;
+	       visibility: hidden; }
+
+/* work around MSIE bugs */
+* html #selector {
+ filter: progid:DXimageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale src='image/image.png'); background-image: none; background-repeat: no-repeat; background-color: transparent; }
+* html .group { height 1%; }
+* html #center_column {background:#fdfde0; width:65%; float:left}
+* html div.fl { width: 45%; float: left; }
+* html div.fr { width: 45%; float: right; }
+* html img { width: 95% }
+* html ul.nav li { list-style: none; margin-top: 0.8em;  margin-left: 2em;
+	    text-indent: -2em; }
+*:first-child+html ul.nav li { list-style: none; margin-top: 0.8em;
+			       margin-left: 2em; text-indent: -2em; }
+*:first-child+html .group { min-height: 1 px; }
+/* end of MSIE bug-fix section */
+
+p { line-height: 1.4; padding: 0.5em; padding-left: 0; margin: 0.25em 0; max-width: 100% } 
+/* #page > p:first-child { margin-top: 1em; }  added by KP Sept 2015 */
+#page p { padding:  0.5em 1em; }
+#page dl, #page ul, #page ol { line-height: 1.4; padding: 0.5em; padding-left: 1em; margin: 0.25em 0; max-width: 100% } /* dl, ul, ol added by KP 10 July 2015.  only within page div so as not to mess up superfish menus!  */
+#page .topmenu img { display: none; } /* hide arrows on site map page. KP, 8 Oct 2015 */
+p.plain { margin: 0.25em 1em; }
+p.plain { line-height: 1.4; padding: 0.5em; padding-left: 0; margin: 0.25em 1em; max-width: 100% } /* added (to change previous line) by KP 29 Sept 2015 */
+ul, ol {padding-bottom: .5em; padding-top: .5em; margin-bottom: .25em; } /*added by KP 29 June 2015 */
+h1, h2, h3 { font-variant: small-caps; color: #080; background: #beb;
+    	     padding: .2em 1em; margin: 0 0em; clear: both; } /* clear: both added by KP 9 June 2015 */
+h2, h3 { margin-top: .75em;} /* added by KP 29 June 2015 */
+h1, h2, h3, h4, h5, h6 { font-family: Georgia, Times, serif; }
+h1 { font-size: 1.75em; text-align: center; padding-top: .4em;} /* padding-top added by KP 10 July 2015 - avoid collision with top banner */
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.25em; }
+h4 { font-size: 1em; font-variant: small-caps; margin-top: .75em;}
+
+h1 tt, h2 tt, h3 tt { font-family: courier, monospace; font-variant: normal; }
+h1 code, h2 code, h3 code { font-family: courier, monospace; font-variant: normal; } /* tt is deprecated; use code instead */
+ /* blockquote is for the quotation, not the source. use class reference instead. KP 7/2015 */
+blockquote { line-height: 1.2; padding: 0.5em; padding-left: 3em; padding-right: 3em }
+.reference { line-height: 1.2;  padding: 0 3em .5em 3em; }
+/* */
+img { max-width: 100%; }
+div > img { padding: 0.5em 1em 0em; }
+li { margin-left: 1em; margin-bottom: 0.3em; text-indent: 0; }
+ul > li { list-style: disc outside; }
+ol > li { list-style: decimal outside; }
+ol.a > li { list-style: lower-alpha; }
+dt { font-weight: bold; padding-left: 1em; }
+dd { margin: 0 0 0 4em; }
+/*tt { font-size: .83em; } */
+tt, code { font-size: 1.2em; }  /* changed by KP 6/2015 */
+/* pre { background: #ffe; font-size: .83em; margin: 0 2em; display: block;
+      border: 1px dotted; text-indent: 0; padding: 0.25em 1.5em; }*/
+pre { background: #ffe; font-size: 1em; margin: 2em; display: block;
+      border: 1px dotted; text-indent: 0; padding: 0.75em 1.5em; } /*changed by KP 6/2015 */
+.pseudopre { font-family: monospace; background: #ffe; font-size: 1em; margin: 2em; display: block;
+      border: 1px dotted; text-indent: 0; padding: 0.75em 1.5em; } /*changed by KP 6/2015 */
+li > pre { margin: 0.5em 2em 0 1em; }
+pre.code { background: #eee; }
+small { font-size: .83em; }
+td { padding-bottom: 0.75em; padding-left: 0.5em; padding-right: 0.5em }
+td img { vertical-align: text-top; }
+.breadcrumbs { float: left; padding: 0.25em; margin: 0.6em; background: #fff; } /* added by KP 7/2015 */
+
+/* styles for forms, added by KP 12/2015  */
+label { font-weight: normal;  padding: .4em .8em .2em 0; display: inline-block; min-width: 40%; text-align: right; }
+fieldset { border: none; padding: 1em 0 1.5em 0; }
+
+a[href^='https://'],
+a[href^='http://'] { background: url(/icons/External.png) no-repeat center
+		     right; padding-right: 1em; }
+a.plain,
+a[href^='https://physionet'],
+a[href^='http://physionet'],
+a[href^='http://www.physionet.org'] { background: none; padding-right: 0; }
+a[href^='mailto:'] { background: url(/icons/Email.png) no-repeat left center;
+		     padding-left: 1.25em; margin-left: 0.25em; }
+a[href^='#top'] { border-style: solid; border-width: thin; border-color: #694;
+		  border-radius: 5px; color: #fff; background: #7c7; background: #694;
+		  text-decoration: none; padding: 1px; padding: .2em .4em; font-size: .9em; margin-bottom: 2em; display: inline-block;} /* changed by KP 10/2015; additional change (bottom margin, display) 6/2016  */
+a[href^='#top']:active { border-width: medium; }
+a[href^='#top']:hover { color: #694; background: #fff; }  /* changed by KP 10/2015 */
+a[name] { padding-top: 1em; }
+/* :target { border-top: 2em solid #fff; margin-top: -2em;} */ /* commented out by KP 21 Aug 2015 -- does strange things */
+:target {border-top: 2em solid transparent; background-clip: padding-box; margin-top: -2em;} /* so that anchored headers will appear under top banner */
+.feed li { list-style: none; }
+
+
+div.notice { width: 90%; margin: 2em auto; margin-bottom: 2em; padding: 2em; background: #cdf; } /*margin top and bottom adjusted  by KP 6/2015*/
+div.figure { width: 90%; margin: auto; padding: 2em; border: 1px dotted; }
+tr.ne { vertical-align: top; }
+td.nd { white-space: nowrap; text-align: right; }
+/* above styles on news.shtml page supplanted by those below. KP 8 Oct 2015 */
+dt.nd { padding-top: .75em; }
+td p { padding: 0; margin: 0; }
+td.si { color: #fff; background: #a44; font-weight: bold; padding: 0;
+	text-align:center; vertical-align: middle; }
+p.pr { margin: 0 0 0 1em; text-indent: -1em }
+p.prc { margin: 0.5em 0 0 1em; text-indent:-1em }
+table.pnw { background: #ffffff; outline: 1px solid #a0a0a0; padding: 5px;
+	    border: 3px solid #d0d0d0; }
+table.acc { background: #ffffe0; outline: 1px solid #a0a0a0; padding: 5px;
+	    border: 5px solid #ddddaa; }
+input.red { -webkit-border-radius: 5px; -moz-border-radius: 5px;
+	    border-radius: 5px; border: 1px solid gray; padding:1px 8px;
+	    display:inline-block; text-decoration:none; background:#c02020;
+	    color:#ffffff; cursor:pointer; font: 14px sans-serif; }
+input.red:hover { text-decoration: none; background: #ff4040; cursor: pointer;
+		  border: 1px solid #ff0000; }
+a.button { -webkit-border-radius: 5px; -moz-border-radius: 5px;
+	    border-radius: 5px; border: 1px solid gray; padding:1px 8px;
+	    display:inline-block; text-decoration:none; background:#f0f0f0;
+	    color:#444; cursor:pointer;
+	    font: 14px sans-serif; font-size: .83em; }
+
+ /* login styles added by KP, 29 Oct 2015 */
+div.login { width: 60%;  padding: 1em 1.5em; background: <!--#echo var=CLIGHT -->; border: solid 2px <!--#echo var=CDARK -->; margin: 1.75em auto 1em auto; border-radius: 5px; border-radius: 10px; display: block; font-size: .9em;}
+div.login input { color: #000; margin: 0 .5em .5em .5em;}
+
+/* table of contents */
+/* #toc { float: right; font-size: 10pt; width: 200px;
+       padding: 10px 10px 10px 20px; background: #efffb1; 
+       border: solid 1px #ccd136; margin: 0 -1em 10px 15px; border-radius: 5px; }
+*/
+/* adjust toc color to coordinate with header colors -- done in /head.shtml */
+#toc { float: right; font-size: 10pt; max-width: 16em; width: 10em;
+       padding: 1em 1.5em; margin: 0 .2em 1em 1em; border-radius: 5px; border-radius: 10px;} /* overrides */
+#toc:before {
+    content: "On this page:";
+}
+#toc li:first-child {
+    margin-top: .5em;
+}
+#toc li ul {
+    padding: .2em;
+}
+#toc li ul li:first-child {
+    margin-top: .1em;
+}
+#toc a {
+    text-decoration: none;
+}
+/***/
+/* styles for quick links, news, and the like */
+.quicklinks {
+    background: #f5fcf3; border: 2px solid #694; border-radius: 10px; margin: 0px 0.2em .75em 1em;
+}
+
+.quicklinks .header {
+    border-radius: 10px; border-bottom-right-radius: 0; border-bottom-left-radius: 0; font-size: 1.25em; font-variant: small-caps; color: #694; background: #daf3ce;  font-weight: bold; padding: 10px; font-family: Georgia, Times, serif; margin: 0;
+}
+
+/*** items below added May 2016 by KP, for accessible menus ***/
+
+/*** menu styles ***/
+/* just use sf-menu styles! */
+
+
+/******************************/
+/*** sf menu styles ***/
+
+/*** ESSENTIAL STYLES ***/
+.sf-menu, .sf-menu * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.sf-menu li {
+    position: relative;
+}
+.sf-menu ul {
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    z-index: 99;
+}
+.sf-menu > li {
+/*    float: left; */
+}
+.sf-menu li:hover > ul,
+.sf-menu li.sfHover > ul {
+    display: block;
+}
+
+.sf-menu a {
+    display: block;
+    position: relative;
+}
+.sf-menu ul ul {
+    top: 0;
+    left: 100%;
+}
+
+/*** END ESSENTIALS ***/
+
+/* custom styles */
+.sf-menu a { /* controls height of menu items */
+    padding: .4em 1em;
+    border-top: 1px solid #999;
+}
+
+.sf-menu li:hover,
+.sf-menu li.sfHover {
+    /* only transition out, not in */
+    -webkit-transition: none;
+    transition: none;
+}
+.sf-menu li:hover, 
+.sf-menu li.sfHover,
+.sf-menu a
+{
+/*	border-left: 0px solid #fff; from superfish.css */
+    background: #daf3ce;
+    color: #222;
+    margin: 0;
+    zoom: 1; /* IE7 */  
+}
+.sf-menu, .sf-menu ul, .sf-menu li { 
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+}
+.sf-menu { 
+/*    	float: left; */
+    position: relative; 
+}
+* html .sf-menu { 
+    position: static; 
+}
+.sf-menu li {
+    float: left; 
+    background: #eee; 
+    width: 100%;
+    margin: 0;
+    white-space: nowrap; /* no need for Supersubs plugin */
+    *white-space: normal; /* ...unless you support IE7 (let it wrap) */
+    -webkit-transition: background .2s;
+    transition: background .2s;
+}
+.sf-menu .pb, 
+.sf-menu .pb li,
+.sf-menu .pb a { 
+    background: #dfe9ff; 
+    color: #38388B; 
+}
+.sf-menu .pt, 
+.sf-menu .pt li,
+.sf-menu .pt a { 
+    background: #fdc; 
+    color: #8B3838; 
+}
+.sf-menu .pw, 
+.sf-menu .pw li,
+.sf-menu .pw a { 
+    background: #eec; 
+    color: #440; 
+}
+.sf-menu li a { 
+    display: block; 
+    font-size: 100%; 
+    text-decoration: none; 
+}
+.sf-menu :hover,
+.sf-menu :focus { 
+    background: #fffff0; 
+}
+.sf-menu li:hover,
+.sf-menu li:focus,
+.sf-menu li a:hover
+.sf-menu li a:focus { 
+    position: relative; 
+}
+.sf-menu :hover > a,
+.sf-menu :focus > a { 
+    background: #fffff0; 
+}
+
+.sf-menu ul {
+    box-shadow: 2px 2px 6px rgba(0,0,0,.2);
+    min-width: 12em; /* allow long menu items to determine submenu width */
+    *width: 12em; /* no auto sub width for IE7, see white-space comment below */
+}
+
+.sf-menu ul,
+.sf-menu :hover ul ul,
+.sf-menu :focus ul ul,
+.sf-menu :hover ul :hover ul ul,
+.sf-menu :focus ul :focus ul ul,
+.sf-menu :hover ul :hover ul :hover ul ul,
+.sf-menu :focus ul :focus ul :focus ul ul { 
+    position: absolute; 
+    display: none; 
+}
+
+.sf-menu :hover ul,
+.sf-menu :focus ul { 
+/*	background: none; */
+border: 1px solid #999;
+border-top: none;
+}
+
+.sf-menu :hover li,
+.sf-menu :hover li ul li, /* testing */
+.sf-menu :hover ul :hover ul,
+.sf-menu :focus ul :focus ul,
+.sf-menu :hover ul :hover ul :hover ul,
+.sf-menu :focus ul :focus ul :focus ul,
+.sf-menu :hover ul :hover ul :hover ul :hover ul,
+.sf-menu :focus ul :focus ul :focus ul :focus ul { 
+    display: block; 
+}
+
+/* top level always shows */
+.sf-menu > li > ul > li { display: none;}
+.sf-menu > li { 
+    display: block;
+}
+
+.sf-menu > li > a { 
+    border: none;
+    border: 1px solid transparent;
+}
+
+.sf-menu:hover > li > a {
+    border: 1px solid #888;
+    border-bottom: none;
+}
+
+.sf-menu ul li ul {
+    border: 1px solid #888;
+    border-top: 0px solid #888;
+}
+
+.sf-menu .pw .menu-note {
+    text-align: right;
+    padding: .4em 0;
+    border-top: 4px double #888;
+}
+
+/* arrows; see https://css-tricks.com/snippets/css/css-triangle/ */
+
+.arrow-down {
+    width: 0; 
+    height: 0; 
+    border-left: .7em solid transparent;
+    border-right: .7em solid transparent;
+    border-top: .6em solid #369;
+    border-top: .6em solid #888;
+    line-height: 0px;
+    position: absolute;
+    right: .6em;
+    top: .8em;
+}
+
+.arrow-right {
+    width: 0; 
+    height: 0; 
+    border-top: .6em solid transparent;
+    border-bottom: .6em solid transparent;
+    border-left: .6em solid #369;
+    border-left: .6em solid #888;
+    position: absolute;
+    right: .2em;
+    top: .6em;
+}
+
+/********************************************************/
+/* include styles from standard local.css file: */
+
+#page {max-width: 9in; margin: 0 auto; padding-top: .25em;} /* padding and margin at top to line up with toc */
+div.notice {margin-top: 1.25em; }
+h1 { padding-top: .4em;}
+h2, h3 { clear: none; }
+
+/* center video: see http://stackoverflow.com/questions/3300660/how-do-i-center-an-image-if-its-wider-than-its-container */
+div.outer {
+    margin: 0 auto; 
+    overflow: visible;
+    width: 100%;  /* some width amount needed */ 
+}
+div.inner {
+    position:relative;
+    float: right; /* this was added and display removed */
+    right: 50%;
+}
+div.inner img {
+    position: relative; 
+    right:-50%; /* this was changed from "left" in original */
+    padding-bottom: 2em;
+    z-index: 0;
+}
+
+div.outer2 {
+    text-align: center;
+    position: relative; 
+/*    float: right;  */
+    left: -50%; 
+    width: 100%; /* if necessary, redefine the outer width locally, to equal width of image to be centered */
+    margin: 1em auto;
+}
+
+div.outer2 + p {
+   clear: both; /* keep paragraph following image from overlapping */
+}
+
+div.inner2 {
+    position: relative; 
+    left: 50%;
+    overflow: hidden;
+    z-index: -1; /* put it behind page navigation pane */
+    padding-bottom: 1em;
+}
+/* table styles for crisdb */
+div.rrtable table {
+   margin: 1em auto;
+}
+div.rrtable th {
+   padding: 0 .5em .75em .5em;
+   text-align: center;
+   vertical-align: bottom;
+}
+div.rrtable td {
+   text-align: center;
+}
+div.rrtable tr.headerrow th {
+   padding-bottom: 1em;
+}
+
+/* table styles for edb */
+div.edbtable table {
+   margin: 1em auto;
+}
+div.edbtable table table {
+   margin: 1em 4em;
+}
+div.edbtable th {
+   padding: 0 .5em .75em .5em;
+   text-align: left;
+   vertical-align: bottom;
+}
+div.edbtable {
+   text-align: left;
+}
+div.edbtable tr.headerrow th {
+   padding-bottom: 1em;
+}
+
+/* local index listing on software index page */
+#index {
+    padding: 1em 0 4em 0;
+}
+#index dl {
+    padding: .4em 0;
+}
+#index dt {
+    padding: .2em 1em;
+}
+#index th {
+    padding: .6em 1em .6em 0;
+    text-align: left;
+}
+/* styles for doi display */
+/* adjust doi color to coordinate with header colors -- done in /head.shtml */
+#doi { float: right; font-size: 10pt; max-width: 16em; width: 10em;
+       padding: 1em 1.5em; background: #ecf3ff;
+       border: solid 2px #44a; margin: 0 .2em 1em 1em; border-radius: 5px; border-radius: 10px; display: block; clear: both;} /* overrides */
+#doi:before {
+ /*  content: "DOI for this page:"; */
+}
+/* styles for table of contents (which is auto-generated) */
+#tocwrapper {
+    max-width: 15in;
+    margin: 0 auto;
+    float: right;
+}
+/* styles for citation boxes (bibtex syntax hidden by default) */
+a.bibexpand {
+    font-size: 80%;
+    float: right;
+}
+.refwrap > pre.bib {
+    display: none;
+    margin: 0.5em 3em 1em 3em;
+}
+.refwrap:target > pre.bib {
+    display: block;
+}
+/* adjust toc color to coordinate with header colors -- done in /head.shtml */
+#toc { float: right; font-size: 10pt; max-width: 16em; width: 10em;
+       padding: 1em 1.5em; margin: 0 .2em 1em 1em; border-radius: 5px; border-radius: 10px;} /* overrides */
+#toc:before {
+    content: "On this page:";
+}
+#toc li:first-child {
+    margin-top: .5em;
+}
+#toc li ul {
+    padding: .2em;
+}
+#toc li ul li:first-child {
+    margin-top: .1em;
+}
+#toc a {
+    text-decoration: none;
+}
+/***/
+/* styles for breadcrumbs (top of page) */
+.crumb {
+    font-size: .9em;
+}
+.breadcrumbs {
+    background: #fff9f6;
+    border-radius: 2px;
+    padding: .25em 1em;
+}
+/***/
+
+pre {
+    overflow: auto;
+}

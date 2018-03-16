@@ -1,6 +1,6 @@
-# Physionet HRV Toolkit for Matlab
+# PhysioNet Cardiovascular Signal Toolbox
 ## Introduction
-The **Physionet HRV Toolkit For MATLAB** is a a cardiovascular dynamics analysis package, designed 
+The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -45,16 +45,16 @@ System requirements:
 ### II. Starting Analysis
 
 #### Quick Start: 
-1)  Review [InitializeHRVparams.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/InitializeHRVparams.m) and optimize the parameters for your 
+1)  Review [InitializeHRVparams.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/InitializeHRVparams.m) and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
-    of the [Main_HRV_Analysis.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/Main_HRV_Analysis.m) fucntion are a two equal length vectors: RR interval
+    of the [Main_HRV_Analysis.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Main_HRV_Analysis.m) fucntion are a two equal length vectors: RR interval
     and time in units of seconds or the 'raw' ECG signal (physical units,mV) 
     and time. 
     Additionaly, blood pressure waveform and photoplethysmographic/pulsatile
     data can be analyzed and they should be in the standard physical units 
     (mmHg or normalized units respectively). 
-3)  Results will be stored in folder called as indicated in the [InitializeHRVparams.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/InitializeHRVparams.m)
+3)  Results will be stored in folder called as indicated in the [InitializeHRVparams.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/InitializeHRVparams.m)
     If the folder does not exist, it will be created.
 
 ## III. Guide to Output:
@@ -129,7 +129,7 @@ The following metrics are output from the HRV Toolbox:
 
 #### Detection Annotation Files 
 
-Using [Main_HRV_Analysis.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/Main_HRV_Analysis.m), [Analyze_ABP_PPG_Waveforms.m](https://github.com/cliffordlab/Physionet-HRV-Toolkit-For-MATLAB/blob/master/Tools/Analyze_ABP_PPG_Waveforms.m) to analyze the ECG, PPG and/or ABP the function 
+Using [Main_HRV_Analysis.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Main_HRV_Analysis.m), [Analyze_ABP_PPG_Waveforms.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Tools/Analyze_ABP_PPG_Waveforms.m) to analyze the ECG, PPG and/or ABP the function 
 will return an annotation file with the locations of detected QRS peaks or PPG/ABP onsets:
 
     ECG : *.jqrs (for jqrs detector)

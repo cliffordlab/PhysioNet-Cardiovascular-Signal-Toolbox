@@ -3,15 +3,17 @@
 %       with known atrial fibrillation to show the operation of the 
 %       AF detection algorithm.
 %   OUTPUT:
-%       Detected AF and HRV Metrics 
+%       HRV Metrics exported to .cvs files
+%
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   REFERENCE: 
+%       Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%       Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Adriana N. Vest 
-%       Giulia Da Poian  
+%       Giulia Da Poian   
 %	COPYRIGHT (C) 2018 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
@@ -35,7 +37,8 @@ HRVparams.MSE.on = 0; % MSE analysis off for this demo
 HRVparams.HRT.on = 0; % HRT analysis off for this demo
 
 
-[subjectIDs,filesTBA] = GenerateListOfFilesTBA(HRVparams.ext,HRVparams.readdata,0);
+[subjectIDs,filesTBA] = GenerateListOfFilesTBA(HRVparams.ext,...
+                                                    HRVparams.readdata,0);
 idx = find(strcmp(subjectIDs,'TestAFdata'));
 i_patient = idx;
 
@@ -43,7 +46,8 @@ i_patient = idx;
 
 load(filesTBA{i_patient});
 % 2. Analyze data using HRV VOSIM toolbox
-[results, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient));
+[results, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',...
+                                          HRVparams,subjectIDs(i_patient));
 
 
 % 3. Compare generated output file with the reference one
@@ -53,7 +57,8 @@ referenceFile = strcat('ReferenceOutput', filesep, 'AFDemo.csv');
 testHRV = CompareOutput(currentFile,referenceFile);
 
 % 3. Load QRS annotation saved by Main_VOSIM 
-annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,subjectIDs(i_patient));
+annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,...
+                                                    subjectIDs(i_patient));
 jqrs_ann = read_ann( annotName{1} , 'jqrs');
 wqrs_ann = read_ann( annotName{1} , 'wqrs');
 

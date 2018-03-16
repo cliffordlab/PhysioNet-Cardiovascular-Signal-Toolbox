@@ -6,19 +6,20 @@
 %       It shows how to automaticly import multiple files from a folder, 
 %       perfrom the HRV analysis on each of them and then store the results 
 %       in .csv format.  
-%       It uses the default parameters in the configuration file using 'demo'
-%       option : InitializeHRVparams('demo_NSR').
+%       It uses the default parameters in the configuration file using 
+%       'demo_NSR' option : InitializeHRVparams('demo_NSR').
 %
 %   OUTPUT:
 %       HRV Metrics exported to .cvs files
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   REFERENCE: 
+%       Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%       Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Adriana N. Vest 
 %       Giulia Da Poian   
 %	COPYRIGHT (C) 2018 
 %   LICENSE:    

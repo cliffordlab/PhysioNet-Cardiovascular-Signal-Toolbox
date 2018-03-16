@@ -1,18 +1,19 @@
 %	OVERVIEW:
 %       This demonstration analyzes a segment of data collected in the 
 %       intensive care unit (ICU) which contains ECG, ABP, and PPG signals 
-%   INPUT:
-%       
+%
 %   OUTPUT:
-%       HRV Metrics
+%       HRV Metrics exported to .cvs files
+%
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   REFERENCE: 
+%       Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%       Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Adriana N. Vest 
-%       Giulia Da Poian
+%       Giulia Da Poian   
 %	COPYRIGHT (C) 2018 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
@@ -46,10 +47,12 @@ i_patient = idx;
 load(filesTBA{i_patient});
 
 % 2. Analyze data using HRV VOSIM toolbox
-[~, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',HRVparams,subjectIDs(i_patient),[],[],signal(:,5),'PPG',signal(:,3),'ABP');
+[~, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',...
+    HRVparams,subjectIDs(i_patient),[],[],signal(:,5),'PPG',signal(:,3),'ABP');
 
 % 3. Load annotations ans SQI for plot
-AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, subjectIDs{i_patient});
+AnnFile = strcat(HRVparams.writedata, filesep, 'Annotation', filesep, ...
+                                                    subjectIDs{i_patient});
 jqrs_ann = read_ann(AnnFile,'jqrs');
 [~,~,sqijw] = read_ann(AnnFile,'sqijw'); % SQI is x100 to be stored
 

@@ -4,18 +4,18 @@
 %   INPUT:
 %       No input necessary. RRGEN data is generated within this script
 %   OUTPUT:
-%       HRV Metrics
+%       HRV Metrics exported to .cvs files
+%
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   REFERENCE: 
+%       Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%       Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
-%       Adriana N. Vest
-%       Giulia Da Poian
-%       Dependent scripts written by various authors 
-%       (see functions for details)       
-%	COPYRIGHT (C) 2018
+%       Giulia Da Poian   
+%	COPYRIGHT (C) 2018 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
@@ -42,12 +42,14 @@ HRVparams.HRT.on = 0; % No HRT analysis for this demo
 
 % 1. Generate Data
 
-rr = rrgen(HRVparams.demo.length,HRVparams.demo.pe,HRVparams.demo.pn,HRVparams.demo.seed);
+rr = rrgen(HRVparams.demo.length,HRVparams.demo.pe,HRVparams.demo.pn,...
+                                                      HRVparams.demo.seed);
 t = cumsum(rr);
 
 % 2. Analyze RR Data - Using HRV Toolbox Main function
 
-[results, resFilename] = Main_HRV_Analysis(rr,t,'RRIntervals',HRVparams,'rrgenData',[]);
+[results, resFilename] = Main_HRV_Analysis(rr,t,'RRIntervals',HRVparams,...
+                                                           'rrgenData',[]);
 
 
 % 3 Compare generated output file with the reference one

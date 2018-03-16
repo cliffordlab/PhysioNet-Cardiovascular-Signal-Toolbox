@@ -18,12 +18,15 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %                                   
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox s+https://physionet.org/physiotools/wfdb.shtml
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
 %   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Main script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

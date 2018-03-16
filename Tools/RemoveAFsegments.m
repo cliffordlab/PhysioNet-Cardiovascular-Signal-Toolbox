@@ -22,10 +22,15 @@ function [cleanRRAnalysisWindows,idx_af] = RemoveAFsegments(RRAnalysisWindows,Af
 %       idx_af                 : indexes of the AF windows
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
-%   ORIGINAL SOURCE AND AUTHORS:     
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox%   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Giulia Da Poian (giulia.dap@gmail.com) on Sep 6, 2017.
 %       Dependent scripts written by various authors 
 %       (see functions for details)       

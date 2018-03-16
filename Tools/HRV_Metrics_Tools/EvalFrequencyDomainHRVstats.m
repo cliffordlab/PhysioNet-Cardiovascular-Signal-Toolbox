@@ -32,13 +32,8 @@ function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
 %                                4 - Window is missing too much data
 %                                5 - Success
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Gari Clifford HRV Tools
 %                   G. Clifford 2001 gari@mit.edu, calc_lfhf.m 

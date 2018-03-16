@@ -24,13 +24,8 @@ function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %                  alpha2     : estimate of scaling exponent for long-term 
 %                              fluctuations, midBoxSize <= n <= maxBoxSize
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Giulia Da Poian    
 %	COPYRIGHT (C) 2016 

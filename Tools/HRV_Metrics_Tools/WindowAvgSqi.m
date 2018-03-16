@@ -12,14 +12,8 @@ function avgsqi = WindowAvgSqi(sqi,tNN,HRVparams)
 %   OUTPUT:     
 %               avgsqi      : average value of SQIs
 %               
-%
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Main script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

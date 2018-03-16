@@ -15,11 +15,8 @@ function output = pnna(rr, alpha)
 %   OUTPUT:     
 %               pnna - Probability of intervals greater alpha ms or 
 %                      smaller -alpha ms (e.g., alpha = 50 ms)
-%   DEPENDENCIES 
-%   & LIBRARIES:
-%   REFERENCE:  
-%	REPO:       https://github.com/cliffordlab/hrv_toolbox
-%   ORIGINAL
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   SOURCE:     Adapted from Kaplan Tools
 %               See: http://www.robots.ox.ac.uk/~gari/CODE/HRV/
 %	AUTHORS:    Adriana Vest <adriana.vest@gmail.com>

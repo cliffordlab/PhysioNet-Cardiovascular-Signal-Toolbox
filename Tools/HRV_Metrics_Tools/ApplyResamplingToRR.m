@@ -15,10 +15,8 @@ function rr_int = ApplyResamplingToRR(t_win,rr_0,HRVparams)
 %   OUTPUT 
 %       rr_int      - resampled rr intervals
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Giulia Da Poian
 %       Dependent scripts written by various authors 

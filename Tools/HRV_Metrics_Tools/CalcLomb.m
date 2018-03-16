@@ -22,9 +22,7 @@ function [PSD,F] = CalcLomb(tNN,NN,F,nfft,norm)
 %
 %   OUTPUT:     PSD  :
 %               F    :
-%
-%   DEPENDENCIES
-%   & LIBRARIES:    
+   
 %   REFERENCE:  See Scargle J.D.:"Studies in astronomical time series analysis. II. 
 %               Statistical aspects of spectral analysis of unevenly spaced data,"
 %               Astrophysical Journal, vol 263, pp. 835-853, 1982.  ... and
@@ -33,11 +31,11 @@ function [PSD,F] = CalcLomb(tNN,NN,F,nfft,norm)
 %
 %               Sources 43, 162, 198 in Clifford Thesis
 %
-%   REPO:       https://github.com/cliffordlab/hrv_toolbox
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL
 %   SOURCE:     Gari Clifford HRV
 %               http://www.robots.ox.ac.uk/~gari/CODE/HRV/
-%   AUTHORS:    Adriana Nicholson Vest, PhD
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

@@ -16,13 +16,8 @@ function [SDANN, SDNNI] = CalcSDANN(windows_all, tNN, NN, HRVparams)
 %   OUTPUT:     SDANN : standard deviation of the averages of values
 %               SDNNI : mean of the standard deviations of all values
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Main script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

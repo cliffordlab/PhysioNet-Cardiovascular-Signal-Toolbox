@@ -25,8 +25,8 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, rri, HRVparams, s
 %   REFERENCE   
 %       http://adsabs.harvard.edu/abs/2007Chaos..17a5112K
 %       http://h-r-t.org/prsa/en/
-%	REPO
-%       https://github.com/cliffordlab/hrv_toolbox
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   DEPENDENCIES & LIBRARIES
 %	COPYRIGHT (C) 2016 AUTHORS (see above)
 %       This code (and all others in this repository) are under the GNU General Public License v3

@@ -17,18 +17,13 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %   OUTPUT:     cleanNN       - normal normal interval data
 %               cleantNN      - time indices of NN data
 %               flagged_beats - percent of original data removed
-%
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
 %   REFERENCE: 
 %       Clifford, G. (2002). "Characterizing Artefact in the Normal 
 %       Human 24-Hour RR Time Series to Aid Identification and Artificial 
 %       Replication of Circadian Variations in Human Beat to Beat Heart
 %       Rate using a Simple Threshold."
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

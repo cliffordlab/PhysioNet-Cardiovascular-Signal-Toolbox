@@ -40,8 +40,16 @@ function [TO, TS,nPVCs, TOsingle, TSsingle , avgTachogram,PVCidxs] = HRT_Analysi
 %       avgTachogram : average PVC tachogram 
 %       PVCidxs      : indexes of the PVCs used in the analysis (relative to the RR position)
 %
+%   DEPENDENCIES & LIBRARIES:
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Giulia Da Poian    
 %	COPYRIGHT (C) 2018 

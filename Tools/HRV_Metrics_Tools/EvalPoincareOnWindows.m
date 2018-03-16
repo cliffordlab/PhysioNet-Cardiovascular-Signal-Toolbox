@@ -23,8 +23,8 @@ function [SD1, SD2, SD1_SD2_ratio] = EvalPoincareOnWindows(rr, rri, HRVparams, W
 % 
 % 
 %   Written by: Giulia Da Poian <giulia.dap@gmail.com>
-%   REPO:       
-%       https://github.com/cliffordlab/HRVToolbox1.0  
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox  
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

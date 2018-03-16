@@ -9,8 +9,8 @@ function output = runrmssd(rr)
 %   & LIBRARIES:    replaceOutliers.m
 %                   AnnotationConversion.m
 %   REFERENCE:  
-%   REPO:       https://github.com/cliffordlab/hrv_toolbox
-%   ORIGINAL
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   SOURCE:     Adapted from Kaplan Tools
 %               See: http://www.robots.ox.ac.uk/~gari/CODE/HRV/
 %   AUTHORS:    Adriana Nicholson Vest, PhD

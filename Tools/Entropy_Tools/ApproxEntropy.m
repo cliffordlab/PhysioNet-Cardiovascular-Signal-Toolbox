@@ -10,7 +10,8 @@ function ApEn = ApproxEntropy( data, m, r)
 %   ApEn : approximate entropy value
 %
 % Written by Giulia Da Poian <giulia.dap@gmail.com>
-%   REPO: https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

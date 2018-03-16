@@ -11,10 +11,16 @@ function Plot_SignalDetection_SQI(time, signal, ann, sqi,signalType)
 %       signalType : string containing the type of signal, e.g., 'ECG', 
 %                    'ABP', 'PPG'
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-Toolbox-for-Matlab
-%   ORIGINAL SOURCE AND AUTHORS:     
-%       Giulia Da Poian
+%   DEPENDENCIES & LIBRARIES:
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   LICENSE:    
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for

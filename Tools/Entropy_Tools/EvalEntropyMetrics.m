@@ -20,7 +20,8 @@ function [SampEn, ApEn] = EvalEntropyMetrics(rr, rri, m, r, HRVparams, WinStarId
 %   ApEn        -
 %
 % Written by Giulia Da Poian <giulia.dap@gmail.com>
-%   REPO: https://github.com/cliffordlab/HRVToolbox1.0  
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %	COPYRIGHT (C) 2016 
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

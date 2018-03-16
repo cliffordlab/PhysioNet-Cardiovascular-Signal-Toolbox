@@ -22,8 +22,8 @@
 %   maxTau = 4; % calculate sample entropy over four coarse grainings
 %   mse = multiscaleEntropy(data, m, r, maxTau, entropyType);
 % 
-% Dependencies
-%   https://github.com/cliffordlab/
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %
 % Reference(s)
 % 

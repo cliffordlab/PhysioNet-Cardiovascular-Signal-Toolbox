@@ -13,7 +13,16 @@ function [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, t )
 %   OUTPUT:     RR_gapFilled   - RR intervals with gaps filled with median
 %                                values
 %               t_gapFilled    - time indices of RR_gapFilled
+%   DEPENDENCIES & LIBRARIES:
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %   Written by Giulia Da Poian (giulia.dap@gmail.com) and Pradyumna Suresha
 %   (pradyumna.suresha@gmail.com)

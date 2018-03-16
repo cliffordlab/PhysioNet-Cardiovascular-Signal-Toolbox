@@ -32,6 +32,8 @@ function alpha = dfaScalingExponent(x, minBoxSize, maxBoxSize, pflag)
 % 09-20-2017 Modified by Giulia Da Poian (GDP) to be included in the Physionet 
 %            HRV Toolkit for Matlab. (Original function name: dfa)
 %
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 % Copyright (c) 2005 Patrick E. McSharry (patrick@mcsharry.net)
 %
 %   LICENSE:    

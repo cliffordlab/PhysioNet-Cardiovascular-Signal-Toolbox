@@ -18,13 +18,8 @@ function [ulf, vlf, lf, hf, lfhf, ttlpwr] = CalcLfHfParams(PSD, F, limits,plot_o
 %	- lfhf    : Ratio LF [ms^2]/HF [ms^2]
 %	- ttlpwr  : (ms^2) Total spectral power (approximately <0.4 Hz)
 %     
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Main script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

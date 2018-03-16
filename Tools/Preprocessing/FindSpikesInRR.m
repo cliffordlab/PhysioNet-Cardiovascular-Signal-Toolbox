@@ -13,7 +13,18 @@ function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 %        idxRRtoBeRemoved : a single vector of indexes related to RR
 %                           intervals corresponding to a change > th
 %
-% Written by Giulia Da Poian (giulia.dap@gmail.com), 09-13-2017
+%   DEPENDENCIES & LIBRARIES:
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   Written by Giulia Da Poian (giulia.dap@gmail.com), 09-13-2017
 %
 %   LICENSE:    
 %       This software is offered freely and without warranty under 

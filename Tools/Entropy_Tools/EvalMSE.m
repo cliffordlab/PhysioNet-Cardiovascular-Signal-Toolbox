@@ -21,13 +21,8 @@ function mse = EvalMSE(NN,tNN,sqi,HRVparams,windows_all)
 %   OUTPUT:     
 %               mse            : vector of [max_tau, 1] doubles for each
 %                                window
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Giulia Da Poian    
 %	COPYRIGHT (C) 2016 

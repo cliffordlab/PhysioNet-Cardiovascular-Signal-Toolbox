@@ -10,10 +10,8 @@ function test = CompareOutput(file1,file2)
 %       test      - return 0 if the two files are different, 1 if they are
 %                   the same
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Giulia Da Poian
 %	COPYRIGHT (C) 2018 

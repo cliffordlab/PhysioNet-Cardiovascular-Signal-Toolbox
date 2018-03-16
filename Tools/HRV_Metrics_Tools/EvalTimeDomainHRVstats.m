@@ -37,13 +37,8 @@ function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 %                                 3 - Not enough data in the window to analyze
 %                                 5 - Success
 %
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Written by Adriana N. Vest     
 %	COPYRIGHT (C) 2016 

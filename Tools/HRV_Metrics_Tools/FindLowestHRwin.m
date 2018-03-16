@@ -19,11 +19,8 @@ function windows_output = FindLowestHRwin(t_win, t, rr, num_segs, HRVparams)
 %	OUTPUT
 %          windows_output.t  - vector of start times for windows
 %          windows_output.hr - vector of median HR values for windows
-%
-%	DEPENDENCIES & LIBRARIES
-%	REFERENCE
-%	REPO
-%		https://github.com/hrv_toolbox
+%	REPO:       
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %	AUTHORS
 %		Erik Reinertsen <erikrtn@gmail.com>
 %       (Adapted for use in HRV Toolbox)

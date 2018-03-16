@@ -23,8 +23,17 @@ function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, Wind
 %       nPVCs      : numer of PVCs used to build the average tachogram and
 %                    compute the mean TO
 %
+%   DEPENDENCIES & LIBRARIES:
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Giulia Da Poian    
 %	COPYRIGHT (C) 2018 

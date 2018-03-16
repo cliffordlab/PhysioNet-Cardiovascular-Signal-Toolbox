@@ -22,11 +22,8 @@ function genHRVann(record, HRVparams, annName, samples, metrictype, metric)
 %
 %   OUTPUT:
 %       A .annName file with annotation timing and metrics.
-%   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%   REFERENCE: 
 %	REPO:       
-%       https://github.com/cliffordlab/hrv_toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Adriana N. Vest
 %       Dependent scripts written by various authors 

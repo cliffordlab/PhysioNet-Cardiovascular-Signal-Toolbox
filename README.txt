@@ -1,8 +1,8 @@
-# Physionet HRV Toolkit for Matlab
+# PhysioNet Cardiovascular Signal Toolbox
 
 ----- Full Instructions: -----
 I. Introduction
-The HRV Toolbox is a a cardiovascular dynamics analysis package, designed 
+The PhysioNet Cardiovascular Signal Toolbox is a aÂ cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -16,7 +16,7 @@ abnormal beat and noise removal and methods for dealing with the missing
 data are poorly described and highly variant in most of the literature. 
 Therefore, we have included signal processing methods that include state 
 of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.  The package can also analyze the interactions between 
+phenotyping.Â  The package can also analyze the interactions between 
 multiple physiological signals.
 
 II. Getting Started
@@ -117,7 +117,7 @@ Long range measures
 
 Nonlinear HRV measures: 
 
-    Poincaré plot (PP)
+    PoincarÃ© plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
                     on the line perpendicular to the line of identity (y=-x)
      - SD2        : (ms) standard deviation of the projection of the PP on 

@@ -4,7 +4,7 @@ function HRVparams = InitializeHRVparams(project_name)
 %
 %   OVERVIEW:   
 %       This file stores settings and should be configured before
-%       each use of the HRV toolbox:
+%       each use of the PhysioNet Cardiovascular Signal Toolbox:
 %       1.  Project Specific Input/Output Data type and Folders
 %       2.  How much does the user trust the data
 %       3.  Global Settings (Window Size) for signal segmentation
@@ -33,10 +33,15 @@ function HRVparams = InitializeHRVparams(project_name)
 %       HRVparams - struct of various settings for the hrv_toolbox analysis
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
 %   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       Adriana N. Vest
 %       Giulia Da Poian

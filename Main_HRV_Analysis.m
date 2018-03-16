@@ -1,7 +1,8 @@
-function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subjectID,annotations,sqi,varargin)
-%  ================= HRV Toolbox for Matlab Main Script ===================
+function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subID,ann,sqi,varargin)
+
+%  ====== HRV Toolbox for PhysioNet Cardiovascular Signal Toolbox =========
 %
-%   Main_HRV_Analysis(InputSig,t,annotations,InputFormat,ProjectName,subjectID)
+%   Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subID,ann,sqi,varargin)
 %	OVERVIEW:
 %       Main "Validated Open-Source Integrated Matlab" VOSIM Toolbox script
 %       Configured to accept RR intervals as well as raw data as input file
@@ -18,21 +19,22 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %       HRVparams   - struct of settings for hrv_toolbox analysis that can
 %                     be obtained using InitializeHRVparams.m function 
 %                     HRVparams = InitializeHRVparams();
-%       subjectID   - (optional) string to identify current subject
-%       annotations - (optional) annotations of the RR data at each point
+%
+%      
+%   OPTIONAL INPUTS:
+%       subID       - (optional) string to identify current subject
+%       ann         - (optional) annotations of the RR data at each point
 %                     indicating the type of the beat 
 %       sqi         - (optional) Signal Quality Index; Requires a 
 %                     matrix with at least two columns. Column 1 
 %                     should be timestamps of each sqi measure, and 
 %                     Column 2 should be SQI on a scale from 0 to 1.
-%      
-%   OPTIONAL INPUTS:
 %       Use InputSig, Type pairs for additional signals such as ABP 
 %       or PPG signal. The input signal must be a vector containing
 %       signal waveform and the Type: 'ABP' and\or 'PPG'.
 %       
 %
-%   OUTPUT 
+%   OUTPUS:
 %       results         - HRV time and frequency domain metrics as well
 %                         as AC and DC, SDANN and SDNNi
 %       ResultsFileName - Name of the file containing the results
@@ -40,19 +42,26 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %       NOTE: before running this script review and modifiy the parameters
 %             in "initialize_HRVparams.m" file accordingly with the specific
 %             of the new project (see the readme.txt file for further details)   
+%
 %   EXAMPLES
 %       - rr interval input
 %       Main_HRV_Analysis(RR,t,'RRIntervals',HRVparams)
 %       - ECG wavefrom input
 %       Main_HRV_Analysis(ECGsig,t,'ECGWavefrom',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
-%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[], abpSig, 
+%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[],[], abpSig, 
 %                         'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       HRV Toolbox for PhysioNet Cardiovascular Signal Toolbox
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
+%
+%   REFERENCE: 
+%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%
 %	REPO:       
-%       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB
+%       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   ORIGINAL SOURCE AND AUTHORS:     
 %       This script written by Giulia Da Poian
 %       Dependent scripts written by various authors 
@@ -68,10 +77,10 @@ if nargin < 4
     error('Wrong number of input arguments')
 end
 if nargin < 5
-    subjectID = '0000';
+    subID = '0000';
 end
 if nargin < 6
-    annotations = [];
+    ann = [];
 end
 if nargin < 7
     sqi = [];
@@ -88,7 +97,7 @@ elseif length(varargin)  == 4
     extraSig = [varargin{1} varargin{3}];
 end
 
-if isa(subjectID,'cell'); subjectID = string(subjectID); end
+if isa(subID,'cell'); subID = string(subID); end
 
 
 % Start HRV analysis
@@ -96,10 +105,10 @@ try
     switch InputFormat
         case 'ECGWaveform'
             % Convert ECG waveform in rr intervals
-            [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subjectID);
+            [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subID);
             sqi = [SQIidx', SQIvalue'];            
         case 'PPGWaveform'
-            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subjectID);
+            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subID);
         case 'RRIntervals'
             rr = InputSig; 
         otherwise
@@ -107,7 +116,7 @@ try
     end
 
     % 1. Preprocess Data, AF detection, create Windows Indexes  
-    [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,annotations,sqi,HRVparams,subjectID);
+    [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,ann,sqi,HRVparams,subID);
         
     HRVout = WinIdxs';
     HRVtitle = {'t_win'};
@@ -155,7 +164,7 @@ try
     end
     
     % Generates Output - Never comment out
-    ResultsFileName.HRV = SaveHRVoutput(subjectID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
+    ResultsFileName.HRV = SaveHRVoutput(subID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
     
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on 
@@ -164,7 +173,7 @@ try
         catch
             mse = NaN;
             fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt','a']);
-            fprintf(fid, 'MSE analysis error for subject %s \n',subjectID );
+            fprintf(fid, 'MSE analysis error for subject %s \n',subID );
             fclose(fid);
         end
          % Save Results for MSE
@@ -174,7 +183,7 @@ try
             Windows{i} = strcat('t_', num2str(WindIdxs(i)));
         end
         HRVtitle = {'Scales' Windows{:}'};
-        ResultsFileName.MSE = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'MSE', HRVparams, tNN, NN);
+        ResultsFileName.MSE = SaveHRVoutput(subID,[],HRVout,HRVtitle, 'MSE', HRVparams, tNN, NN);
     end   
 
        
@@ -185,10 +194,10 @@ try
             % Save Results for DFA
             HRVout = [out.WinIdxsDFA' alpha1 alpha2];
             HRVtitle = {'t_win' 'alpha1' 'alpha2'};
-            ResultsFileName.DFA = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
+            ResultsFileName.DFA = SaveHRVoutput(subID,[],HRVout,HRVtitle, 'DFA', HRVparams, tNN, NN);
         catch
             fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
-            fprintf(fid, 'DFA analysis error for subject %s \n',subjectID );
+            fprintf(fid, 'DFA analysis error for subject %s \n',subID );
             fclose(fid);
         end
     end
@@ -198,14 +207,14 @@ try
         try
             % Create analysis windows from original rr intervals
             WinIdxsHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
-            [TO, TS, nPVCs] = Eval_HRT(rr,t,annotations,sqi, HRVparams, WinIdxsHRT);
+            [TO, TS, nPVCs] = Eval_HRT(rr,t,ann,sqi, HRVparams, WinIdxsHRT);
             % Save Results for DFA
             HRVout = [WinIdxsHRT' TO TS nPVCs];
             HRVtitle = {'t_win' 'TO' 'TS' 'nPVCs'};
-            ResultsFileName.HRT = SaveHRVoutput(subjectID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
+            ResultsFileName.HRT = SaveHRVoutput(subID,[],HRVout,HRVtitle, 'HRT', HRVparams, t, rr);
         catch
             fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
-            fprintf(fid, 'HRT analysis error for subject %s \n',subjectID );
+            fprintf(fid, 'HRT analysis error for subject %s \n',subID );
             fclose(fid);
         end
     end
@@ -214,22 +223,22 @@ try
     if ~isempty(varargin)
         try
             fprintf('Analyizing %s \n', extraSigType{:});
-            Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subjectID);
+            Analyze_ABP_PPG_Waveforms(extraSig,extraSigType,HRVparams,jqrs_ann,subID);
         catch
             fid = fopen([HRVparams.writedata filesep 'AnalysisError.txt'],'a');
-            fprintf(fid, 'ABP/PPG analysis error for subject %s \n',subjectID );
+            fprintf(fid, 'ABP/PPG analysis error for subject %s \n',subID );
             fclose(fid);
         end
     end
         
     % 12. Some statistics on %ages windows removed (poor quality and AF)
     %    save on file  
-    RemovedWindowsStats(WinIdxs,AFWindows,HRVparams,subjectID);
+    RemovedWindowsStats(WinIdxs,AFWindows,HRVparams,subID);
     
-    fprintf('HRV Analysis completed for subject ID %s \n',subjectID);
+    fprintf('HRV Analysis completed for subject ID %s \n',subID);
     
     fid = fopen([HRVparams.writedata filesep 'FileSuccessfullyAnalyzed.txt'],'a');
-    fprintf(fid, '%s \n',subjectID );
+    fprintf(fid, '%s \n',subID );
     fclose(fid);
   
 catch
@@ -237,7 +246,7 @@ catch
     fid = fopen(strcat(HRVparams.writedata,filesep,'AnalysisError.txt'),'a');
     HRVout = NaN;
     ResultsFileName = '';
-    fprintf(fid, 'Basic HRV Analysis faild for subject: %s \n', subjectID);
+    fprintf(fid, 'Basic HRV Analysis faild for subject: %s \n', subID);
     fclose(fid); 
     %fprintf('Analysis not performed for file ID %s \n', subjectID);
 end % end of HRV analysis

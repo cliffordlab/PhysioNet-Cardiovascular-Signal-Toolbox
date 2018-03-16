@@ -1,6 +1,7 @@
 %	OVERVIEW:
-%       This is demo for VOSIM HRV toolbox using RR intervals with
-%       annotations. Provided data are a subset from the MIT Physionet 
+%       This is demo for PhysioNet Cardiovascular Signal Toolbox 
+%       using RR intervals with annotations. 
+%       Provided data are a subset from the MIT Physionet 
 %       NSR dataset, which contains long-term ECG recordings of subjects 
 %       in normal sinus rhythm.
 %       It shows how to automaticly import multiple files from a folder, 

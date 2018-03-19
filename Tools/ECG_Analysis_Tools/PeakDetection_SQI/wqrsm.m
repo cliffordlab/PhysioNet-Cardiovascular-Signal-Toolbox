@@ -1,4 +1,4 @@
-function [qrs]=wqrsm(data,fs,PWfreq,TmDEF)
+function [qrs,jpoints]=wqrsm(data,fs,PWfreq,TmDEF,jflag)
 % The WQRS detector rewrited from wqrs.c
 % rewrite by Qiao Li, March 6, 2017
 % qiaolibme@gmail.com
@@ -10,8 +10,10 @@ function [qrs]=wqrsm(data,fs,PWfreq,TmDEF)
 %   fs:     sampling frequency (default: 125)
 %   PWfreq: power line (mains) frequency, in Hz (default: 60)
 %   TmDEF:  minimum threshold value (default: 100)
+%   jflag:  annotate J-points (ends of QRS complexes) (default: 0)
 % output:
 %   qrs:    QRS fiducial mark in samples
+%   jpoints:J-points annotation, if jflag==1
 %
 % Matlab code based on:
 %  file: wqrs.c		Wei Zong      23 October 1998
@@ -55,6 +57,9 @@ function [qrs]=wqrsm(data,fs,PWfreq,TmDEF)
 %
 %
 
+if nargin<5
+    jflag = 0;
+end
 if nargin<4
     TmDEF = 100;
 end
@@ -65,17 +70,17 @@ if nargin<2
     fs = 125;
 end
 
-clear global Yn Yn1 Yn2 lt_tt lbuf ebuf aet et LPn LP2n lfsc wqrs_data BUFLN LTwindow
+clear global wqrsm_Yn wqrsm_Yn1 wqrsm_Yn2 wqrsm_lt_tt wqrsm_lbuf wqrsm_ebuf wqrsm_aet wqrsm_et wqrsm_LPn wqrsm_LP2n wqrsm_lfsc wqrsm_data wqrsm_BUFLN wqrsm_LTwindow
 
-global Yn Yn1 Yn2;
-global lt_tt lbuf ebuf;
-global aet et;
-global LPn LP2n lfsc;
-global wqrs_data;
-global BUFLN;
-global LTwindow;
+global wqrsm_Yn wqrsm_Yn1 wqrsm_Yn2;
+global wqrsm_lt_tt wqrsm_lbuf wqrsm_ebuf;
+global wqrsm_aet wqrsm_et;
+global wqrsm_LPn wqrsm_LP2n wqrsm_lfsc;
+global wqrsm_data;
+global wqrsm_BUFLN;
+global wqrsm_LTwindow;
 
-BUFLN = 16384; %	/* must be a power of 2, see ltsamp() */
+wqrsm_BUFLN = 16384; %	/* must be a power of 2, see ltsamp() */
 EYE_CLS = 0.25; %   /* eye-closing period is set to 0.25 sec (250 ms) */ 
 MaxQRSw = 0.13; %    /* maximum QRS width (130ms) */                        
 NDP	= 2.5; %    /* adjust threshold if no QRS found in NDP seconds */
@@ -85,7 +90,7 @@ WFDB_DEFGAIN = 200.0; %  /* default value for gain (adu/physical unit) */
 
 timer_d=0;
 gain=WFDB_DEFGAIN;
-lfsc = fix(1.25*gain*gain/fs);	% /* length function scale constant */
+wqrsm_lfsc = fix(1.25*gain*gain/fs);	% /* length function scale constant */
 PWFreq = PWFreqDEF;	% /* power line (mains) frequency, in Hz */
 
 % test data is physical units (mV) or raw adus units
@@ -98,31 +103,32 @@ if test_ap<10 % peak-peak < 10 mV, may physical units
     data=data*gain;
 end
 
-wqrs_data = data;
+wqrsm_data = data;
 
-lbuf = zeros(BUFLN,1);
-ebuf = zeros(BUFLN,1);
-ebuf(1:end)=fix(sqrt(lfsc));
+wqrsm_lbuf = zeros(wqrsm_BUFLN,1);
+wqrsm_ebuf = zeros(wqrsm_BUFLN,1);
+wqrsm_ebuf(1:end)=fix(sqrt(wqrsm_lfsc));
 
-lt_tt = 0;
-aet = 0;
-Yn = 0;
-Yn1 = 0;
-Yn2 = 0;
+wqrsm_lt_tt = 0;
+wqrsm_aet = 0;
+wqrsm_Yn = 0;
+wqrsm_Yn1 = 0;
+wqrsm_Yn2 = 0;
     
 qrs = [];
+jpoints = [];
 
     Tm = fix(TmDEF / 5.0);
 %     spm = 60 * fs;
 %     next_minute = from + spm;
-    LPn = fix(fs/PWFreq); %		/* The LP filter will have a notch at the power line (mains) frequency */
-    if (LPn > 8)  
-        LPn = 8;	% /* avoid filtering too agressively */
+    wqrsm_LPn = fix(fs/PWFreq); %		/* The LP filter will have a notch at the power line (mains) frequency */
+    if (wqrsm_LPn > 8)  
+        wqrsm_LPn = 8;	% /* avoid filtering too agressively */
     end
-    LP2n = 2 * LPn;
+    wqrsm_LP2n = 2 * wqrsm_LPn;
     EyeClosing = fix(fs * EYE_CLS); % /* set eye-closing period */
     ExpectPeriod = fix(fs * NDP);   % /* maximum expected RR interval */
-    LTwindow = fix(fs * MaxQRSw);   % /* length transform window size */
+    wqrsm_LTwindow = fix(fs * MaxQRSw);   % /* length transform window size */
 
 %     for i=1:2000
 %         ltdata(i)=ltsamp(i);
@@ -133,8 +139,8 @@ qrs = [];
 %        in the average is limited to half of the ltsamp buffer if the sampling
 %        frequency exceeds about 2 KHz. */
     t1 = fs*8;
-    if t1> fix(BUFLN*0.9)
-        t1=BUFLN/2;
+    if t1> fix(wqrsm_BUFLN*0.9)
+        t1=wqrsm_BUFLN/2;
     end
     
     T0=0;
@@ -182,7 +188,7 @@ qrs = [];
             tpq = t - 5;
             for tt = t:-1:t - fix(EyeClosing/2)
                 if (ltsamp(tt)   - ltsamp(tt-1) < onset && ltsamp(tt-1) - ltsamp(tt-2) < onset && ltsamp(tt-2) - ltsamp(tt-3) < onset && ltsamp(tt-3) - ltsamp(tt-4) < onset) 
-                    tpq = tt - LP2n; %	/* account for phase shift */
+                    tpq = tt - wqrsm_LP2n; %	/* account for phase shift */
                     break;
                 end
             end
@@ -195,6 +201,21 @@ qrs = [];
                 % /* Record an annotation at the QRS onset */
                 qrs = [qrs tpq];
                 
+                % J-points processing
+                if (jflag)
+                    tj = t+5;
+                    for tt=t:t + fix(EyeClosing/2)
+                        if ltsamp(tt) > maxd - fix(maxd/10)
+                            tj = tt;
+                            break;
+                        end
+                    end
+                    if tj>length(data)
+                        break;
+                    end
+                    % Record an annotation at the J-point
+                    jpoints = [jpoints tj];
+                end
             end
             % /* Adjust thresholds */
             Ta = Ta + (maxd - Ta)/10;
@@ -223,55 +244,55 @@ function lt_data = ltsamp(t)
 %    Since this program analyzes only one signal, ltsamp() does not have an
 %    input argument for specifying a signal number; rather, it always filters
 %    and returns samples from the signal designated by the global variable
-%    'sig'.  The caller must never "rewind" by more than BUFLN samples (the
+%    'sig'.  The caller must never "rewind" by more than wqrsm_BUFLN samples (the
 %    length of ltsamp()'s buffers). */
 
-global Yn Yn1 Yn2;
-global lt_tt lbuf ebuf;
-global aet et;
-global LPn LP2n lfsc;
-global wqrs_data;
-global BUFLN;
-global LTwindow;
+global wqrsm_Yn wqrsm_Yn1 wqrsm_Yn2;
+global wqrsm_lt_tt wqrsm_lbuf wqrsm_ebuf;
+global wqrsm_aet wqrsm_et;
+global wqrsm_LPn wqrsm_LP2n wqrsm_lfsc;
+global wqrsm_data;
+global wqrsm_BUFLN;
+global wqrsm_LTwindow;
 
-while (t > lt_tt) 
-	Yn2 = Yn1;
-	Yn1 = Yn;
-    v0=wqrs_data(1);
-    v1=wqrs_data(1);
-    v2=wqrs_data(1);
-    if lt_tt>0 && lt_tt<=length(wqrs_data)
-        v0 = wqrs_data(lt_tt);
+while (t > wqrsm_lt_tt) 
+	wqrsm_Yn2 = wqrsm_Yn1;
+	wqrsm_Yn1 = wqrsm_Yn;
+    v0=wqrsm_data(1);
+    v1=wqrsm_data(1);
+    v2=wqrsm_data(1);
+    if wqrsm_lt_tt>0 && wqrsm_lt_tt<=length(wqrsm_data)
+        v0 = wqrsm_data(wqrsm_lt_tt);
     end
-    if lt_tt-LPn>0 && (lt_tt-LPn)<=length(wqrs_data)
-        v1 = wqrs_data(lt_tt-LPn);
+    if wqrsm_lt_tt-wqrsm_LPn>0 && (wqrsm_lt_tt-wqrsm_LPn)<=length(wqrsm_data)
+        v1 = wqrsm_data(wqrsm_lt_tt-wqrsm_LPn);
     end        
-    if lt_tt-LP2n>0 && (lt_tt-LP2n)<=length(wqrs_data)
-        v2 = wqrs_data(lt_tt-LP2n);
+    if wqrsm_lt_tt-wqrsm_LP2n>0 && (wqrsm_lt_tt-wqrsm_LP2n)<=length(wqrsm_data)
+        v2 = wqrsm_data(wqrsm_lt_tt-wqrsm_LP2n);
     end
     if v0~=-32768 && v1~=-32768 && v2~=-32768
-        Yn = 2*Yn1 - Yn2 + v0 - 2*v1 + v2;
+        wqrsm_Yn = 2*wqrsm_Yn1 - wqrsm_Yn2 + v0 - 2*v1 + v2;
     end
-	dy = fix((Yn - Yn1) / LP2n);	%	/* lowpass derivative of input */
-    lt_tt=lt_tt+1;
-	et = fix(sqrt(lfsc +dy*dy)); % /* length transform */
-    id = mod(lt_tt,BUFLN);
+	dy = fix((wqrsm_Yn - wqrsm_Yn1) / wqrsm_LP2n);	%	/* lowpass derivative of input */
+    wqrsm_lt_tt=wqrsm_lt_tt+1;
+	wqrsm_et = fix(sqrt(wqrsm_lfsc +dy*dy)); % /* length transform */
+    id = mod(wqrsm_lt_tt,wqrsm_BUFLN);
     if id == 0
-        id = BUFLN;
+        id = wqrsm_BUFLN;
     end
-    ebuf(id) = et;
-    id2 = mod(lt_tt-LTwindow,BUFLN);
+    wqrsm_ebuf(id) = wqrsm_et;
+    id2 = mod(wqrsm_lt_tt-wqrsm_LTwindow,wqrsm_BUFLN);
     if id2 == 0
-        id2 = BUFLN;
+        id2 = wqrsm_BUFLN;
     end
-    aet = aet + (et - ebuf(id2));
-    lbuf(id) = aet;
-% 	/* lbuf contains the average of the length-transformed samples over
-% 	   the interval from tt-LTwindow+1 to tt */
+    wqrsm_aet = wqrsm_aet + (wqrsm_et - wqrsm_ebuf(id2));
+    wqrsm_lbuf(id) = wqrsm_aet;
+% 	/* wqrsm_lbuf contains the average of the length-transformed samples over
+% 	   the interval from tt-wqrsm_LTwindow+1 to tt */
 end
-    id3 = mod(t,BUFLN);
+    id3 = mod(t,wqrsm_BUFLN);
     if id3 == 0
-        id3 = BUFLN;
+        id3 = wqrsm_BUFLN;
     end
-    lt_data = lbuf(id3);
+    lt_data = wqrsm_lbuf(id3);
 end

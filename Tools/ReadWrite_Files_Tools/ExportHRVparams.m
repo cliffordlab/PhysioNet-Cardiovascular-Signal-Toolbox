@@ -80,7 +80,7 @@ end
 
 Tab = [TableNames' TableValues'];
 
-writetable(T,[HRVparams.writedata filesep 'HRVparams' HRVparams.filename '.csv']);
+writetable(T,[HRVparams.writedata filesep 'ParametersTable' HRVparams.filename '.csv']);
 try
     matrix2latex(Tab, [HRVparams.writedata filesep 'ParametersTable' HRVparams.filename '.tex']);
 catch

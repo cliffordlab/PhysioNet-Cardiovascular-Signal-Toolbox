@@ -150,10 +150,11 @@ HRVparams.debug = 0;
 
 %% 6. SQI Settings
 HRVparams.sqi.LowQualityThreshold = 0.9; % Default: 0.9, Threshold for which SQI represents good data
-HRVparams.sqi.windowlength = 10;         % Default: 10, seconds
+HRVparams.sqi.windowlength = 10;         % Default: 10, seconds, length of the comparison window
 HRVparams.sqi.increment = 1;             % Default: 1, seconds
 HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
-HRVparams.sqi.margin = 2;                % Default: 2, seconds
+HRVparams.sqi.margin = 2;                % Default: 2, seconds, Margin time not include in comparison 
+
 
 %% 7. Output Settings
 
@@ -212,8 +213,6 @@ HRVparams.timedomain.on = 1;             % Default: 1, Time Domain Analysis 1=On
 HRVparams.timedomain.dataoutput = 0;     % 1 = Print results to .txt file
                                          % Anything else = utputs to return variables only
                                          % returned variables
-HRVparams.prsa.thresh_per = 20;          % Default: 20%, Percent difference that one beat can 
-                                         % differ from the next in the prsa code
 HRVparams.timedomain.alpha = 50   ;      % Default: 50 ,In msec
 HRVparams.timedomain.win_tol = .15;      % Default: .15, Maximum percentage of data allowable 
                                          % to be missing from a window
@@ -266,6 +265,8 @@ HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
 HRVparams.prsa.win_length = 30;    % Default: 30, The length of the PRSA signal 
                                    % before and after the anchor points
                                    % (the resulting PRSA has length 2*L)
+HRVparams.prsa.thresh_per = 20;    % Default: 20%, Percent difference that one beat can 
+                                   % differ from the next in the prsa code
 HRVparams.prsa.plot_results = 0;   % Default: 0                            
 HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet analysis (to compute AC and DC)
 
@@ -273,38 +274,37 @@ HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet ana
 
 % The following settings are for jqrs.m
 
-HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25 (should be 0.15 for FECG)
-HRVparams.PeakDetect.THRES = .6;           % Default: 0.6
-HRVparams.PeakDetect.fid_vec = [];         % Default: []
-HRVparams.PeakDetect.SIGN_FORCE = [];      % Default: []
+HRVparams.PeakDetect.REF_PERIOD = 0.250;   % Default: 0.25 (should be 0.15 for FECG), refractory period in sec between two R-peaks
+HRVparams.PeakDetect.THRES = .6;           % Default: 0.6, Energy threshold of the detector 
+HRVparams.PeakDetect.fid_vec = [];         % Default: [], If some subsegments should not be used for finding the optimal 
+                                           % threshold of the P&T then input the indices of the corresponding points here
+HRVparams.PeakDetect.SIGN_FORCE = [];      % Default: [], Force sign of peaks (positive value/negative value)
 HRVparams.PeakDetect.debug = 0;            % Default: 0
 HRVparams.PeakDetect.ecgType = 'MECG';     % Default : MECG, options (adult MECG) or featl ECG (fECG) 
-HRVparams.PeakDetect.windows = 15;         % Befautl: 15,(in seconds)size of the window onto which to perform QRS detection
+HRVparams.PeakDetect.windows = 15;         % Befautl: 15,(in seconds) size of the window onto which to perform QRS detection
 
 
 %% 16. Entropy Settings
 % Multiscale Entropy
 HRVparams.MSE.on = 1;                      % Default: 1, MSE Analysis 1=On or 0=Off
-HRVparams.MSE.windowlength = [];           % Default: [], windows size in seconds, default perform MSE on the entair signal
-HRVparams.MSE.increment = [];              % Default: [];
+HRVparams.MSE.windowlength = [];           % Default: [], windows size in seconds, default perform MSE on the entire signal
+HRVparams.MSE.increment = [];              % Default: [], window increment
 HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
-HRVparams.MSE.patternLength = 2;           % Default: 2, 
+HRVparams.MSE.patternLength = 2;           % Default: 2, pattern length
 HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 20, Maximum number of coarse-grainings
 % SampEn an ApEn 
 HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)
-HRVparams.Entropy.patternLength = 2;          % Default: 2, 
+HRVparams.Entropy.patternLength = 2;          % Default: 2, pattern length
 
 %% 17. DFA Settings
 
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
 HRVparams.DFA.windowlength = [];    % Default [], windows size in seconds, default perform DFA on the entair signal
-HRVparams.DFA.increment = [];       % Default: [];
+HRVparams.DFA.increment = [];       % Default: [], window increment
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 HRVparams.DFA.midBoxSize = 16;      % Medium time scale box width (default in DFA code: 16)
-
-%
 
 %% 18. Poincaré plot
 
@@ -316,9 +316,9 @@ HRVparams.HRT.on = 1;                        % Default: 1, HRT Analysis 1=On or 
 HRVparams.HRT.BeatsBefore = 2;               % Default: 2, # of beats before PVC 
 HRVparams.HRT.BeatsAfter = 16;               % Default: 16, # of beats after PVC and CP
 HRVparams.HRT.GraphOn = 0;                   % Default: 0, do not plot 
-HRVparams.HRT.windowlength = 24;             % Default 24h, windows size in seconds, default perform DFA on the entair signal
-HRVparams.HRT.increment = 24;                % Default 24h, windows size in seconds, default perform DFA on the entair signal
-HRVparams.HRT.filterMethod = 'mean5before';  % Default mean5before
+HRVparams.HRT.windowlength = 24;             % Default 24h, windows size in hours
+HRVparams.HRT.increment = 24;                % Default 24h, sliding window increment in hours
+HRVparams.HRT.filterMethod = 'mean5before';  % Default mean5before, HRT filtering option
 
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 

@@ -55,9 +55,23 @@ legend1 = legend(axes1,'show');
 set(legend1,'Location','southeast');
 
 % Second subplot for SQI
+
+% make sure SQI is an Nx1 vector
+if size(sqi,1)>size(sqi,2)
+    sqi=sqi';
+end
+
+nn_rep = 1/(time(2)-time(1));
+
+SQI_ = repmat(sqi,nn_rep,1);
+SQI__ = reshape(SQI_,1,size(SQI_,1)*size(SQI_,2));
+
+
 axes2 = axes('Parent',figure1, 'Position',[0.13 0.28 0.775 0.08]);
 clims = [0 1];
-imagesc([0.5 291],0,sqi,'Parent',axes2,'CDataMapping','scaled',clims)
+%imagesc([0.5 291],0,SQI__,'Parent',axes2,'CDataMapping','scaled',clims)
+imagesc([0.5 round(length(SQI__)/nn_rep)],0,SQI__,'Parent',axes2,'CDataMapping','scaled',clims)
+ylabel('SQI');
 xlabel('Time (s)');
 ylh=ylabel('SQI');
 pos1=get(ylh,'Position'); pos1(1,2)=pos1(1,2)-0.05;

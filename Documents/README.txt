@@ -1,8 +1,6 @@
 # PhysioNet Cardiovascular Signal Toolbox
-
------ Full Instructions: -----
-I. Introduction
-The PhysioNet Cardiovascular Signal Toolbox is a a cardiovascular dynamics analysis package, designed 
+## Introduction
+The **PhysioNet Cardiovascular Signal Toolbox** is a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -16,10 +14,12 @@ abnormal beat and noise removal and methods for dealing with the missing
 data are poorly described and highly variant in most of the literature. 
 Therefore, we have included signal processing methods that include state 
 of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.  The package can also analyze the interactions between 
+phenotyping. The package can also analyze the interactions between 
 multiple physiological signals.
 
-II. Getting Started
+## Full Instructions: 
+
+### I. Getting Started
 System requirements:
 
 - Matlab and License    https://www.mathworks.com/
@@ -42,28 +42,27 @@ System requirements:
             usr/local/bin or similar location on the path
         3.  Ensure executable is on Matlab's path using the addpath fn
 
-III. Starting Analysis
+### II. Starting Analysis
 
-------- Quick Start: ---------
-1)  Review InitializeHRVparams.m and optimize the parameters for your 
+#### Quick Start: 
+1)  Review [InitializeHRVparams.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/InitializeHRVparams.m) and optimize the parameters for your 
     data. 
 2)  The toolbox does not assume any format of data except that the input 
-    of the Main_VOSIM.m fucntion are a two equal length vectors: RR interval
+    of the [Main_HRV_Analysis.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Main_HRV_Analysis.m) fucntion are a two equal length vectors: RR interval
     and time in units of seconds or the 'raw' ECG signal (physical units,mV) 
     and time. 
     Additionaly, blood pressure waveform and photoplethysmographic/pulsatile
     data can be analyzed and they should be in the standard physical units 
     (mmHg or normalized units respectively). 
-3)  Results will be stored in a subdirectory of the project's data file
-    in a folder called as indicated in the InitializeHRVparams.m. 
+3)  Results will be stored in folder called as indicated in the [InitializeHRVparams.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/InitializeHRVparams.m)
     If the folder does not exist, it will be created.
 
------- Guide to Output: ------
+## III. Guide to Output:
 The following metrics are output from the HRV Toolbox:
 
     - t_win     : (s)  Start time of each window analyzed
 
-Time domain measures of HRV:
+#### Time domain measures of HRV:
 
 	- NNmean    : (ms) mean value of NN intervals
 	- NNmode    : (ms) mode of NN intervals
@@ -73,7 +72,7 @@ Time domain measures of HRV:
 	- NNiqr     : interquartile range of NN intervals
 	- SDNN      : (ms) Standard deviation of all NN intervals.
 	- RMSSD     : (ms) The square root of the mean of the sum of the squares 
-                   of differences between adjacent NN intervals.
+                       of differences between adjacent NN intervals.
 	- pnn50     : (%) NN50 count divided by the total number of all NN intervals.
                   (Number of pairs of adjacent NN intervals differing by more than 50 ms )
 	- tdflag    :   2 = not enough high SQI data in the window to process
@@ -82,7 +81,7 @@ Time domain measures of HRV:
                     4 = window is missing too much data
                     5 = success
 
-Frequency domain measures of HRV (default using Lomb Periodogram or method ):
+#### Frequency domain measures of HRV (default using Lomb Periodogram method):
 
 	- ulf         : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
 	- vlf         : (ms^2) Power in very low frequency range (default 0.003 <= vlf < 0.04 Hz)
@@ -97,25 +96,24 @@ Frequency domain measures of HRV (default using Lomb Periodogram or method ):
                     4 = window is missing too much data
                     5 = success
 
-Others HRV measures 
+#### Other HRV measures: 
     
-    PRSA - AC     : (ms) acceleration capacity
-    PRSA - DC     : (ms) deceleration capacity
-	
-    SDANN         : (ms) Standard deviation of the average of NN intervals 
-                    in all 5-minute segments of a long recording
-	SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
-                    segments of a long recording
+    - PRSA - AC     : (ms) acceleration capacity
+    - PRSA - DC     : (ms) deceleration capacity
+    - SDANN         : (ms) Standard deviation of the average of NN intervals 
+                       in all 5-minute segments of a long recording
+    - SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
+                      segments of a long recording
 
-Long range measures
+#### Long range measures:
     
-    MSE           : First column contains the scale factors, and the second 
-                    column provides the corresponding entropy values
+    - MSE           : First column contains the scale factors, and the second 
+                      column provides the corresponding entropy values
      
-    DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
-    DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
+    - DFA - alpha1  : Short range fractal scaling exponents (default 4<=n<16)
+    - DFA - alpha2  : Long range fractal scaling exponents (default 16<=n<length/4)
 
-Nonlinear HRV measures: 
+#### Nonlinear HRV measures: 
 
     Poincaré plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
@@ -124,51 +122,52 @@ Nonlinear HRV measures:
                     the line of identity (y=x)
      - SD2/SD1    : (ms) SD1/SD2 ratio
 
-Heart Rate Turbulence HRT:
+#### Heart Rate Turbulence HRT Analysis:
+
      - TO         : (%) turbulence onset
      - TS         : turbulence slope    
 
------ Detection Annotation Files -------
+#### Detection Annotation Files 
 
-Using Main_VOSIM.m function or Analyze_ABP_PPG_Waveforms.m or 
-ConvertRawDataToRRIntervals.m fucntion the ECG, PPG and/or ABP detection 
-returns an annotation filese with the locations of QRS peaks or PPG/ABP onset 
-ECG : *.jqrs (for jqrs detector)
-      *.wqrs (for wqrs detector)
-      *.sqrs (for sqrs detector)
+Using [Main_HRV_Analysis.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Main_HRV_Analysis.m), [Analyze_ABP_PPG_Waveforms.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/Tools/Analyze_ABP_PPG_Waveforms.m) to analyze the ECG, PPG and/or ABP the function 
+will return an annotation file with the locations of detected QRS peaks or PPG/ABP onsets:
 
-PPG : *.ppg (for PPG onset)
+    ECG : *.jqrs (for jqrs detector)
+          *.wqrs (for wqrs detector)
+          *.sqrs (for sqrs detector)
 
-ABP : *.abp (for ABP onset)
+    PPG : *.ppg (for PPG onset)
 
-To read these files use the read_ann.m function included in the VOSIM 
-toolbox, e.g.,
+    ABP : *.abp (for ABP onset)
 
-QRS_locations = read_ann('fileName', 'jqrs')
-PPG_onsets = read_ann('fileName','ppg') 
+To read these files use the [read_ann.m] function included in the toolbox:
+
+    QRS_locations = read_ann('fileName', 'jqrs')
+    PPG_onsets = read_ann('fileName','ppg') 
 
 Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
------ SQI Annotation Files -------
+#### SQI Annotation Files
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion
-*.sqijw : comparison of jqrs wrt wqrs detection
-*.sqijs : comparison of jqrs wrt sqrs detection
+For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion:
+
+    *.sqijw : comparison of jqrs wrt wqrs detection
+    *.sqijs : comparison of jqrs wrt sqrs detection
 
 read these files as follows
 
-[sqiTime,~, sqiValue] = read_ann('fileName' , 'sqijw')
+    [sqiTime,~,sqiValue] = read_ann('fileName' , 'sqijw')
 
 For PPG and ABP two different values of SQI are seved in each annotation files
 and they are related to a specific 'beat', one is a char value (E: excellent 
 beat, A: acceptable beat, Q: unaceptable beat) and the other value is an integer 
 in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
-read these files as follows
+read *.ppgsqi files as follows 
 
-[ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
+    [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   
 
-IV. FAQ
+## IV. FAQ

@@ -141,4 +141,8 @@ annType(find(pvc_outputs==1)) = 'V';
 wrann([OutputFolder filesep 'Annotation' filesep sigName],'pvc',qrs_times,annType);
 
 
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> 5c8e11c09652d00b78a40a45977e722cbab44721

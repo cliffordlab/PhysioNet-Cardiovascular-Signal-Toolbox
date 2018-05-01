@@ -1,6 +1,6 @@
 # PhysioNet Cardiovascular Signal Toolbox
 ## Introduction
-The **PhysioNet Cardiovascular Signal Toolbox** is a aÂ cardiovascular dynamics analysis package, designed 
+The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 

@@ -153,20 +153,20 @@ Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI value is saved as a number from 0 to 100 in a file with extansion
+For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion
 *.sqijw : comparison of jqrs wrt wqrs detection
 *.sqijs : comparison of jqrs wrt sqrs detection
 
-read these files as follow:
+read these files as follows
 
-[sqiTime, sqiValue] = read_ann('fileName' , 'sqijw')
+[sqiTime,~, sqiValue] = read_ann('fileName' , 'sqijw')
 
 For PPG and ABP two different values of SQI are seved in each annotation files
 and they are related to a specific 'beat', one is a char value (E: excellent 
 beat, A: acceptable beat, Q: unaceptable beat) and the other value is an integer 
 in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
-read these files as follow:
+read these files as follows
 
 [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   

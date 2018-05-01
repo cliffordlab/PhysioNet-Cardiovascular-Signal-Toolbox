@@ -90,7 +90,7 @@ The following metrics are output from the HRV Toolbox:
 	- lfhf        : Ratio LF [ms^2]/HF [ms^2]
 	- ttlpwr      : (ms^2) Total spectral power (approximately <0.4 Hz)
 	- fdflag      : 1 = Lomb Periodogram or other method failed
-	2 = not enough high SQI data in the window to process
+	                2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
 			3 = not enough data in the window
 			4 = window is missing too much data

@@ -165,7 +165,7 @@ and they are related to a specific 'beat', one is a char value (E: excellent
 beat, A: acceptable beat, Q: unaceptable beat) and the other value is an integer 
 in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
-read *.ppgsqi files as follows
+read *.ppgsqi files as follows 
 
     [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   

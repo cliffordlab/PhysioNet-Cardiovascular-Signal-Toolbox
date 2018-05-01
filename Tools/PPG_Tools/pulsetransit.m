@@ -9,9 +9,6 @@ function ptt = pulsetransit(ecgann, pulseann)
 %   OUTPUT:     
 %
 %   DEPENDENCIES & LIBRARIES:
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
-%       WFDB Matlab toolbox https://github.com/ikarosilva/wfdb-app-toolbox
-%       WFDB Toolbox https://physionet.org/physiotools/wfdb.shtml
 %   REFERENCE: 
 %	REPO:       
 %       https://github.com/cliffordlab/hrv_toolbox

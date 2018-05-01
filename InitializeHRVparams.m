@@ -11,19 +11,19 @@ function HRVparams = InitializeHRVparams(project_name)
 %       4.  Quality Threshold Settings
 %       5.  Debug Settings
 %       6.  SQI Settings
-%       7.  Output Settings 
-%       8.  Time of Process and Filename to Save Data
-%       9.  Preprocess Settings
-%       10. AF Detection Settings
-%       11. Time Domain Analysis Settings
-%       12. Frequency Domain Analysis Settings
-%       13. SDANN and SDNNI Analysis Settings
-%       14. PRSA Analysis Settings
-%       15. Peak Detection Settings
-%       16. Entropy  and Multiscale Entropy - MSE - Settings
-%       17. Detrended Fluctuation Analysis - DFA - Settings
-%       18. Poincaré plot - Settings
-%       19. Heart Rate Turbulence (HRT) - Settings
+%       7.  Preprocess Settings
+%       8. AF Detection Settings
+%       9. Time Domain Analysis Settings
+%       10. Frequency Domain Analysis Settings
+%       11. SDANN and SDNNI Analysis Settings
+%       12. PRSA Analysis Settings
+%       13. Peak Detection Settings
+%       14. Entropy  and Multiscale Entropy - MSE - Settings
+%       15. Detrended Fluctuation Analysis - DFA - Settings
+%       16. Poincaré plot - Settings
+%       17. Heart Rate Turbulence (HRT) - Settings
+%       18. Output Settings 
+%       19. Time of Process and Filename to Save Data
 %
 %   INPUT:      
 %       project_name = a string with the name of the project - this
@@ -148,7 +148,7 @@ HRVparams.MissingDataThreshold = .15; % Default: 0.15, maximum percentage of dat
 HRVparams.rawsig = 0;           % Load raw signal if it is available for debugging
 HRVparams.debug = 0;
 
-%% 6. SQI Settings
+%% 6. SQI Analysis Settings 
 HRVparams.sqi.LowQualityThreshold = 0.9; % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.sqi.windowlength = 10;         % Default: 10, seconds, length of the comparison window
 HRVparams.sqi.increment = 1;             % Default: 1, seconds
@@ -156,32 +156,9 @@ HRVparams.sqi.TimeThreshold = 0.1;       % Default: 0.1, seconds
 HRVparams.sqi.margin = 2;                % Default: 2, seconds, Margin time not include in comparison 
 
 
-%% 7. Output Settings
+%% 7. Preprocess Settings
 
-HRVparams.gen_figs = 0;             % Generate figures
-HRVparams.save_figs = 0;            % Save generated figures
-if HRVparams.save_figs == 1
-    HRVparams.gen_figs = 1;
-end
-
-% Format settings for HRV Outputs
-HRVparams.output.format = 'csv';        % 'csv' - creates csv file for output
-                                        % 'mat' - creates .mat file for output
-HRVparams.output.separate = 1;          % Default : 1 = separate files for each subject
-                                        %           0 = all results in one file
-HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
-                                        % leave blank if all windows should be returned
-                                        % Format settings for annotations generated
-HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file generated
-                                        % 'csv'     = ASCII CSV file generated
-                            
-%% 8. Filename to Save Data
-HRVparams.time = datestr(now, 'yyyymmdd');              % Setup time for filename of output
-HRVparams.filename = [HRVparams.time '_' project_name];
-
-%% 9. Preprocess Settings
-
-HRVparams.preprocess.figures = HRVparams.gen_figs;  % Figures on = 1, Figures off = 0
+HRVparams.preprocess.figures = 0;                   % Figures on = 1, Figures off = 0
 HRVparams.preprocess.gaplimit = 2;                  % Default: 2, seconds; maximum believable gap in rr intervals
 HRVparams.preprocess.per_limit = 0.2;               % Default: 0.2, Percent limit of change from one interval to the next
 HRVparams.preprocess.forward_gap = 3;	            % Default: 3, Maximum tolerable gap at beginning of timeseries in seconds
@@ -201,13 +178,13 @@ HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of 
 HRVparams.preprocess.threshold1 = 0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
-%% 10. AF Detection Settings
+%% 8. AF Detection Settings
 
 HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
 HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~30 beats in each window
 HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
 
-%% 11. Time Domain Analysis Settings
+%% 9. Time Domain Analysis Settings
 
 HRVparams.timedomain.on = 1;             % Default: 1, Time Domain Analysis 1=On or 0=Off
 HRVparams.timedomain.dataoutput = 0;     % 1 = Print results to .txt file
@@ -217,7 +194,7 @@ HRVparams.timedomain.alpha = 50   ;      % Default: 50 ,In msec
 HRVparams.timedomain.win_tol = .15;      % Default: .15, Maximum percentage of data allowable 
                                          % to be missing from a window
 
-%% 12. Frequency Domain Analysis Settings
+%% 10. Frequency Domain Analysis Settings
 
 HRVparams.freq.on = 1;              % Default: 1, Frequency Domain Analysis 1=On or 0=Off
 
@@ -255,11 +232,11 @@ HRVparams.freq.resample_interp_method = 'cub';  % Default: 'cub'
                                                 % 'lin' = linear spline method
 HRVparams.freq.resampled_burg_poles = 100;      % Default: 100
 
-%% 13. SDANN and SDNNI Analysis Settings
+%% 11. SDANN and SDNNI Analysis Settings
 HRVparams.sd.on = 1;                        % Default: 1, SD analysis 1=On or 0=Off
 HRVparams.sd.segmentlength = 300;           % Default: 300, windows length in seconds
 
-%% 14. PRSA Analysis Settings
+%% 12. PRSA Analysis Settings
 
 HRVparams.prsa.on = 1;             % Default: 1, PRSA Analysis 1=On or 0=Off
 HRVparams.prsa.win_length = 30;    % Default: 30, The length of the PRSA signal 
@@ -270,7 +247,7 @@ HRVparams.prsa.thresh_per = 20;    % Default: 20%, Percent difference that one b
 HRVparams.prsa.plot_results = 0;   % Default: 0                            
 HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet analysis (to compute AC and DC)
 
-%% 15. Peak Detection Settings
+%% 13. Peak Detection Settings
 
 % The following settings are for jqrs.m
 
@@ -284,7 +261,7 @@ HRVparams.PeakDetect.ecgType = 'MECG';     % Default : MECG, options (adult MECG
 HRVparams.PeakDetect.windows = 15;         % Befautl: 15,(in seconds) size of the window onto which to perform QRS detection
 
 
-%% 16. Entropy Settings
+%% 14. Entropy Settings
 % Multiscale Entropy
 HRVparams.MSE.on = 1;                      % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.MSE.windowlength = [];           % Default: [], windows size in seconds, default perform MSE on the entire signal
@@ -297,7 +274,7 @@ HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or
 HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)
 HRVparams.Entropy.patternLength = 2;          % Default: 2, pattern length
 
-%% 17. DFA Settings
+%% 15. DFA Settings
 
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
 HRVparams.DFA.windowlength = [];    % Default [], windows size in seconds, default perform DFA on the entair signal
@@ -306,11 +283,11 @@ HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 HRVparams.DFA.midBoxSize = 16;      % Medium time scale box width (default in DFA code: 16)
 
-%% 18. Poincaré plot
+%% 16. Poincaré plot
 
 HRVparams.poincare.on = 1;     % Default: 1, Poincare Analysis 1=On or 0=Off
 
-%% 19. Heart Rate Turbulence (HRT) - Settings
+%% 17. Heart Rate Turbulence (HRT) - Settings
 
 HRVparams.HRT.on = 1;                        % Default: 1, HRT Analysis 1=On or 0=Off
 HRVparams.HRT.BeatsBefore = 2;               % Default: 2, # of beats before PVC 
@@ -319,6 +296,31 @@ HRVparams.HRT.GraphOn = 0;                   % Default: 0, do not plot
 HRVparams.HRT.windowlength = 24;             % Default 24h, windows size in hours
 HRVparams.HRT.increment = 24;                % Default 24h, sliding window increment in hours
 HRVparams.HRT.filterMethod = 'mean5before';  % Default mean5before, HRT filtering option
+
+
+%% 18. Output Settings
+
+HRVparams.gen_figs = 0;             % Generate figures
+HRVparams.save_figs = 0;            % Save generated figures
+if HRVparams.save_figs == 1
+    HRVparams.gen_figs = 1;
+end
+
+% Format settings for HRV Outputs
+HRVparams.output.format = 'csv';        % 'csv' - creates csv file for output
+                                        % 'mat' - creates .mat file for output
+HRVparams.output.separate = 1;          % Default : 1 = separate files for each subject
+                                        %           0 = all results in one file
+HRVparams.output.num_win = [];          % Specify number of lowest hr windows returned
+                                        % leave blank if all windows should be returned
+                                        % Format settings for annotations generated
+HRVparams.output.ann_format = 'binary'; % 'binary'  = binary annotation file generated
+                                        % 'csv'     = ASCII CSV file generated
+                            
+%% 19. Filename to Save Data
+HRVparams.time = datestr(now, 'yyyymmdd');              % Setup time for filename of output
+HRVparams.filename = [HRVparams.time '_' project_name];
+
 
 %% Export Parameter as Latex Table
 % Note that if you change the order of the parameters or add parameters 

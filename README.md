@@ -1,6 +1,6 @@
 # PhysioNet Cardiovascular Signal Toolbox
 ## Introduction
-The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 
+The **PhysioNet Cardiovascular Signal Toolbox** is a aÂ cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
 standardized, well-documented open-source toolkit to evaluate the 
 relationships between physiological signals and disease. The package not 
@@ -14,7 +14,7 @@ abnormal beat and noise removal and methods for dealing with the missing
 data are poorly described and highly variant in most of the literature. 
 Therefore, we have included signal processing methods that include state 
 of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.  The package can also analyze the interactions between 
+phenotyping.Â  The package can also analyze the interactions between 
 multiple physiological signals.
 
 ## Full Instructions: 
@@ -115,7 +115,7 @@ The following metrics are output from the HRV Toolbox:
 
 #### Nonlinear HRV measures: 
 
-    Poincaré plot (PP)
+    PoincarÃ© plot (PP)
      - SD1        : (ms) standard  deviation  of  projection  of  the  PP    
                     on the line perpendicular to the line of identity (y=-x)
      - SD2        : (ms) standard deviation of the projection of the PP on 
@@ -151,21 +151,21 @@ Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI value is saved as a number from 0 to 100 in a file with extansion:
+For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion:
 
     *.sqijw : comparison of jqrs wrt wqrs detection
     *.sqijs : comparison of jqrs wrt sqrs detection
 
-read these files as follow:
+read these files as follows
 
-    [sqiTime, sqiValue] = read_ann('fileName' , 'sqijw')
+    [sqiTime,~,sqiValue] = read_ann('fileName' , 'sqijw')
 
 For PPG and ABP two different values of SQI are seved in each annotation files
 and they are related to a specific 'beat', one is a char value (E: excellent 
 beat, A: acceptable beat, Q: unaceptable beat) and the other value is an integer 
 in the range 0-100 given by the average of three SQI values (see PPG_SQI_buf.m)
 
-read these files as follow:
+read *.ppgsqi files as follows 
 
     [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   

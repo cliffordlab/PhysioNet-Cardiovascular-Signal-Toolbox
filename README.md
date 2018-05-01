@@ -14,7 +14,7 @@ abnormal beat and noise removal and methods for dealing with the missing
 data are poorly described and highly variant in most of the literature. 
 Therefore, we have included signal processing methods that include state 
 of the art peak detectors, signal quality processing units, and beat/rhythm 
-phenotyping.Â  The package can also analyze the interactions between 
+phenotyping. The package can also analyze the interactions between 
 multiple physiological signals.
 
 ## Full Instructions: 
@@ -77,9 +77,9 @@ The following metrics are output from the HRV Toolbox:
                   (Number of pairs of adjacent NN intervals differing by more than 50 ms )
 	- tdflag    :   2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
-            	    3 = not enough data in the window 
-                    4 = window is missing too much data
-                    5 = success
+            	        3 = not enough data in the window 
+                        4 = window is missing too much data
+                        5 = success
 
 #### Frequency domain measures of HRV (default using Lomb Periodogram method):
 
@@ -90,11 +90,11 @@ The following metrics are output from the HRV Toolbox:
 	- lfhf        : Ratio LF [ms^2]/HF [ms^2]
 	- ttlpwr      : (ms^2) Total spectral power (approximately <0.4 Hz)
 	- fdflag      : 1 = Lomb Periodogram or other method failed   
-                    2 = not enough high SQI data in the window to process
+                        2 = not enough high SQI data in the window to process
                 	(amount of data above threshold1 is greater than threshold2)
-            	    3 = not enough data in the window 
-                    4 = window is missing too much data
-                    5 = success
+            	        3 = not enough data in the window 
+                        4 = window is missing too much data
+                        5 = success
 
 #### Other HRV measures: 
     

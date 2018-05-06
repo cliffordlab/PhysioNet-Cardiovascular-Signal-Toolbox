@@ -58,9 +58,9 @@ mse = NaN(maxTau, 1); % Initialize output vector
 SampEnType = 'Maxim'; % Initialize default SampEn method 
 
 % Check data length, if < 34000 use Fast Implementation (introduced GDP) 
-% if length(data) < maxVecSize
-%     SampEnType = 'Fast'; 
-% end
+if length(data) < maxVecSize
+     SampEnType = 'Fast'; 
+end
 
 
 % Loop through each window
@@ -70,7 +70,7 @@ SampEnType = 'Maxim'; % Initialize default SampEn method
 for i_tau = 1:maxTau
     % Coarse-grain data (using scale in Costa's paper)
     scaledData = coarsegrain(data,i_tau); % Changed by GDP
-    
+        
     switch SampEnType
         case 'Fast'
            mse(i_tau) = fastSampen(scaledData, m, r);

@@ -100,15 +100,6 @@ end
 if isa(subID,'cell'); subID = string(subID); end
 
 
-% Control on signal length
-
-if (strcmp(InputFormat, 'ECGWaveform') && length(InputSig)/HRVparams.Fs< HRVparams.windowlength) ...
-        || (strcmp(InputFormat, 'PPGWaveform') && length(InputSig)/HRVparams.Fs<HRVparams.windowlength) ...
-        ||  (strcmp(InputFormat, 'RRIntervals') && t(end)/HRVparams.Fs<HRVparams.windowlength)
-   error('Error: imput signal or RR interval time series is shorter than the desired analysis windows (%i s).', HRVparams.windowlength)
-end
-
-
 
 % Start HRV analysis
 try   

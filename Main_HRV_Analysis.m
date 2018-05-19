@@ -100,15 +100,6 @@ end
 if isa(subID,'cell'); subID = string(subID); end
 
 
-% Control on signal length
-
-if (strcmp(InputFormat, 'ECGWaveform') && length(InputSig)/HRVparams.Fs< HRVparams.windowlength) ...
-        || (strcmp(InputFormat, 'PPGWaveform') && length(InputSig)/HRVparams.Fs<HRVparams.windowlength) ...
-        ||  (strcmp(InputFormat, 'RRIntervals') && t(end)<HRVparams.windowlength)
-   error('Error: imput signal or RR interval time series is shorter than the desired analysis windows (%i s).', HRVparams.windowlength)
-end
-
-
 
 % Start HRV analysis
 try   
@@ -128,8 +119,8 @@ try
     % 1. Preprocess Data, AF detection, create Windows Indexes  
     [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,ann,sqi,HRVparams,subID);
         
-    HRVout = WinIdxs';
-    HRVtitle = {'t_win'};
+    HRVout = [WinIdxs' (WinIdxs+HRVparams.windowlength)'];
+    HRVtitle = {'t_start' 't_end'};
    
     % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
     if HRVparams.timedomain.on 

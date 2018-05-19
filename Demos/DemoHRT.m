@@ -1,6 +1,6 @@
 %	OVERVIEW:
 %       Demo for Heart Rate Turbulence (HRT) analysis using the Physionet
-%       HRV toolbox for Matlab
+%       Cardiovascular Signal Toolbox
 %       Provided data are from the MIT Physionet Arrhytmia Database 
 %       (https://www.physionet.org/physiobank/database/mitdb/)
 %

@@ -104,7 +104,11 @@ The following metrics are output from the HRV Toolbox:
                        in all 5-minute segments of a long recording
     - SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                       segments of a long recording
-
+		      
+#### Entropy measures:
+    - SampEn        : (a.u.) Sample entropy, which measures the regularity and complexity of a time series
+    - ApEn          : (a.u.)Approximate entropy, which measures the regularity and complexity of a time series
+    
 #### Long range measures:
     
     - MSE           : First column contains the scale factors, and the second 

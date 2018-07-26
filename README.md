@@ -151,7 +151,7 @@ Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion:
+For ECG the SQI values are saved as a number from 0 to 100 in a file with extension:
 
     *.sqijw : comparison of jqrs wrt wqrs detection
     *.sqijs : comparison of jqrs wrt sqrs detection

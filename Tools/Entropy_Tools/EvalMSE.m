@@ -8,7 +8,7 @@ function mse = EvalMSE(NN,tNN,sqi,HRVparams,windows_all)
 %   INPUT:      MANDATORY:
 %               NN             : a single row of NN (normal normal) interval 
 %                                data in seconds
-%               tNN            : the time indices of the rr interval data 
+%               tNN            : the time indices of the NN interval data 
 %                                (seconds)
 %               sqi            : (Optional )Signal Quality Index; Requires 
 %                                a matrix with at least two columns. Column 
@@ -46,10 +46,10 @@ end
 % Set Defaults
 
 
-if windows_all == 0
+if isempty(HRVparams.MSE.windowlength)
     windowlength = length(NN);
 else
-    windowlength = HRVparams.MSE.windowlength;
+    windowlength = HRVparams.MSE.windowlength*3600;
 end
 
 threshold1 = HRVparams.sqi.LowQualityThreshold;
@@ -59,6 +59,7 @@ m = HRVparams.MSE.patternLength;
 r = HRVparams.MSE.RadiusOfSimilarity;
 maxTau = HRVparams.MSE.maxCoarseGrainings;
 
+cg_moment = HRVparams.MSE.moment;
 
 % Preallocate arrays (all NaN) before entering the loop
 mse = nan(maxTau,length(windows_all));
@@ -82,7 +83,7 @@ for i_win = 1:length(windows_all)
 
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
-            mse(:,i_win) =ComputeMultiscaleEntropy(nn_win, m, r, maxTau);
+            mse(:,i_win) =ComputeMultiscaleEntropy(nn_win, m, r, maxTau, [], cg_moment);
         end
         
 

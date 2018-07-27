@@ -1,6 +1,6 @@
- function mse = ComputeMultiscaleEntropy(data, m, r, maxTau, maxVecSize)
+ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau, maxVecSize,cg_moment)
 
-% mse = ComputeMultiscaleEntropy(data, m, r, max_tau)
+% mse = ComputeMultiscaleEntropy(data, m, r, max_tau,cg_moment)
 %
 % Overview
 %	Calculates multiscale entropy on a vector of input data.
@@ -11,7 +11,10 @@
 %   r           - radius of similarity (% of std); double
 %   maxTau      - maximum number of coarse-grainings; int
 %   maxVecSize  - optional, parameter to switch from SampEn to FastSempEn        
-%                
+%   cg_moment   - optional, moment used to coarse-grain the time series,
+%                 by default use the mean 'mean'
+%                 Options: 'mean', 'varaince'
+%      
 % Output
 %   mse          - vector of [max_tau, 1] doubles
 %
@@ -20,7 +23,7 @@
 %   m = 2; % template length
 %   r = 0.2; % radius of similarity
 %   maxTau = 4; % calculate sample entropy over four coarse grainings
-%   mse = multiscaleEntropy(data, m, r, maxTau, entropyType);
+%   mse = multiscaleEntropy(data, m, r, maxTau, 'Fast','mean');
 % 
 %	REPO:       
 %       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
@@ -47,11 +50,13 @@
 if nargin<5 || isempty(maxVecSize)
     maxVecSize = 34000;
 end
+if nargin<6 || isempty(cg_moment)
+    cg_moment = 'mean';
+end
 
 data = zscore(data);  % (introduced by GDP) normalization of the signal that 
                       % replace the common practice of expressing the 
                       % tolerance as r times the standard deviation
-                      
                       
 mse = NaN(maxTau, 1); % Initialize output vector
 
@@ -69,7 +74,7 @@ end
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
     % Coarse-grain data (using scale in Costa's paper)
-    scaledData = coarsegrain(data,i_tau); % Changed by GDP
+    scaledData = coarsegrain(data,i_tau,cg_moment); % Changed by GDP
         
     switch SampEnType
         case 'Fast'

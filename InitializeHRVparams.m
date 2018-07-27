@@ -269,6 +269,8 @@ HRVparams.MSE.increment = [];              % Default: [], window increment
 HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
 HRVparams.MSE.patternLength = 2;           % Default: 2, pattern length
 HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 20, Maximum number of coarse-grainings
+HRVparams.MSE.moment = 'mean';             % Default: 'mean', moment used to coarse-grain the time series
+                                           %           options 'mean', 'variance'
 % SampEn an ApEn 
 HRVparams.Entropy.on = 1;                     % Default: 1, MSE Analysis 1=On or 0=Off
 HRVparams.Entropy.RadiusOfSimilarity = 0.15;  % Default: 0.15, Radius of similarity (% of std)

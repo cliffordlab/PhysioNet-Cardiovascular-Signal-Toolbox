@@ -49,10 +49,10 @@ end
 % Set Defaults
 
 
-if windows_all == 0
+if isempty(HRVparams.DFA.windowlength)
     windowlength = length(NN);
 else
-    windowlength = HRVparams.DFA.windowlength;
+    windowlength = HRVparams.DFA.windowlength*3600;
 end
 
 SQI_LowQualityThresh = HRVparams.sqi.LowQualityThreshold;

@@ -104,7 +104,11 @@ The following metrics are output from the HRV Toolbox:
                        in all 5-minute segments of a long recording
     - SDNNI         : (ms) Mean of the standard deviation in all 5-minute 
                       segments of a long recording
-
+		      
+#### Entropy measures:
+    - SampEn        : (a.u.) Sample entropy, which measures the regularity and complexity of a time series
+    - ApEn          : (a.u.)Approximate entropy, which measures the regularity and complexity of a time series
+    
 #### Long range measures:
     
     - MSE           : First column contains the scale factors, and the second 
@@ -151,7 +155,7 @@ Note that QRS locations and PPG/ABP onstets are in samples not in seconds
 
 The SQI values are also saved as annotations files both for ECG and PPG/ABP
 
-For ECG the SQI values are saved as a number from 0 to 100 in a file with extansion:
+For ECG the SQI values are saved as a number from 0 to 100 in a file with extension:
 
     *.sqijw : comparison of jqrs wrt wqrs detection
     *.sqijs : comparison of jqrs wrt sqrs detection

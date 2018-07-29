@@ -135,7 +135,7 @@ if ~strcmp(option,'af') && ~strcmp(option,'sqi')
         % measurement:
         idxhi = find(nn_win > HRVparams.preprocess.upperphysiolim);
         idxlo = find(nn_win < HRVparams.preprocess.lowerphysiolim);
-        comb = [idxhi ; idxlo];
+        comb = [idxhi(:) ; idxlo(:)];
         nn_win(comb) = [];
         % Now query the true length of the window by adding up all of the NN
         % intervals

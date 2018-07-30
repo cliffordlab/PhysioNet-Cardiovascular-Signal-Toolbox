@@ -121,8 +121,8 @@ for i_win = 1:length(WinStarIdxs)
                 acm(i,:) = 1000*nn_win(ac_ind(i)-prsaWinLength:ac_ind(i)+prsaWinLength-1); % convert from sec to msec
             end
 
-            prsa_ac = mean(acm);
-            prsa_dc = mean(dcm);
+            prsa_ac = mean(acm,1);
+            prsa_dc = mean(dcm,1);
             
             % Edited by Adriana Vest: Added the following if statements to
             % deal with scenarios when ac or dc is not computable for a

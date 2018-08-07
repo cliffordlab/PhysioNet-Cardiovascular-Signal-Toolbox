@@ -128,11 +128,11 @@ for i_win = 1:length(WinStarIdxs)
             % deal with scenarios when ac or dc is not computable for a
             % particular window. An example scenario is when the RR
             % intervals are flat.
-            if ~isnan(prsa_dc) % Edited by Giulia Da Poian
+            if (~isnan(sum(prsa_dc)) && numel(dc_ind)>= HRVparams.prsa.min_anch) % Edited by Giulia Da Poian
                 dc = (sum(prsa_dc(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_dc(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 dc_results(i_win,1) = dc; % assign output of window
             end
-            if ~isnan(prsa_ac) % Edited by Giulia Da Poian
+            if ~isnan(sum(prsa_ac)) && numel(ac_ind)>= HRVparams.prsa.min_anch % Edited by Giulia Da Poian
                 ac = (sum(prsa_ac(prsaWinLength+1:prsaWinLength+s)) - sum(prsa_ac(prsaWinLength-(s-1):prsaWinLength))) ./ (2*s);
                 ac_results(i_win,1) = ac; % assign output of window
             end

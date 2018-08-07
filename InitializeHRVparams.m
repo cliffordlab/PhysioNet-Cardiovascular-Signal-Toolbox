@@ -246,6 +246,7 @@ HRVparams.prsa.thresh_per = 20;    % Default: 20%, Percent difference that one b
                                    % differ from the next in the prsa code
 HRVparams.prsa.plot_results = 0;   % Default: 0                            
 HRVparams.prsa.scale = 2;          % Default: 2, scale parameter for wavelet analysis (to compute AC and DC)
+HRVparams.prsa.min_anch = 20;       % Default: 20, minimum number of anchors point required to create the "average signal"
 
 %% 13. Peak Detection Settings
 

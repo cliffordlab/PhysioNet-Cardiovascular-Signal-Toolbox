@@ -62,8 +62,8 @@ if size(testqrs,1)>size(testqrs,2); testqrs=testqrs';end
 
 start = margin*fs;
 stop = (windowlen-margin)*fs;
-refqrs = refqrs*fs; % convert into samples from time
-testqrs = testqrs*fs; % convert into samples from time
+refqrs = refqrs.*fs; % convert into samples from time
+testqrs = testqrs.*fs; % convert into samples from time
 
 try
     refqrs  = refqrs(refqrs>start & refqrs<stop)'; % reference annotations
@@ -120,7 +120,7 @@ try
     else
         F1=[];Se=[];PPV=[];Nb=[];
     end
-catch ME
+catch 
     F1=[];Se=[];PPV=[];Nb=[];
 end
 

@@ -54,7 +54,6 @@ end
 % Convert to ms
 SD1 = SD1 * 1000;
 SD2 = SD2 * 1000;
-SD1_SD2_ratio = SD1_SD2_ratio * 1000;
 
 end
 

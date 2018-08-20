@@ -265,8 +265,8 @@ HRVparams.PeakDetect.windows = 15;         % Befautl: 15,(in seconds) size of th
 %% 14. Entropy Settings
 % Multiscale Entropy
 HRVparams.MSE.on = 1;                      % Default: 1, MSE Analysis 1=On or 0=Off
-HRVparams.MSE.windowlength = [];           % Default: [], windows size in seconds, default perform MSE on the entire signal
-HRVparams.MSE.increment = [];              % Default: [], window increment
+HRVparams.MSE.windowlength = [];           % Default: [], windows size in hours, default perform MSE on the entire signal
+HRVparams.MSE.increment = [];              % Default: [], window increment in hours
 HRVparams.MSE.RadiusOfSimilarity = 0.15;   % Default: 0.15, Radius of similarity (% of std)
 HRVparams.MSE.patternLength = 2;           % Default: 2, pattern length
 HRVparams.MSE.maxCoarseGrainings = 20;     % Default: 20, Maximum number of coarse-grainings
@@ -280,8 +280,8 @@ HRVparams.Entropy.patternLength = 2;          % Default: 2, pattern length
 %% 15. DFA Settings
 
 HRVparams.DFA.on = 1;               % Default: 1, DFA Analysis 1=On or 0=Off
-HRVparams.DFA.windowlength = [];    % Default [], windows size in seconds, default perform DFA on the entair signal
-HRVparams.DFA.increment = [];       % Default: [], window increment
+HRVparams.DFA.windowlength = [];    % Default [], windows size in hours, default perform DFA on the entair signal
+HRVparams.DFA.increment = [];       % Default: [], window increment in hours
 HRVparams.DFA.minBoxSize = 4 ;      % Default: 4, Smallest box width
 HRVparams.DFA.maxBoxSize = [];      % Largest box width (default in DFA code: signal length/4) 
 HRVparams.DFA.midBoxSize = 16;      % Medium time scale box width (default in DFA code: 16)

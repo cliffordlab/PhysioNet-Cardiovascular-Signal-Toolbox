@@ -1,6 +1,6 @@
 function [qrs,jpoints] = wqrsm_fast(data,fs,PWfreq,TmDEF,jflag)
 % The swqrsm detector rewrited from swqrsm.c
-% rewrite by Giulia Da Poian, August 7, 2018
+% rewrited by Giulia Da Poian, August 7, 2018
 % use struct swqrsm instead of global varaibles
 % giulia.da.poian@emory.com
 %

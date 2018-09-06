@@ -1,5 +1,5 @@
 %	OVERVIEW:
-%       This is demo for PhysioNet Cardiovascular Signal Toolbox 
+%       This is demo for the HRV PhysioNet Cardiovascular Signal Toolbox 
 %       using RR intervals with annotations. 
 %       Provided data are a subset from the MIT Physionet 
 %       NSR dataset, which contains long-term ECG recordings of subjects 

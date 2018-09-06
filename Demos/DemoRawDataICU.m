@@ -46,7 +46,7 @@ i_patient = idx;
 % 1. Load Raw Patient Data (ECG Waveform)
 load(filesTBA{i_patient});
 
-% 2. Analyze data using HRV VOSIM toolbox
+% 2. Analyze data using HRV PhysioNet Cardiovascular Signal Toolbox
 [~, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',...
     HRVparams,subjectIDs(i_patient),[],[],signal(:,5),'PPG',signal(:,3),'ABP');
 

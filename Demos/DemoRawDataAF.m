@@ -45,7 +45,7 @@ i_patient = idx;
 % 1. Load Raw Patient Data
 
 load(filesTBA{i_patient});
-% 2. Analyze data using HRV VOSIM toolbox
+% 2. Analyze data using HRV PhysioNet Cardiovascular Signal Toolbox
 [results, resFilename] = Main_HRV_Analysis(signal(:,1),[],'ECGWaveform',...
                                           HRVparams,subjectIDs(i_patient));
 
@@ -56,7 +56,7 @@ currentFile = strcat(HRVparams.writedata, filesep, resFilename.HRV, '.csv');
 referenceFile = strcat('ReferenceOutput', filesep, 'AFDemo.csv');
 testHRV = CompareOutput(currentFile,referenceFile);
 
-% 3. Load QRS annotation saved by Main_VOSIM 
+% 3. Load QRS annotation saved by Main_HRV_Analysis
 annotName = strcat(HRVparams.writedata, filesep, 'Annotation',filesep,...
                                                     subjectIDs(i_patient));
 jqrs_ann = read_ann( annotName{1} , 'jqrs');

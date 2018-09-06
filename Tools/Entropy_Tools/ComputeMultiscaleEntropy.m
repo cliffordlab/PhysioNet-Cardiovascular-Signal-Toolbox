@@ -34,7 +34,8 @@
 % All rights reserved.
 %
 % 
-% 08-23-2017 Modyfied by Giulia Da Poian for the VOSIM HRV Toolbox 
+% 08-23-2017 Modyfied by Giulia Da Poian to be inclused in the HRV Toolbox 
+% for PhysioNet Cardiovascular Signal ToolboxToolbox 
 % Removed the possibility to use different types of entropy, only
 % fastSampen method in this version
 %

@@ -4,7 +4,7 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %
 %   Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subID,ann,sqi,varargin)
 %	OVERVIEW:
-%       Main "Validated Open-Source Integrated Matlab" VOSIM Toolbox script
+%       Main "HRV Toolbox for PhysioNet Cardiovascular Signal Toolbox" 
 %       Configured to accept RR intervals as well as raw data as input file
 %
 %   INPUT:
@@ -122,7 +122,8 @@ try
     HRVout = [WinIdxs' (WinIdxs+HRVparams.windowlength)'];
     HRVtitle = {'t_start' 't_end'};
    
-    % 3. Calculate time domain HRV metrics - Using VOSIM Toolbox Functions        
+    % 3. Calculate time domain HRV metrics - Using HRV Toolbox for PhysioNet 
+    %    Cardiovascular Signal Toolbox Toolbox Functions        
     if HRVparams.timedomain.on 
         TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
@@ -130,7 +131,7 @@ try
         HRVtitle = [HRVtitle fieldnames(TimeMetrics)'];
     end
     
-    % 4. Frequency domain  metrics (LF HF TotPow) - Using VOSIM Toolbox Functions
+    % 4. Frequency domain  metrics (LF HF TotPow) 
     if HRVparams.freq.on 
         FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results

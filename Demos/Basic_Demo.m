@@ -29,11 +29,12 @@ clc
 % Where are the data, in this demo they are located in a subfolder
 InputFolder = [pwd filesep 'TestData' filesep 'mitdb-Arrhythmia']; % path to the folder where you data are located
 SigName = '200m';
-
-% load the ecg using rdmat
-[tm,sig,Fs] = rdmat([InputFolder filesep SigName]);
+Fs = 360;
+% load the ecg signa using load (it loads a variable called val)
+load([InputFolder filesep SigName]);
 % the signal has two channels, from now on we will use just one 
-ecg = sig(:,1);
+ecg = val(1,:);
+tm = 0:1/Fs:(length(ecg)-1)/Fs;
 
 % plot the signal
 figure(1)

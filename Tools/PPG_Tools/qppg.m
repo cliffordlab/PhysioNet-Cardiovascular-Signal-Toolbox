@@ -1,4 +1,4 @@
-function [idxPeaks] = qppg(data,fs,from,to)
+function ppgOnsets = qppg(data,fs,from,to)
 
 % This function is rewriten from wabp_pleth_new.c and wabp.c
 % /* file wabp.c          Wei Zong       23 October 1998
@@ -61,7 +61,7 @@ function [idxPeaks] = qppg(data,fs,from,to)
 %           fs:   sampling frequency, default 125 Hz
 %           from: begin point to analysis
 %           to  : end point to analysis
-% output:   beat: onset position of PPG beats in samples
+% output:   ppgOnsets: onset position of PPG beats in samples
 %
 %
 %
@@ -102,6 +102,10 @@ function [idxPeaks] = qppg(data,fs,from,to)
 % 03 Mar 2017 by Adriana Vest
 %   Changed name of function to qppg to avoid confusion with wabp
 %	Previous name: wabp_pleth_new.m
+%
+% 12 Sep 2018 by Giulia Da Poian
+%   Changed output variable name to ppgOnsets 
+%
 
 
 if nargin<3
@@ -116,7 +120,7 @@ end
 global BUFLN ebuf lbuf tt_2  aet SLPwindow
 
 
-idxPeaks=[];
+ppgOnsets=[];
 beat_n=1;
 
 sps=fs; % Sampling Frequency
@@ -271,13 +275,13 @@ while t <= to
                     
                     % If the proposed peak index > 0
                     if round(valley_v) > 0
-                        idxPeaks(beat_n) = round(valley_v);
+                        ppgOnsets(beat_n) = round(valley_v);
                         beat_n = beat_n + 1;
                     end
                 else
                     % Check if rounded valley_v is greater than the prior beat index
-                    if round(valley_v) > idxPeaks(beat_n-1)
-                        idxPeaks(beat_n) = round(valley_v);
+                    if round(valley_v) > ppgOnsets(beat_n-1)
+                        ppgOnsets(beat_n) = round(valley_v);
                         beat_n = beat_n + 1;
                     end
                 end

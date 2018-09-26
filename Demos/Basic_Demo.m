@@ -30,13 +30,18 @@ clc
 InputFolder = [pwd filesep 'TestData' filesep 'mitdb-Arrhythmia']; % path to the folder where you data are located
 SigName = '200m';
 
-% load the ecg using rdmat
-[tm,sig,Fs] = rdmat([InputFolder filesep SigName]);
+% load the ecg signa using load (it loads a variable called val)
+load([InputFolder filesep SigName]);
 % the signal has two channels, from now on we will use just one 
-ecg = sig(:,1);
+ecg = val(1,:);
+% Get sampling frequency Fs from header file
+sigInfo = readheader2([InputFolder filesep SigName '.hea']);
+Fs = sigInfo.freq;
+% time vector for visualization (in seconds)
+tm = 0:1/Fs:(length(ecg)-1)/Fs;
 
 % plot the signal
-figure(1)
+xsfigure(1)
 plot(tm,ecg);
 xlabel('[s]');
 ylabel('[mV]')

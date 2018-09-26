@@ -137,7 +137,11 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
                [y2 pla2]=PLA(d2,1,1);
 
                [w ta tb] = simmx_dtw(y1,pla1,y2,pla2);
-               [p,q,Dm] = dpfast(w);
+               try % try to use the fast version if possible
+                   [p,q,Dm] = dpfast(w);
+               catch
+                   [p,q,Dm] = dp_dwt(w);
+               end
                [ym1, ym2, yout1] = draw_dtw(y1,pla1,p,y2,pla2,q); 
                 cc=corrcoef(y1,ym2);
                 c3(j)=cc(1,2);

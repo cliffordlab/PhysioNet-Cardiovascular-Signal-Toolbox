@@ -40,7 +40,8 @@
 % parameter instead of fixed fs = 125
 % 
 % 12-19-2017 Modified by Giulia Da Poian: replaced dp_dtw with dpfast 
-
+% 09-26-2018 Modified by Giulia Da Poian: try to use dpfast and if not
+% working switch to dp_dtw
 
 function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,windowlen,Fs)
 
@@ -137,7 +138,11 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
                [y2 pla2]=PLA(d2,1,1);
 
                [w ta tb] = simmx_dtw(y1,pla1,y2,pla2);
-               [p,q,Dm] = dpfast(w);
+               try % try to use fast version if possible
+                   [p,q,Dm] = dpfast(w);
+               catch
+                   [p,q,Dm] = dp_dtw(w);
+               end
                [ym1, ym2, yout1] = draw_dtw(y1,pla1,p,y2,pla2,q); 
                 cc=corrcoef(y1,ym2);
                 c3(j)=cc(1,2);

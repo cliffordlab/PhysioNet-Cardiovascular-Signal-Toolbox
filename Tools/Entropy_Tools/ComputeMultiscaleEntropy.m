@@ -1,4 +1,4 @@
- function mse = ComputeMultiscaleEntropy(data, m, r, maxTau, maxVecSize,cg_moment)
+ function mse = ComputeMultiscaleEntropy(data, m, r, maxTau, maxVecSize,cg_moment,cg_method,constant_r)
 
 % mse = ComputeMultiscaleEntropy(data, m, r, max_tau,cg_moment)
 %
@@ -14,6 +14,17 @@
 %   cg_moment   - optional, moment used to coarse-grain the time series,
 %                 by default use the mean 'mean'
 %                 Options: 'mean', 'varaince'
+%   cg_method   - [optional] - method use to generate the coarse-grain 
+%                 time series. By default use the original method proposed
+%                 by Costa et al. ('fir' with mean).
+%                 Options: 'fir' [Costa et al.], 'butter' [Valencia et al.]
+%   constant_r  - [DEFAULT] 1 : use r as function of std of original time 
+%                 series in this implementation correspond to zscore only 
+%                 the original time series 
+%               - 0 : r as a function of scale factor (tau), i.e., 
+%                 r(i)= r*std(ScaleData(i)), in this implementation it
+%                 corresponds to zscore  each coarse-grain time siries
+% 
 %      
 % Output
 %   mse          - vector of [max_tau, 1] doubles
@@ -54,6 +65,13 @@ end
 if nargin<6 || isempty(cg_moment)
     cg_moment = 'mean';
 end
+if nargin<7 || isempty(cg_method)
+    cg_method = 'fir';
+end
+if nargin<8 || isempty(constant_r)
+    constant_r = 0;
+end
+
 
 data = zscore(data);  % (introduced by GDP) normalization of the signal that 
                       % replace the common practice of expressing the 
@@ -74,9 +92,13 @@ end
 % Loop through each timescale
 % Note: i_tau == 1 is the original time series
 for i_tau = 1:maxTau
-    % Coarse-grain data (using scale in Costa's paper)
-    scaledData = coarsegrain(data,i_tau,cg_moment); % Changed by GDP
-        
+    
+    scaledData = coarsegrain(data,i_tau,cg_moment,cg_method); % Changed by GDP
+    
+    if ~constant_r
+        scaledData = zscore(scaledData);
+    end
+
     switch SampEnType
         case 'Fast'
            mse(i_tau) = fastSampen(scaledData, m, r);
@@ -86,4 +108,17 @@ for i_tau = 1:maxTau
 
 end % end for loop
 
-end % end function
+
+
+
+
+
+% REFERENCES
+
+% Costa et al. "Multiscale entropy analysis of complex physiologic time
+% series." Physical review letters 89.6 (2002): 068102
+
+% Valencia et al. "Refined multiscale entropy: Application to 24-h holter 
+% recordings of heart period variability in healthy and aortic stenosis
+% subjects." IEEE Transactions on Biomedical Engineering 56, no. 9 (2009).
+

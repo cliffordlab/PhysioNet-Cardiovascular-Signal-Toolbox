@@ -58,15 +58,15 @@ switch option
         increment = HRVparams.af.increment;
         windowlength = HRVparams.af.windowlength;
     case 'mse'
-        increment = HRVparams.MSE.increment * 3600;
-        windowlength = HRVparams.MSE.windowlength * 3600;
+        increment = HRVparams.MSE.increment * 3600 * HRVparams.Fs;
+        windowlength = HRVparams.MSE.windowlength * 3600* HRVparams.Fs;
         if isempty(increment)
             windowRRintervals = 0;
             return % no need to crate windows , use entair signal
         end 
     case 'dfa'
-        increment = HRVparams.DFA.increment * 3600;
-        windowlength = HRVparams.DFA.windowlength * 3600;
+        increment = HRVparams.DFA.increment * 3600* HRVparams.Fs;
+        windowlength = HRVparams.DFA.windowlength * 3600* HRVparams.Fs;
         if isempty(increment)
             windowRRintervals = 0;
             return  % no need to crate windows , use entair signal

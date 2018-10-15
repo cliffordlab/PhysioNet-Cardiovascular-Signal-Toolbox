@@ -52,7 +52,7 @@ end
 if isempty(HRVparams.DFA.windowlength)
     windowlength = length(NN);
 else
-    windowlength = HRVparams.DFA.windowlength*3600*HRVparams.Fs;
+    windowlength = HRVparams.DFA.windowlength*3600;
 end
 
 SQI_LowQualityThresh = HRVparams.sqi.LowQualityThreshold;

@@ -49,7 +49,7 @@ end
 if isempty(HRVparams.MSE.windowlength)
     windowlength = length(NN);
 else
-    windowlength = HRVparams.MSE.windowlength*3600*HRVparams.Fs;
+    windowlength = HRVparams.MSE.windowlength*3600;
 end
 
 threshold1 = HRVparams.sqi.LowQualityThreshold;

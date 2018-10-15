@@ -60,7 +60,8 @@ System requirements:
 ## III. Guide to Output:
 The following metrics are output from the HRV Toolbox:
 
-    - t_win     : (s)  Start time of each window analyzed
+    - t_start   : (s)  Start time of each window analyzed
+    - t_end     : (s)  End time of each window analyzed
 
 #### Time domain measures of HRV:
 

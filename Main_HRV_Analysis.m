@@ -72,6 +72,7 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %       the GNU (v3 or later) public license. See license file for
 %       more information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+clc;
 
 if nargin < 4
     error('Wrong number of input arguments')
@@ -107,18 +108,37 @@ try
         case 'ECGWaveform'
             % Convert ECG waveform in rr intervals
             [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subID);
-            sqi = [SQIidx', SQIvalue'];            
+            sqi = [SQIidx', SQIvalue'];                  
         case 'PPGWaveform'
             [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subID);
         case 'RRIntervals'
             rr = InputSig; 
+            if isempty(t)
+                fprintf('\n*** Error!***\nFor input type "RRIntervals" must provide \nvetcor with time indices of the rr interval data \n')
+                fprintf('***HRV analyis will be perfomed!***\n')
+                fprintf('\n');
+                error_flag = 'Input Error: missing vetcor with time indices of the rr interval';
+                brake;
+            end
+                
         otherwise
-            error('Wrong Input Type! This function accepts: ECGWaveform, PPGWaveform or RRIntervals')           
+            fprintf('\n*** Wrong Input Type!***\nThis function accepts: ECGWaveform, PPGWaveform or RRIntervals! \n')
+            fprintf('***No HRV analyis will be perfomed!***\n')
+            fprintf('\n');
+            error_flag = 'Input Error: wrong Input Type';
+            brake;
     end
-
+    
+    if t(end) < HRVparams.windowlength
+        fprintf('\n*** Warning!***\nThe signal is shorter than the analysis window length \n')
+        fprintf('***HRV analyis can fail!***\n')
+        fprintf('\n');
+        error_flag = 'Warning: input signal is shorter than the analysis window length';
+    end
+        
     % 1. Preprocess Data, AF detection, create Windows Indexes  
     [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,ann,sqi,HRVparams,subID);
-        
+    
     HRVout = [WinIdxs' (WinIdxs+HRVparams.windowlength)'];
     HRVtitle = {'t_start' 't_end'};
    
@@ -248,9 +268,8 @@ catch
     fid = fopen(strcat(HRVparams.writedata,filesep,'AnalysisError.txt'),'a');
     HRVout = NaN;
     ResultsFileName = '';
-    fprintf(fid, 'Basic HRV Analysis faild for subject: %s \n', subID);
+    fprintf(fid, 'Basic HRV Analysis faild for subject: %s, %s \n', subID, error_flag);
     fclose(fid); 
-    %fprintf('Analysis not performed for file ID %s \n', subjectID);
 end % end of HRV analysis
 
 

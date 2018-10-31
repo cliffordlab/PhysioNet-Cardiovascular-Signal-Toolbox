@@ -47,7 +47,7 @@ end
 if nargin < 3 || isempty(maxBoxSize)
     maxBoxSize = length(x)/4;
 end
-if nargin < 5
+if nargin < 4
    pflag = 0;
 end
 
@@ -84,7 +84,7 @@ lFpred = A*a;
 if pflag == 1
     figure;
     loglog(10.^lns, 10.^lF,'b.-','MarkerSize',16);
-    hold;
+    hold on;
     loglog(10.^[lns(1) lns(nn)], 10.^[lFpred(1) lFpred(nn)],'k');
     xlabel('n');
     ylabel('F(n)');

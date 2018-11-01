@@ -101,6 +101,7 @@ end
 if isa(subID,'cell'); subID = string(subID); end
 
 
+error_flag = [];
 
 % Start HRV analysis
 try   

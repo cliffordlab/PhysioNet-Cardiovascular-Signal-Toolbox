@@ -52,7 +52,7 @@ PVCs = PVC_detect(ecg',HRVparams.Fs,HRVparams.PVC.qrsth,sigName,HRVparams.writed
 
 figure(1)
 plot(ecg,'LineWidth',1)
-xlabel(fprintf('Samples (@%i Hz)', HRVparams.Fs),'FontSize',16)
+xlabel('Samples (@360 Hz)','FontSize',16)
 ylabel('mV','FontSize',16)
 hold on 
 plot(PVCs, ecg(PVCs), 'o','MarkerSize',8);

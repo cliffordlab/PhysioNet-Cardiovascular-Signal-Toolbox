@@ -175,4 +175,4 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
     end
     
     template=t;
-    valid=v;
+valid=v;

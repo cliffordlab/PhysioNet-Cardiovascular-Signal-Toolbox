@@ -60,6 +60,8 @@ r = HRVparams.MSE.RadiusOfSimilarity;
 maxTau = HRVparams.MSE.maxCoarseGrainings;
 
 cg_moment = HRVparams.MSE.moment;
+cg_method = HRVparams.MSE.method;
+constant_r = HRVparams.MSE.constant_r;
 
 % Preallocate arrays (all NaN) before entering the loop
 mse = nan(maxTau,length(windows_all));
@@ -83,7 +85,7 @@ for i_win = 1:length(windows_all)
 
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
-            mse(:,i_win) =ComputeMultiscaleEntropy(nn_win, m, r, maxTau, [], cg_moment);
+            mse(:,i_win) = ComputeMultiscaleEntropy(nn_win, m, r, maxTau, [], cg_moment,cg_method,constant_r);
         end
         
 

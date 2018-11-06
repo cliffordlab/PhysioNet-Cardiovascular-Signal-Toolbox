@@ -96,6 +96,10 @@ switch project_name
         HRVparams.readdata = strcat('TestData', filesep, 'Physionet_nsr2db');
         HRVparams.writedata = strcat('OutputData', filesep, 'ResultsHRT');
         HRVparams.Fs = 128;
+    case 'demoPVC'      % Parameters for PVC demo 
+        HRVparams.readdata = strcat('TestData', filesep, 'mitdb-Arrhythmia');
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsPVC');
+        HRVparams.Fs = 360;
     otherwise                  % Default
         HRVparams.Fs = NaN;                          % Spacify sampling frequency
         HRVparams.writedata = 'HRV_Output';          % (Optional) Specify name for data output folder
@@ -178,11 +182,13 @@ HRVparams.preprocess.method_unphysio = 'rem';       % Default: 'rem', Method of 
 HRVparams.preprocess.threshold1 = 0.9 ;	        % Default: 0.9, Threshold for which SQI represents good data
 HRVparams.preprocess.minlength = 30;            % Default: 30, The minimum length of a good data segment in seconds
                                 
-%% 8. AF Detection Settings
+%% 8. AF Detection Settings and PVC detection
 
 HRVparams.af.on = 1;              % Default: 1, AF Detection On or Off
 HRVparams.af.windowlength = 30;   % Default: 30, Set to include ~30 beats in each window
 HRVparams.af.increment = 30;      % Default: 30, No overlap necessary in AF feat calc
+
+HRVparams.PVC.qrsth = 0.1;        % Default: 0.1, threshold for qrs detection
 
 %% 9. Time Domain Analysis Settings
 

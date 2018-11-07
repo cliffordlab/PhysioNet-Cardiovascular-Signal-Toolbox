@@ -119,7 +119,6 @@ try
                 fprintf('***HRV analyis will be perfomed!***\n')
                 fprintf('\n');
                 error_flag = 'Input Error: missing vetcor with time indices of the rr interval';
-                brake;
             end
                 
         otherwise
@@ -127,7 +126,6 @@ try
             fprintf('***No HRV analyis will be perfomed!***\n')
             fprintf('\n');
             error_flag = 'Input Error: wrong Input Type';
-            brake;
     end
     
     if t(end) < HRVparams.windowlength

@@ -1,8 +1,9 @@
 # PhysioNet Cardiovascular Signal Toolbox
       
 If you are using this software, please cite:
-        Vest A, Da Poian G, Li Q, Liu C, Nemati S, Shah A, Clifford GD, "An Open Source Benchmarked Toolbox for Cardiovascular Waveform and Interval Analysis", Physiological measurement 39, no. 10 (2018): 105004. DOI:10.5281/zenodo.1243111; 2018. 
-        
+```
+ Vest A, Da Poian G, Li Q, Liu C, Nemati S, Shah A, Clifford GD, "An Open Source Benchmarked Toolbox for Cardiovascular Waveform and Interval Analysis", Physiological measurement 39, no. 10 (2018): 105004. DOI:10.5281/zenodo.1243111; 2018. 
+```        
 ## Introduction
 The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
@@ -32,7 +33,7 @@ System requirements:
     Signal Processing Toolbox, and Statistics and Machine Learning Toolbox, 
     Neural Network Toolbox)
 
-2)  Add the Physionet HRV Toolkit for Matlab folder and subfolders to your
+2)  Add the PhysioNet Cardiovascular Signal Toolbox to your
     Matlab path: **run startup.m**
 
 3)  (Optional) rrgen binary - compilation of rrgenV3.c on your system:

@@ -1,14 +1,10 @@
-function PVCs = PVC_detect(signal,Fs,th,sigName,OutputFolder)
+function PVCs = PVC_detect(signal,sigName,HRVparams)
 %
 % PVC_detect(signal,Fs,sigName,OutputFolder,th)
 % INPUTS: 
 %        signal       : Nx1 raw ech signal (in mV)
-%        Fs           : sampling freqency of record
-%        th           : threshold for QRS detection (default: 0.1), if too
-%                       many missing beats, decrease th; if too many extra 
-%                       beats, increase th
 %        sigName      : recording name
-%        OutputFolder : directory to save the annotation files 
+%        HRVparams    : struct of settings for hrv_toolbox analysis
 
 % OUTPUTS : 
 %         PVCs        : locations of detected PVC beats, in samples 
@@ -37,25 +33,21 @@ function PVCs = PVC_detect(signal,Fs,th,sigName,OutputFolder)
 %       This software is offered freely and without warranty under 
 %       the GNU (v3 or later) public license. See license file for
 %       more information
-
+%
+%   Mdified on November 8 2018 by Giulia Da Poian: replace input paramters
+%   with toolbox HRVparams struct
+%
 qrs_times=[];
 pvc_outputs=[];
 
 
 
-if nargin<5
-    OutputFolder = pwd;
-end
-if nargin<4
-    sigName = 'Test';
-end
 if nargin<3
-    th=0.1;
+    error('Wrong number of input parameters: see help for more information')
 end
 
-if nargin<2
-    Fs=360;
-end
+Fs = HRVparams.Fs;          % sampling freqency of record
+th = HRVparams.PVC.qrsth;   % threshold for QRS detection (default: 0.1)
 
 LengthSamples =  length(signal);
 
@@ -138,5 +130,12 @@ PVCs = qrs_times(find(pvc_outputs==1));
 annType = repmat('N',length(qrs_times),1);
 annType(find(pvc_outputs==1)) = 'V';
 
-write_ann([OutputFolder filesep 'Annotation' filesep sigName],'pvc',qrs_times,annType);
+% Create a Folder for Annotations
+AnnDir = [HRVparams.writedata filesep 'Annotation'];
+if ~exist(AnnDir, 'dir')
+   mkdir(AnnDir)
+   fprintf('Creating a new folder: "Annotation", folder is located in %s \n',[pwd filesep AnnDir]);
+end
+addpath(AnnDir)
+write_ann([AnnDir filesep sigName],HRVparams,'pvc',qrs_times,annType);
 

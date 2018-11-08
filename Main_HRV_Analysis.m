@@ -111,7 +111,7 @@ try
             [t, rr, jqrs_ann, SQIvalue , SQIidx] = ConvertRawDataToRRIntervals(InputSig, HRVparams, subID);
             sqi = [SQIidx', SQIvalue'];                  
         case 'PPGWaveform'
-            [rr,t] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subID);
+            [rr,t,sqi] = Analyze_ABP_PPG_Waveforms(InputSig,{'PPG'},HRVparams,[],subID);
         case 'RRIntervals'
             rr = InputSig; 
             if isempty(t)

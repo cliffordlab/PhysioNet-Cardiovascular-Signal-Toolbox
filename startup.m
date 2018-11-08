@@ -3,7 +3,7 @@
  
 % --- Check Matlab version
 if verLessThan('matlab', '9.3.0')
-    warning('MLab:Version', 'Your version of Matlab is too old. R2017b or higher is requested.\n');
+    warning('Matlab:Version', 'Your version of Matlab is too old. R2017b or higher is requested.\n');
     return;
 end
 

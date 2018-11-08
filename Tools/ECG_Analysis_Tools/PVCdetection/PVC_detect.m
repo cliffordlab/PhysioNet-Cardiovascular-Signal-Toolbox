@@ -138,5 +138,5 @@ PVCs = qrs_times(find(pvc_outputs==1));
 annType = repmat('N',length(qrs_times),1);
 annType(find(pvc_outputs==1)) = 'V';
 
-wrann([OutputFolder filesep 'Annotation' filesep sigName],'pvc',qrs_times,annType);
+write_ann([OutputFolder filesep 'Annotation' filesep sigName],'pvc',qrs_times,annType);
 

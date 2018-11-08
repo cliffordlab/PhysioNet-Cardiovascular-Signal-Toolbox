@@ -55,8 +55,7 @@ for i = 1:NmbOfSigs
             % PPG Detection - qppg
             [PPGann] = qppg(Waveform(:,i),HRVparams.Fs);
             % PPG SQI 
-            [ppgsqi,ppgsqiMatrix,~,~] = PPG_SQI_buf(Waveform(:,i),PPGann,[],[],HRVparams.Fs);
-            ppgsqi_numeric = round(mean(ppgsqiMatrix(:,1:3),2)');
+            ppgsqi_numeric = calculate_ppgsqi(PPGann,Waveform(:,i),HRVparams.Fs);
             % Write PPG  annotations
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'ppg',PPGann);
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqippg',PPGann(1:length(ppgsqi)),char(ppgsqi),ppgsqi_numeric);

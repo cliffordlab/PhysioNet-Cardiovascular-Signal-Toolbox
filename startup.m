@@ -1,5 +1,4 @@
-% MATLAB script that updates all git repos on the Symphony search path and starts the Symphony app
-
+% MATLAB script that updates all git repos on the PhysioNet Cardiovascular Signal Toolbox
 
 % --- Check Matlab version
 if verLessThan('matlab', '9.3.0')

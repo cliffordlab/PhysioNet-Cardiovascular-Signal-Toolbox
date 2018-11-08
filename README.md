@@ -1,9 +1,7 @@
 # PhysioNet Cardiovascular Signal Toolbox
 
-### If you are using this software, please cite:
-#### Vest A, Da Poian G, Li Q, Liu C, Nemati S, Shah A, Clifford GD, "An Open Source Benchmarked Toolbox
- for Cardiovascular Waveform and Interval Analysis", Physiological measurement 39, no. 10 (2018): 105004.
- DOI:10.5281/zenodo.1243111; 2018. 
+If you are using this software, please cite:
+    Vest A, Da Poian G, Li Q, Liu C, Nemati S, Shah A, Clifford GD, "An Open Source Benchmarked Toolbox for Cardiovascular Waveform and Interval Analysis", Physiological measurement 39, no. 10 (2018): 105004. DOI:10.5281/zenodo.1243111; 2018. 
 
 ## Introduction
 The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 

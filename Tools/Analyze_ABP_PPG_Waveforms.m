@@ -1,4 +1,4 @@
-function [rr,t] = Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
+function [rr,t,sqi] = Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
 %
 %   Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detectedQRS,subjectID)
 %	OVERVIEW:
@@ -46,6 +46,7 @@ addpath(AnnotationFolder)
 
 rr = [];
 t = [];
+sqi = [];
 
 for i = 1:NmbOfSigs
     
@@ -55,14 +56,14 @@ for i = 1:NmbOfSigs
             % PPG Detection - qppg
             [PPGann] = qppg(Waveform(:,i),HRVparams.Fs);
             % PPG SQI 
-            ppgsqi_numeric = calculate_ppgsqi(PPGann,Waveform(:,i),HRVparams.Fs);
+            [ppgsqi_numeric, ~, ppgsqi]= calculate_ppgsqi(PPGann,Waveform(:,i),HRVparams.Fs);
             % Write PPG  annotations
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'ppg',PPGann);
-            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqippg',PPGann(1:length(ppgsqi)),char(ppgsqi),ppgsqi_numeric);
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqippg',PPGann(1:length(ppgsqi_numeric)),char(ppgsqi),ppgsqi_numeric);
             
             rr = diff(PPGann)./HRVparams.Fs;
             t = PPGann(2:end)./HRVparams.Fs;
-
+            sqi = [PPGann'./HRVparams.Fs, ppgsqi_numeric'./100];
 
         case 'ABP'
             % ABP

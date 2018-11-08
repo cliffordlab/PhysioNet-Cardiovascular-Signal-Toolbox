@@ -1,4 +1,33 @@
 function [ppgsqi_numeric sqi_mean_30 annot_all]=calculate_ppgsqi(PPGann,Waveform,fs)
+
+% calculate_ppgsqi.m - run PPG SQI based on beat template correlation on 
+% 30 s PPG segments in loop
+% by Qiao Li 30 Mar 2011
+% 
+% input: 
+%     PPGann   :  PPG annotation time (samples), read from ple annot file,
+%                 But the ann-time is the OFFSET based on wave(1)
+%     Waveform :  PPG waveform
+%     Fs       :  sampling frequency (default Fs=125Hz)
+% output:
+%     annot:      ppg sqi annotation
+%                     E - excellent beat; 
+%                     A - acceptable beat; 
+%                     Q - unacceptable beat
+%     sqimatrix:  ppg sqi matrix   
+%                     [N,1]: SQI based on Direct compare
+%                     [N,2]: SQI based on Linear resampling
+%                     [N,3]: SQI based on Dynamic time warping
+%                     [N,4]: SQI based on Clipping detection
+%     template:   Current PPG beat template
+%     valid:      1 or greater for valid template, 
+%                 0 for invalid template
+%	
+%   LICENSE:    
+%       This software is offered freely and without warranty under 
+%       the GNU (v3 or later) public license. See license file for
+%       more information
+
         sqimatrix_all=zeros(length(PPGann),3);
         sqi_mean_30=zeros(1,ceil(length(Waveform)/fs/30));
         annot_all=[];

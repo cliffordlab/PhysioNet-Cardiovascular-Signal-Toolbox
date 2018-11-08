@@ -1,5 +1,6 @@
-% MATLAB script that updates all git repos on the PhysioNet Cardiovascular Signal Toolbox
-
+% MATLAB script that add the PhysioNet Cardiovascular Signal Toolbox to
+% Matlab path, aslo check Matlab version
+ 
 % --- Check Matlab version
 if verLessThan('matlab', '9.3.0')
     warning('MLab:Version', 'Your version of Matlab is too old. R2017b or higher is requested.\n');

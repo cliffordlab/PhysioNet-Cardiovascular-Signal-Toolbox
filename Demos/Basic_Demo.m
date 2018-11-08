@@ -26,6 +26,8 @@
 clear all
 clc
 
+run(['..' filesep 'startup.m'])
+
 % Where are the data, in this demo they are located in a subfolder
 InputFolder = [pwd filesep 'TestData' filesep 'mitdb-Arrhythmia']; % path to the folder where you data are located
 SigName = '200m';

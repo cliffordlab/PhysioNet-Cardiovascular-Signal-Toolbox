@@ -43,7 +43,7 @@ Fs = sigInfo.freq;
 tm = 0:1/Fs:(length(ecg)-1)/Fs;
 
 % plot the signal
-xsfigure(1)
+figure(1)
 plot(tm,ecg);
 xlabel('[s]');
 ylabel('[mV]')

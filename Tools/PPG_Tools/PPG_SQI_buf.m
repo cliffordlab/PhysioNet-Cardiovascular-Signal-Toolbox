@@ -140,7 +140,7 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
                try % try to use the fast version if possible
                    [p,q,Dm] = dpfast(w);
                catch
-                   [p,q,Dm] = dp_dwt(w);
+                   [p,q,Dm] = dp_dtw(w); 
                end
                [ym1, ym2, yout1] = draw_dtw(y1,pla1,p,y2,pla2,q); 
                 cc=corrcoef(y1,ym2);

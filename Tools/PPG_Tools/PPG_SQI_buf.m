@@ -62,6 +62,11 @@ function [annot sqimatrix template valid] = PPG_SQI_buf(wave,anntime,template,wi
         return;
     end
 
+    try
+        addpath('mex_dpcore');
+    catch
+    end
+    
     annot=[];
     sqimatrix=[];
     

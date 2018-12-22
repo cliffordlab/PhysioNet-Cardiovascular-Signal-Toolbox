@@ -107,8 +107,8 @@ function ppgOnsets = qppg_fast(data,fs,from,to)
 %   Changed output variable name to ppgOnsets 
 %
 % 22 Dec 2018 by Giulia Da Poian
-%   Replace use of global variable with function arguments and name
-%   qppg_fast
+%   Start from the qppg.m code, replace use of global variables and use 
+%   function arguments, rename the function qppg_fast
 
 
 if nargin<3

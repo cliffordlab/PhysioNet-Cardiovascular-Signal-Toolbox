@@ -181,7 +181,7 @@ t1 = t1+from;
 T0 = 0;
 n=0;
 for t = from:t1
-   [temp, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+   [temp,ebuf,lbuf,tt_2, aet] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
     if temp > INVALID_DATA+10
         T0 = T0+temp;
         n=n+1;
@@ -191,15 +191,13 @@ T0 = T0/n; % T0=T0/(t1-from);
 Ta = 3 * T0;
 
 learning=1;
-t=from;
 
 %    /* Main loop */
 t = from;
 while t <= to
-	
-	if (learning) 
-
-	    if (t > from + LPERIOD) 
+    
+    if (learning) 
+        if (t > from + LPERIOD) 
     		learning = 0;
         	T1 = T0;
             t = from;	% /* start over */
@@ -208,16 +206,16 @@ while t <= to
         end
     end
             
-	[temp, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+	[temp,ebuf,lbuf,tt_2, aet] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
     
-	if (temp > T1)    % /* found a possible ABP pulse near t */ 
+    if (temp > T1)    % /* found a possible ABP pulse near t */ 
 	    timer = 0; 
             % /* used for counting the time after previous ABP pulse */
 	    maxd = temp;
         mind = maxd;
         tmax=t;
         for (tt = t + 1: t + EyeClosing-1)
-            [temp2, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+            [temp2 ,ebuf,lbuf,tt_2, aet] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
             if temp2 > maxd
                 maxd=temp2;
                 tmax=tt;
@@ -228,8 +226,8 @@ while t <= to
             continue;
         end
         
-        for (tt = tmax :-1: t - EyeClosing / 2 +1)
-            [temp2, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+        for tt = tmax :-1: (t - EyeClosing / 2 +1)
+            [temp2 ,ebuf,lbuf,tt_2, aet] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
             if temp2< mind
                 mind=temp2;
             end
@@ -239,14 +237,14 @@ while t <= to
             tpq=t-round(0.04*fs);
             maxmin_2_3_threshold=(maxd-mind)*2.0/3;
             for tt=tmax:-1:t-EyeClosing/2+1
-                [temp2, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+                [temp2, ebuf,lbuf,tt_2, aet] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
                 if temp2<maxmin_2_3_threshold
                     break;
                 end
             end
             for tt=tt:-1:t - EyeClosing / 2 + round(0.024*fs)
-                [temp2, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
-                [temp3, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(tt-round(0.024*fs),data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+                [temp2 ,ebuf,lbuf,tt_2, aet] = slpsamp(tt,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
+                [temp3 ,ebuf,lbuf,tt_2, aet] = slpsamp(tt-round(0.024*fs),data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow);
                 if temp2-temp3<onset
                     tpq=tt-round(0.016*fs);
                     break;
@@ -301,7 +299,7 @@ while t <= to
 	    % /* Once past the learning period, decrease threshold if no pulse
 	    %   was detected recently. */
             timer = timer+1;
-	        if (timer > ExpectPeriod && Ta > Tm) 
+            if (timer > ExpectPeriod && Ta > Tm) 
                 Ta=Ta-1;
                 T1 = Ta / 3;
             end
@@ -318,16 +316,9 @@ end
 end
 
 
-function [beat1, BUFLN_out,ebuf_out,lbuf_out,tt_2_out, aet_out,SLPwindow_out] = ...
-          slpsamp(t,data,BUFLN_in,ebuf_in,lbuf_in,tt_2_in, aet_in,SLPwindow_in) 
+function [beat1,ebuf,lbuf,tt_2, aet] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow) 
 
-    BUFLN = BUFLN_in;
-    ebuf = ebuf_in;
-    lbuf = lbuf_in;
-    tt_2 = tt_2_in;
-    aet = aet_in;
-    SLPwindow = SLPwindow_in;
-        
+    
     while (t > tt_2) 
         prevVal=0;
         
@@ -362,12 +353,4 @@ function [beat1, BUFLN_out,ebuf_out,lbuf_out,tt_2_out, aet_out,SLPwindow_out] = 
     end
     M3=round(mod(t,(BUFLN-1))+1);
     beat1=lbuf(M3);
-    
-    
-    BUFLN_out = BUFLN;
-    ebuf_out = ebuf;
-    lbuf_out = lbuf;
-    tt_2_out = tt_2;
-    aet_out = aet;
-    SLPwindow_out = SLPwindow;
 end

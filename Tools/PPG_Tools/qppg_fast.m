@@ -318,9 +318,16 @@ end
 end
 
 
-function [beat1, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(t,data,BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow) 
+function [beat1, BUFLN_out,ebuf_out,lbuf_out,tt_2_out, aet_out,SLPwindow_out] = ...
+          slpsamp(t,data,BUFLN_in,ebuf_in,lbuf_in,tt_2_in, aet_in,SLPwindow_in) 
 
-
+    BUFLN = BUFLN_in;
+    ebuf = ebuf_in;
+    lbuf = lbuf_in;
+    tt_2 = tt_2_in;
+    aet = aet_in;
+    SLPwindow = SLPwindow_in;
+        
     while (t > tt_2) 
         prevVal=0;
         
@@ -355,4 +362,12 @@ function [beat1, BUFLN,ebuf,lbuf,tt_2, aet,SLPwindow] = slpsamp(t,data,BUFLN,ebu
     end
     M3=round(mod(t,(BUFLN-1))+1);
     beat1=lbuf(M3);
+    
+    
+    BUFLN_out = BUFLN;
+    ebuf_out = ebuf;
+    lbuf_out = lbuf;
+    tt_2_out = tt_2;
+    aet_out = aet;
+    SLPwindow_out = SLPwindow;
 end

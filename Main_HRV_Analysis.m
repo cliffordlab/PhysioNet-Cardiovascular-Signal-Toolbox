@@ -135,8 +135,10 @@ try
         error_flag = 'Warning: input signal is shorter than the analysis window length';
     end
         
-    % 1. Preprocess Data, AF detection, create Windows Indexes  
+    % 1. Preprocess Data, AF detection, create Windows Indexes 
+    error_flag = 'Data Preprocessing or AF detection failure';
     [NN, tNN, WinIdxs, AFWindows,out] = PreparDataForHRVAnlysis(rr,t,ann,sqi,HRVparams,subID);
+    error_flag = []; % clean error flag since preprocessing done
     
     HRVout = [WinIdxs' (WinIdxs+HRVparams.windowlength)'];
     HRVtitle = {'t_start' 't_end'};
@@ -144,48 +146,59 @@ try
     % 3. Calculate time domain HRV metrics - Using HRV Toolbox for PhysioNet 
     %    Cardiovascular Signal Toolbox Toolbox Functions        
     if HRVparams.timedomain.on 
+        error_flag = 'Time Domain Analysis failure';
         TimeMetrics = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
         HRVout = [HRVout cell2mat(struct2cell(TimeMetrics))'];
         HRVtitle = [HRVtitle fieldnames(TimeMetrics)'];
+        error_flag = []; % clean error flag since time domain analysis done
     end
     
     % 4. Frequency domain  metrics (LF HF TotPow) 
     if HRVparams.freq.on 
+        error_flag = 'Frequency Domain Analysis failure';
         FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
         HRVout = [HRVout cell2mat(struct2cell(FreqMetrics))'];
-        HRVtitle = [HRVtitle fieldnames(FreqMetrics)'];
+        error_flag = []; % clean error flag since frequency domain analysis done
     end
     
     % 5. PRSA, AC and DC values
     if HRVparams.prsa.on 
+        error_flag = 'PRSA Analysis failure';
         [ac,dc,~] = prsa(NN, tNN, HRVparams, sqi, WinIdxs );
         % Export results
         HRVout = [HRVout, ac(:), dc(:)];
         HRVtitle = [HRVtitle {'ac' 'dc'}];
+        error_flag = []; % clean error flag since PRSA analysis done
     end
     
     % 6.Poincare Features
     if HRVparams.poincare.on
+         error_flag = 'Poincare Analysis failure';
          [SD1, SD2, SD12Ratio] = EvalPoincareOnWindows(NN, tNN, HRVparams, WinIdxs, sqi);
          % Export results
          HRVout = [HRVout, SD1(:),SD2(:),SD12Ratio(:)];
          HRVtitle = [HRVtitle {'SD1', 'SD2', 'SD1SD2'}];
+         error_flag = []; % clean error flag since Poincare analysis done
     end
     
     % 7.Entropy Features
     if HRVparams.Entropy.on
+        error_flag = 'Entropy Analysis failure';
         m = HRVparams.Entropy.patternLength;
         r = HRVparams.Entropy.RadiusOfSimilarity;
         [SampEn, ApEn] = EvalEntropyMetrics(NN, tNN, m ,r, HRVparams, WinIdxs, sqi);
         % Export results
         HRVout = [HRVout, SampEn(:),ApEn(:)];
         HRVtitle = [HRVtitle {'SampEn', 'ApEn'}];
+        error_flag = []; % clean error flag since Entropy analysis done
     end
     
     % Generates Output - Never comment out
+    error_flag = 'Failure during output file generation';
     ResultsFileName.HRV = SaveHRVoutput(subID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
+    error_flag = []; % clean error flag 
     
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on 

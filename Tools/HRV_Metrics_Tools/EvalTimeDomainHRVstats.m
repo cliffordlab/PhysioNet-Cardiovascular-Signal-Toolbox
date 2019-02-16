@@ -20,19 +20,19 @@ function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 %                                windows (in seconds) 
 %                
 %   OUTPUT:     
-%               out.NNmean      :  
-%               out.NNmedian    :
-%               out.NNmode      :
-%               out.NNvariace   :
+%               out.NNmean      : mean
+%               out.NNmedian    : median
+%               out.NNmode      : mode
+%               out.NNvariace   : variance
 %               out.NNskew      : skewness
 %               out.NNkurt      : kurtosis
 %               out.SDNN        : standard deviation
-%               out.NNiqr       :
-%               out.RMSSD       :
+%               out.NNiqr       : intra quartil range
+%               out.RMSSD       : root mean square difference
 %               out.pnn50       : the fraction of consecutive beats that differ by
 %                                 more than a specified time.
-%               out.btsdet      :
-%               out.avgsqi      :
+%               out.btsdet      : number of detected beats
+%               out.avgsqi      : average signal quality
 %               out.tdflag      : 2 - Not enough high SQI data
 %                                 3 - Not enough data in the window to analyze
 %                                 5 - Success
@@ -106,17 +106,17 @@ for i_win = 1:length(windows_all)
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
 
-            out.NNmean(i_win) = mean(nn_win) * 1000; % compute and convert to ms
-            out.NNmedian(i_win) = median(nn_win)* 1000; % compute and convert to ms
-            out.NNmode(i_win) = mode(nn_win)* 1000; % compute and convert to ms
-            out.NNvariance(i_win) = var(nn_win)* 1000; % compute and convert to ms
+            out.NNmean(i_win) = mean(nn_win.* 1000); % compute and convert to ms
+            out.NNmedian(i_win) = median(nn_win.* 1000); % compute and convert to ms
+            out.NNmode(i_win) = mode(nn_win.* 1000); % compute and convert to ms
+            out.NNvariance(i_win) = var(nn_win.* 1000); % compute and convert to ms^2
             out.NNskew(i_win) = skewness(nn_win); 
             out.NNkurt(i_win) = kurtosis(nn_win); %
-            out.NNiqr(i_win) = iqr(nn_win)* 1000; % compute and convert to ms
-            out.SDNN(i_win) = std(nn_win)* 1000; % compute and convert to ms % SDNN should only be done on longer data segments
+            out.NNiqr(i_win) = iqr(nn_win.* 1000); % compute and convert to ms
+            out.SDNN(i_win) = std(nn_win.* 1000); % compute and convert to ms % SDNN should only be done on longer data segments
 
             % RMSSD
-            out.RMSSD(i_win) = runrmssd(nn_win)* 1000; % compute and convert to ms
+            out.RMSSD(i_win) = runrmssd(nn_win.* 1000); % compute and convert to ms
 
             % pNN50
             out.pnn50(i_win) = pnna(nn_win, alpha); % 

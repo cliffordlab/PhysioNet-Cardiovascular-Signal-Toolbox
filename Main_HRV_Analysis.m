@@ -160,6 +160,7 @@ try
         FreqMetrics = EvalFrequencyDomainHRVstats(NN,tNN,sqi,HRVparams,WinIdxs);
         % Export results
         HRVout = [HRVout cell2mat(struct2cell(FreqMetrics))'];
+        HRVtitle = [HRVtitle fieldnames(FreqMetrics)'];
         error_flag = []; % clean error flag since frequency domain analysis done
     end
     

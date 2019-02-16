@@ -111,7 +111,7 @@ for i_win = 1:length(windows_all)
             out.NNmode(i_win) = mode(nn_win.* 1000); % compute and convert to ms
             out.NNvariance(i_win) = var(nn_win.* 1000); % compute and convert to ms^2
             out.NNskew(i_win) = skewness(nn_win); 
-            out.NNkurt(i_win) = kurtosis(nn_win); %
+            out.NNkurt(i_win) = kurtosis(nn_win); 
             out.NNiqr(i_win) = iqr(nn_win.* 1000); % compute and convert to ms
             out.SDNN(i_win) = std(nn_win.* 1000); % compute and convert to ms % SDNN should only be done on longer data segments
 

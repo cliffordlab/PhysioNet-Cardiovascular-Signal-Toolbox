@@ -9,7 +9,7 @@ end
 
 fprintf('Adding the PhysioNet Cardiovascular Signal Toolbox to Matlab path\n')
 try
-    ss = ['..' filesep 'PhysioNet-Cardiovascular-Signal-Toolbox'];
+    ss = ['..' filesep 'PhysioNet-Cardiovascular-Signal-Toolbox-master'];
     addpath(genpath(ss));
     fprintf('PhysioNet Cardiovascular Signal Toolbox successfully added to Matlab path\n')
 catch 

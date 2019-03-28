@@ -37,7 +37,7 @@ load([InputFolder filesep SigName]);
 % the signal has two channels, from now on we will use just one 
 ecg = val(1,:);
 % Get sampling frequency Fs from header file
-sigInfo = readheader2([InputFolder filesep SigName '.hea']);
+sigInfo = readheader([InputFolder filesep SigName '.hea']);
 Fs = sigInfo.freq;
 % time vector for visualization (in seconds)
 tm = 0:1/Fs:(length(ecg)-1)/Fs;

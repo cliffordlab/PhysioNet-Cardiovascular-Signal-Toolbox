@@ -45,7 +45,7 @@ HRVparams = InitializeHRVparams('demoPVC');
 % load mat file, and use gain and baseline information from hea file
 
 sig = load([HRVparams.readdata filesep sigName 'm']);
-siginfo = readheader2([HRVparams.readdata filesep sigName 'm.hea']);
+siginfo = readheader([HRVparams.readdata filesep sigName 'm.hea']);
 % use first 5 minutes of the first channel
 lead = 1;
 ecg = (sig.val(lead,1:HRVparams.Fs*300)-siginfo.adczero(lead))./siginfo.gain(lead);

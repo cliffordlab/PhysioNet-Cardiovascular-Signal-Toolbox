@@ -18,7 +18,6 @@ function heasig=readheader(name)
 fid=fopen(name,'rt');
 if (fid<=0)
    disp(['error in opening file ' name]);
-   keyboard;
 end
 
 pp=' /+:()x';
@@ -37,12 +36,12 @@ heasig.nsig=str2num(s1);
 if isempty(findstr(s1,'/'))
    heasig.freq=str2num(s1);
 else
-   [s1 s2]=strtok(s1,'/');
+   s1=strtok(s1,'/');
    heasig.freq=str2num(s1);
-   %[s1 s]=strtok(s);
+  
 end
 
-[s1 s]=strtok(s);
+[s1 s]=strtok(s,pp);
 heasig.nsamp=str2num(s1);
 
 if ~isempty(deblank(s))
@@ -56,9 +55,9 @@ end
 
 if ~isempty(deblank(s))
    [s1 s]=strtok(s,'/');
-   month=str2num(s1);
-   [s1 s]=strtok(s,'/');
    day=str2num(s1);
+   [s1 s]=strtok(s,'/');
+   month=str2num(s1);
    [s1 s]=strtok(s,pp);
    year=str2num(s1);  
 end
@@ -89,11 +88,13 @@ for i=1:heasig.nsig
      end
   end
   a=[findstr(s,'x') findstr(s,':') findstr(s,'+')];
+  [s2,aux]=strtok(s); % rute prob com o bd do politecnico 13/2/03
+  a(a>length(s2))=[]; % rute prob com o bd do politecnico 13/2/03
   if isempty(a)
      heasig.fmt(i)=str2num(s1);     
   else
     [s2,s]=strtok(s);
-    a=[a length(s2)+1];
+    a=[a length(s2)+1];     
     for k=1:length(a)-1
       switch (s2(a(k)))
        case '+',
@@ -118,7 +119,8 @@ for i=1:heasig.nsig
         heasig.gain(i)=str2num(s1);
       else
        [s2,s]=strtok(s);
-        a=[a length(s2)+1];
+        %a=[a length(s2)+1];
+        a=[a(1) length(s2)+1]; % rute prob com o bd do politecnico na unidade da respiraçao(dl/sec) 13/2/03 
         for k=1:length(a)-1
   	  switch (s2(a(k)))
            case '(', 

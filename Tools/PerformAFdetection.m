@@ -1,14 +1,14 @@
-function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,tNN,NN,sqi,HRVparams)    
-%   PerformAFdetection(subjectID,tNN,NN,HRVparams)  
+function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,trr,rr,sqi,HRVparams)    
+%   PerformAFdetection(subjectID,trr,rr,HRVparams)  
 %
 %	OVERVIEW:
 %       Perform Atrial Fibrillation (AF) detection 
 %
 %   INPUT:
 %       subjectID : string containing the identifier of the subject to be analyze      
-%       tNN       : a single row of time indices of the rr interval 
+%       trr      : a single row of time indices of the rr interval 
 %                   data (seconds)
-%       NN        : a single row of NN (normal normal) interval
+%       rr        : a single row of peak to peak interval
 %                   data in seconds
 %       sqi       : Signal Quality Index; Requires a matrix with
 %                   at least two columns. Column 1 should be timestamps 
@@ -46,13 +46,13 @@ function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,t
 
 
 if isempty(sqi) 
-     sqi(:,1) = tNN;
-     sqi(:,2) = ones(length(tNN),1);
+     sqi(:,1) = trr;
+     sqi(:,2) = ones(length(trr),1);
 end
 
 % 1. Calculate AF Features
-AfAnalysisWindows = CreateWindowRRintervals(tNN,NN,HRVparams,'af');
-NNsamps = NN .* HRVparams.Fs;
+AfAnalysisWindows = CreateWindowRRintervals(trr,rr,HRVparams,'af');
+NNsamps = rr .* HRVparams.Fs;
 
 AFtest = nan(length(AfAnalysisWindows),1);
 
@@ -61,7 +61,7 @@ for idx = 1:length(AfAnalysisWindows)
     
     if ~isnan(tstart)  
       
-        idxInWin = find(tNN >= tstart & tNN< tstart + HRVparams.af.windowlength);
+        idxInWin = find(trr >= tstart & trr< tstart + HRVparams.af.windowlength);
        
         % Added by Giulia: exclude from the Analysis low quality
         % segments (SQI< SQI_threshold)
@@ -88,4 +88,4 @@ afcol_titles = {'AFtest'};
 
 outputType = 'AF';
 AFfile = SaveHRVoutput(subjectID,AfAnalysisWindows,afresults, ...
-    afcol_titles, outputType, HRVparams, tNN, NN);
+    afcol_titles, outputType, HRVparams, trr, rr);

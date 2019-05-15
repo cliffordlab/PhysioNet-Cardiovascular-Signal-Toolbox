@@ -215,9 +215,9 @@ try
         Scales = 1:HRVparams.MSE.maxCoarseGrainings;
         HRVout = [Scales' mse];
         for i=1:length(out.WinIdxsMSE)
-            Windows{i} = strcat('t_', num2str(WindIdxs(i)));
+            Windows{i} = strcat('t_', num2str(WinIdxs(i)));
         end
-        HRVtitle = {'Scales' Windows{:}'};
+        HRVtitle = {'Scales' Windows{:}};
         ResultsFileName.MSE = SaveHRVoutput(subID,[],HRVout,HRVtitle, 'MSE', HRVparams, tNN, NN);
     end   
 

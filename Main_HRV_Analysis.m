@@ -240,7 +240,7 @@ try
     % 10. Heart Rate Turbulence Analysis (HRT)
     if HRVparams.HRT.on
         try
-            % Create analysis windows from original rr intervals
+            % Create analysis windows from original rr intervals 
             tWinHRT = CreateWindowRRintervals(t, rr, HRVparams,'HRT');
             [TO, TS, nPVCs] = Eval_HRT(rr,t,ann,sqi, HRVparams, tWinHRT);
             % Save Results for DFA
@@ -254,7 +254,7 @@ try
         end
     end
     
-    % 11. Analyze additional signals (ABP, PPG or both)
+    % 11. Analyze additional waveform signals (ABP, PPG or both)
     if ~isempty(varargin)
         try
             fprintf('Analyizing %s \n', extraSigType{:});

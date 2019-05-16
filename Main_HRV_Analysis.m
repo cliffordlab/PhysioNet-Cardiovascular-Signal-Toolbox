@@ -47,9 +47,9 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %       - rr interval input
 %       Main_HRV_Analysis(RR,t,'RRIntervals',HRVparams)
 %       - ECG wavefrom input
-%       Main_HRV_Analysis(ECGsig,t,'ECGWavefrom',HRVparams,'101')
+%       Main_HRV_Analysis(ECGsig,[],'ECGWaveform',HRVparams,'101')
 %       - ECG waveform and also ABP and PPG waveforms
-%       Main_HRV_Analysis(ECGsig,t,'ECGWaveform',HRVparams,[],[],[], abpSig, 
+%       Main_HRV_Analysis(ECGsig,[],'ECGWaveform',HRVparams,[],[],[], abpSig, 
 %                         'ABP', ppgSig, 'PPG')
 %
 %   DEPENDENCIES & LIBRARIES:

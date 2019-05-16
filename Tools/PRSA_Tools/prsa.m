@@ -136,45 +136,69 @@ for i_win = 1:length(tWin)
             end
 
             % Load custom colors
-            custom_colors.red = [72 11 11] / 100;
+            custom_colors.red   = [72 11 11] / 100;
             custom_colors.green = [30 69 31] / 100;
+            custom_colors.black = [40 40 40] / 100; % for less solid lines
 
             % Plot results
             if plot_results == 1
+                
+                Relative_RRI_indices=-prsaWinLength:prsaWinLength-1;
+                
                 figure(1);
-                plot(t_rr_win, nn_win, 'k-', 'Marker','o', 'MarkerFaceColor', 'k');
+                plot(t_rr_win, nn_win, '-', 'Color', custom_colors.black, 'Marker','o', 'MarkerFaceColor', 'k');
+                xlabel('Time, s');
+                ylabel('R-R interval, s');
                 hold on;
 
                 figure(2)
-                subplot(2,1,2)
-                plot(dcm', '--');
-                legend('Deceleration');
+                plot(t_rr_win, nn_win,'-', 'Color', custom_colors.black, 'Marker','.', 'MarkerFaceColor', 'k');
                 hold on;
-
-                figure(2)
-                subplot(2,1,1)
-                plot(acm', '--');
-                hold on;
-
-                figure(3)
-                plot(t_rr_win,nn_win,'k-', 'Marker','.');
-                hold on;
-                plot(t_rr_win(ac_ind),nn_win(ac_ind), 'LineStyle','none', 'Marker', 'v', 'MarkerEdgeColor', 'none', 'MarkerFaceColor', custom_colors.green);
-                plot(t_rr_win(dc_ind),nn_win(dc_ind), 'LineStyle','none', 'Marker', '^', 'MarkerEdgeColor', 'none', 'MarkerFaceColor', custom_colors.red);
-                legend('non-anchor','ac anchor','dc anchor');
+                plot(t_rr_win(dc_ind),nn_win(dc_ind), 'Color', custom_colors.black, 'LineStyle','none', 'Marker', '^', 'MarkerFaceColor', custom_colors.green);
+                plot(t_rr_win(ac_ind),nn_win(ac_ind), 'Color', custom_colors.black, 'LineStyle','none', 'Marker', 'v', 'MarkerFaceColor', custom_colors.red);
+                legend('non-anchor','DC anchor','AC anchor');
                 title('RR anchors');
+                ylabel('R-R interval, s');
+                xlabel('Time, s');
+                %hold off; % don't draw on top, if multiple windows are analysed
+                
+                figure(3)
+                subplot(2,1,1)
+                acx=cell2mat(arrayfun(@(i)t_rr_win(i+Relative_RRI_indices)-t_rr_win(i),ac_ind,'UniformOutput',0))';
+                plot(acx, acm','--');
+                hold on
+                plot(mean(acx,2),prsa_ac,'k','LineWidth',3);
+                hold off; % don't draw on top, if multiple windows are analysed
+                title('Acceleration');
+                ylabel('R-R interval, ms');
+                subplot(2,1,2)
+                dcx=cell2mat(arrayfun(@(i)t_rr_win(i+Relative_RRI_indices)-t_rr_win(i),dc_ind,'UniformOutput',0))';
+                plot(dcx,dcm','--');
+                hold on
+                plot(mean(dcx,2),prsa_dc,'k','LineWidth',3);
+                hold off;
+                title('Deceleration')
+                ylabel('R-R interval, ms');
+                xlabel('Time, s');
 
                 figure(4);
                 subplot(2,1,1)
-                plot(-prsaWinLength:prsaWinLength-1, dcm', 'k--')
-                title('dc matrix')
+                plot(Relative_RRI_indices, acm', '--')
                 hold on
-                plot(-prsaWinLength:prsaWinLength-1, prsa_dc, 'r');
+                plot(Relative_RRI_indices, prsa_ac, 'k','LineWidth',3);
+                xticks(Relative_RRI_indices);
+                hold off;
+                title('AC matrix')
+                ylabel('R-R interval, ms');
                 subplot(2,1,2)
-                plot(-prsaWinLength:prsaWinLength-1, acm', 'k--')
+                plot(Relative_RRI_indices, dcm', '--')
                 hold on
-                plot(-prsaWinLength:prsaWinLength-1,p rsa_ac, 'r');
-                title('ac matrix')
+                plot(Relative_RRI_indices, prsa_dc, 'k','LineWidth',3);
+                xticks(Relative_RRI_indices);
+                title('DC matrix')
+                ylabel('R-R interval, ms');
+                xlabel('Index');
+                hold off;
                 
             end % end of plotting condition
         else % else, if SQI is not adequate

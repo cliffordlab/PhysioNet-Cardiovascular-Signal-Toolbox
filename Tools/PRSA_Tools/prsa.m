@@ -85,7 +85,9 @@ for i_win = 1:length(tWin)
     if ~isnan(tWin(i_win))
         % Isolate data in this window
         sqi_win = sqi( sqi(:,1) >= tWin(i_win) & sqi(:,1) < tWin(i_win) + windowlength,:);
-        nn_win = rr( t_rr >= tWin(i_win) & t_rr < tWin(i_win) + windowlength );
+        rr_idx_in_win = find( t_rr >= tWin(i_win) &     t_rr  < tWin(i_win) + windowlength );
+        nn_win   =   rr( rr_idx_in_win );
+        t_rr_win = t_rr( rr_idx_in_win );
          
         % Analysis of SQI for the window
         lowqual_idx = find(sqi_win(:,2) < SQI_th);
@@ -140,40 +142,40 @@ for i_win = 1:length(tWin)
             % Plot results
             if plot_results == 1
                 figure(1);
-                plot(t_rr,nn_win,'k+');
+                plot(t_rr_win, nn_win, 'k-', 'Marker','o', 'MarkerFaceColor', 'k');
                 hold on;
 
                 figure(2)
                 subplot(2,1,2)
-                plot(dcm,'k--');
+                plot(dcm', '--');
                 legend('Deceleration');
                 hold on;
 
                 figure(2)
                 subplot(2,1,1)
-                plot(acm,'k--');
-                legend('Acceleration');    
+                plot(acm', '--');
                 hold on;
 
                 figure(3)
-                plot(t_rr,nn_win,'k-+');
+                plot(t_rr_win,nn_win,'k-', 'Marker','.');
                 hold on;
-                plot(t_rr(ac_ind),nn_win(ac_ind), 'color', custom_colors.green, 'marker', '+');
-                plot(t_rr(dc_ind),nn_win(dc_ind), 'color', custom_colors.red, 'marker', '+');
+                plot(t_rr_win(ac_ind),nn_win(ac_ind), 'LineStyle','none', 'Marker', 'v', 'MarkerEdgeColor', 'none', 'MarkerFaceColor', custom_colors.green);
+                plot(t_rr_win(dc_ind),nn_win(dc_ind), 'LineStyle','none', 'Marker', '^', 'MarkerEdgeColor', 'none', 'MarkerFaceColor', custom_colors.red);
                 legend('non-anchor','ac anchor','dc anchor');
                 title('RR anchors');
 
                 figure(4);
                 subplot(2,1,1)
-                plot([-2:2*prsaWinLength-2],dcm,'k--')
+                plot(-prsaWinLength:prsaWinLength-1, dcm', 'k--')
                 title('dc matrix')
                 hold on
-                plot([-2:2*prsaWinLength-2],prsa_dc,'r');
+                plot(-prsaWinLength:prsaWinLength-1, prsa_dc, 'r');
                 subplot(2,1,2)
-                plot([-2:2*prsaWinLength-2],acm,'k--')
+                plot(-prsaWinLength:prsaWinLength-1, acm', 'k--')
                 hold on
-                plot([-2:2*prsaWinLength-2],prsa_ac,'r');
+                plot(-prsaWinLength:prsaWinLength-1,p rsa_ac, 'r');
                 title('ac matrix')
+                
             end % end of plotting condition
         else % else, if SQI is not adequate
         end % end of conditional statements run when SQI is adequate

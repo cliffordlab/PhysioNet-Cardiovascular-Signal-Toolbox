@@ -13,7 +13,12 @@ function [rr,t,sqi] = Analyze_ABP_PPG_Waveforms(Waveform,Type,HRVparams,detected
 %       subjectID   - string to identify current subject
 %
 %   OUTPUT
-%       Annotation files
+%       rr          - (seconds) Vector containing RR interval
+%       t           - (seconds) Time of the rr interval data 
+%       sqi         - (optional) Signal Quality Index; Requires a 
+%                     matrix with at least two columns. Column 1 
+%                     should be timestamps of each sqi measure, and 
+%                     Column 2 should be SQI on a scale from 0 to 1.
 %   
 %   DEPENDENCIES & LIBRARIES:
 %       PhysioNet Cardiovascular Signal Toolbox

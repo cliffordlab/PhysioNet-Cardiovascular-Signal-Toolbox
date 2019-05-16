@@ -6,10 +6,10 @@ function [afresults, AfAnalysisWindows, AFfile] = PerformAFdetection(subjectID,t
 %
 %   INPUT:
 %       subjectID : string containing the identifier of the subject to be analyze      
-%       trr      : a single row of time indices of the rr interval 
-%                   data (seconds)
-%       rr        : a single row of peak to peak interval
-%                   data in seconds
+%       trr      : (seconds)a single row of time of the rr interval 
+%                   data 
+%       rr        : (seconds) a single row of peak to peak interval
+%                   data 
 %       sqi       : Signal Quality Index; Requires a matrix with
 %                   at least two columns. Column 1 should be timestamps 
 %                   should be timestamps of each sqi measure, and Column 2 

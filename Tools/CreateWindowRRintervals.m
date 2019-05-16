@@ -5,10 +5,9 @@ function windowRRintervals = CreateWindowRRintervals(tNN, NN, HRVparams,option)
 %   OVERVIEW:   This function returns the starting time (in seconds) of 
 %               each window to be analyzed.
 %
-%   INPUT:      tNN       : a single row of time indices of the rr interval 
-%                           data (seconds)
-%               NN        : a single row of NN (normal normal) interval
-%                           data in seconds
+%   INPUT:      tNN       : (seconds) a single row of time of the rr interval 
+%               NN        : (seconds) a single row of NN (normal normal) interval
+%                           data
 %               HRVparams : struct of settings for hrv_toolbox analysis
 %               option    : 'normal', 'af', 'sqi', 'mse', 'dfa'
 %               

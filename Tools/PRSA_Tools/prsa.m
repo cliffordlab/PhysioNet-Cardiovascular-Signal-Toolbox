@@ -1,17 +1,17 @@
-function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, rri, HRVparams, sqi, WinStarIdxs)
-%   [ac_results, dc_results] = prsa(rr, rri, sqi, windows_all, HRVparams )
+function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, t_rr, HRVparams, sqi, tWin)
+%   [ac_results, dc_results] = prsa(rr, t_rr, HRVparams, swi, tWin )
 %
 %   OVERVIEW:
 %       Calculates acceleration and deceleration capacity values  
 %   INPUT
-%       rr           - rr intervals
-%       rri          - index of rr intervals
+%       rr           - (seconds) rr intervals
+%       t_rr         - (seconds) time of the rr intervals
 %       HRVparams    - struct of settings for hrv_toolbox analysis
 %       sqi          - Signal Quality Index; Requires a matrix with
 %                      at least two columns. Column 1 should be
 %                      timestamps of each sqi measure, and Column 2
 %                      should be SQI on a scale from 0 to 1.
-%       WinStarIdxs  - Starting index of each windows to analyze 
+%       tWin         - Starting time of each windows to analyze 
 %
 %   OUTPUT
 %       ac_results   - Acceleration Capacity value
@@ -53,12 +53,10 @@ if nargin < 5
     error('no data provided')
 end
 if isempty(sqi)
-    sqi(:,1) = rri;
-    sqi(:,2) = ones(length(rri),1);
+    sqi(:,1) = t_rr;
+    sqi(:,2) = ones(length(t_rr),1);
 end
-
-time_stamp = rri;
-
+s
 prsaWinLength = HRVparams.prsa.win_length;
 s = HRVparams.prsa.scale;
 PRSA_th = HRVparams.prsa.thresh_per; 
@@ -72,24 +70,22 @@ Anchor_High_th = 1+PRSA_th/100;      % The upper limit for the DC anchor selecti
 
 % Preallocation
 
-ac_results = nan(length(WinStarIdxs),1);
-dc_results = nan(length(WinStarIdxs),1);
+ac_results = nan(length(tWin),1);
+dc_results = nan(length(tWin),1);
 prsa_ac = [];
 prsa_dc = [];
 
 % Run PRSA by Window
 % Loop through each window of RR data
-for i_win = 1:length(WinStarIdxs)
+for i_win = 1:length(tWin)
 	% Check window for sufficient data
-    if isnan(WinStarIdxs(i_win))
+    if isnan(tWin(i_win))
 
     end
-    if ~isnan(WinStarIdxs(i_win))
+    if ~isnan(tWin(i_win))
         % Isolate data in this window
-        % idx_NN_in_win = find(rri >= windows_all(i_win) & rri < windows_all(i_win) + windowlength);
-        % idx_sqi_win = find(sqi(:,1) >= windows_all(i_win) & sqi(:,1) < windows_all(i_win) + windowlength);
-        sqi_win = sqi( sqi(:,1) >= WinStarIdxs(i_win) & sqi(:,1) < WinStarIdxs(i_win) + windowlength,:);
-        nn_win = rr( rri >= WinStarIdxs(i_win) & rri < WinStarIdxs(i_win) + windowlength );
+        sqi_win = sqi( sqi(:,1) >= tWin(i_win) & sqi(:,1) < tWin(i_win) + windowlength,:);
+        nn_win = rr( t_rr >= tWin(i_win) & t_rr < tWin(i_win) + windowlength );
          
         % Analysis of SQI for the window
         lowqual_idx = find(sqi_win(:,2) < SQI_th);
@@ -144,7 +140,7 @@ for i_win = 1:length(WinStarIdxs)
             % Plot results
             if plot_results == 1
                 figure(1);
-                plot(time_stamp,nn_win,'k+');
+                plot(t_rr,nn_win,'k+');
                 hold on;
 
                 figure(2)
@@ -160,10 +156,10 @@ for i_win = 1:length(WinStarIdxs)
                 hold on;
 
                 figure(3)
-                plot(time_stamp,nn_win,'k-+');
+                plot(t_rr,nn_win,'k-+');
                 hold on;
-                plot(time_stamp(ac_ind),nn_win(ac_ind), 'color', custom_colors.green, 'marker', '+');
-                plot(time_stamp(dc_ind),nn_win(dc_ind), 'color', custom_colors.red, 'marker', '+');
+                plot(t_rr(ac_ind),nn_win(ac_ind), 'color', custom_colors.green, 'marker', '+');
+                plot(t_rr(dc_ind),nn_win(dc_ind), 'color', custom_colors.red, 'marker', '+');
                 legend('non-anchor','ac anchor','dc anchor');
                 title('RR anchors');
 

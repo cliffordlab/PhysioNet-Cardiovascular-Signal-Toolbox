@@ -1,4 +1,4 @@
-function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
+function [t,rr,jqrs_ann,SQIjw, StartSQIwindows_jw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)
 %   [t,rr,jqrs_ann,sqijs, StartIdxSQIwindows_jw] = ConvertRawDataToRRIntervals(ECG_RawData ,HRVparams, subjectID)  
 %
 %	OVERVIEW:
@@ -12,10 +12,10 @@ function [t,rr,jqrs_ann,SQIjw, StartIdxSQIwindows_jw] = ConvertRawDataToRRInterv
 %       subjectID   : name that identify the analyzed signal 
 %
 %   OUTPUT:
-%       rr                     :  Vector containing RR interval
-%       t                      :  Time indices of the rr interval data (seconds)
-%       SQIjs                  :  Signal Quality Index values comparing jqrs and wqrsm 
-%       StartIdxSQIwindows_jw  :  Indexes of SQI windows
+%       rr                  :  (seconds) Vector containing RR interval
+%       t                   :  (seconds) Time of the rr interval data 
+%       SQIjs               :  Signal Quality Index values comparing jqrs and wqrsm 
+%       StartSQIwindows_jw  :  time of SQI windows
 %
 %   DEPENDENCIES & LIBRARIES:
 %       PhysioNet Cardiovascular Signal Toolbox
@@ -63,8 +63,8 @@ sqrs_ann = run_sqrs(ECG_RawData*GainQrsDetect,HRVparams,0);
 wqrs_ann = wqrsm(ECG_RawData*GainQrsDetect,HRVparams.Fs);
 
 % QRS SQI analysis
-[SQIjs, StartIdxSQIwindows_js] = bsqi(jqrs_ann(:),sqrs_ann(:),HRVparams);
-[SQIjw, StartIdxSQIwindows_jw] = bsqi(jqrs_ann(:),wqrs_ann(:),HRVparams);
+[SQIjs, StartSQIwindows_js] = bsqi(jqrs_ann(:),sqrs_ann(:),HRVparams);
+[SQIjw, StartSQIwindows_jw] = bsqi(jqrs_ann(:),wqrs_ann(:),HRVparams);
 
 
 % Translate anotations to rr intervals
@@ -89,9 +89,9 @@ write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs_ann);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs_ann);
 fakeAnnType = repmat('S',[length(SQIjs), 1]);
-write_ann(AnnFile, HRVparams,'sqijs', StartIdxSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
+write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
 fakeAnnType = repmat('S',[length(SQIjw), 1]);
-write_ann(AnnFile, HRVparams,'sqijw', StartIdxSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
+write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
 
 
 

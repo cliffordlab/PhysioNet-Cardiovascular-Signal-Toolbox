@@ -115,10 +115,10 @@ try
         case 'RRIntervals'
             rr = InputSig; 
             if isempty(t)
-                fprintf('\n*** Error!***\nFor input type "RRIntervals" must provide \nvetcor with time indices of the rr interval data \n')
-                fprintf('***HRV analyis will be perfomed!***\n')
+                fprintf('\n*** Error!***\nFor input type "RRIntervals" must provide \nvetcor with time of the rr intervals \n')
+                fprintf('***HRV analyis will not be perfomed!***\n')
                 fprintf('\n');
-                error_flag = 'Input Error: missing vetcor with time indices of the rr interval';
+                error_flag = 'Input Error: missing vetcor with time stamps of the rr interval';
             end
                 
         otherwise

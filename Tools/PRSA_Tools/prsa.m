@@ -56,7 +56,7 @@ if isempty(sqi)
     sqi(:,1) = t_rr;
     sqi(:,2) = ones(length(t_rr),1);
 end
-s
+
 prsaWinLength = HRVparams.prsa.win_length;
 s = HRVparams.prsa.scale;
 PRSA_th = HRVparams.prsa.thresh_per; 

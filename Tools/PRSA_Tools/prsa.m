@@ -196,7 +196,9 @@ for i_win = 1:length(tWin)
                 plot(Relative_RRI_indices, dcm', '--')
                 hold on
                 plot(Relative_RRI_indices, prsa_dc, 'k','LineWidth',3);
-                xticks(Relative_RRI_indices);
+		if prsaWinLength <= 5
+                   xticks(Relative_RRI_indices);
+		end
                 title('DC matrix')
                 ylabel('R-R interval, ms');
                 xlabel('Index');

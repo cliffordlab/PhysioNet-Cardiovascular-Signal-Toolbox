@@ -1,4 +1,4 @@
-function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
+function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, tWin)
 %
 % out = EvalFrequencyDomainHRVstats (NN, tNN, , sqi, settings)
 %   
@@ -8,7 +8,7 @@ function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
 %   INPUT:      MANDATORY:
 %               NN          : a single row of NN (normal normal) interval
 %                             data in seconds
-%               tNN         : a single row of time indices of the rr interval 
+%               tNN         : a single row of time of the rr interval 
 %                             data (seconds)
 %               sqi         : (Optional) Signal Quality Index; Requires a 
 %                             matrix with at least two columns. Column 1 
@@ -17,7 +17,7 @@ function out = EvalFrequencyDomainHRVstats(NN, tNN, sqi, HRVparams, windows_all)
 %                             Additional columns can be included with
 %                             additional sqi at the same timestamps
 %               HRVparams   : struct of settings for hrv_toolbox analysis
-%               windows_all : vector containing the starting time of each
+%               tWin .      : vector containing the starting time of each
 %                             windows (in seconds) 
 %
 %   OUTPUT:     out.ulf        : (ms^2) Power in the ultra low frequency range (default < 0.003 Hz)
@@ -85,22 +85,22 @@ sf = HRVparams.freq.resampling_freq;
 
 % Preallocate arrays before entering the loop
 
-out.ulf = nan(1,length(windows_all));
-out.vlf = nan(1,length(windows_all));
-out.lf = nan(1,length(windows_all));
-out.hf = nan(1,length(windows_all));
-out.lfhf = nan(1,length(windows_all));
-out.ttlpwr = nan(1,length(windows_all));
-out.fdflag = nan(1,length(windows_all));
+out.ulf = nan(1,length(tWin));
+out.vlf = nan(1,length(tWin));
+out.lf = nan(1,length(tWin));
+out.hf = nan(1,length(tWin));
+out.lfhf = nan(1,length(tWin));
+out.ttlpwr = nan(1,length(tWin));
+out.fdflag = nan(1,length(tWin));
 % Window by Window Analysis
 
 % Loop through each window of RR data
-for iWin = 1:length(windows_all)
+for iWin = 1:length(tWin)
     % Check window for sufficient data
-    if ~isnan(windows_all(iWin))    
+    if ~isnan(tWin(iWin))    
         % Isolate data in this window
-        idx_NN_in_win = find(tNN >= windows_all(iWin) & tNN < windows_all(iWin) + windowlength);
-        idx_sqi_win = find(sqi(:,1) >= windows_all(iWin) & sqi(:,1) < windows_all(iWin) + windowlength);
+        idx_NN_in_win = find(tNN >= tWin(iWin) & tNN < tWin(iWin) + windowlength);
+        idx_sqi_win = find(sqi(:,1) >= tWin(iWin) & sqi(:,1) < tWin(iWin) + windowlength);
 
         sqi_win = sqi(idx_sqi_win,:);
         t_win = tNN(idx_NN_in_win);

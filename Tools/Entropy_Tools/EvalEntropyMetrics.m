@@ -1,20 +1,21 @@
-function [SampEn, ApEn] = EvalEntropyMetrics(rr, rri, m, r, HRVparams, WinStarIdxs, sqi)
+function [SampEn, ApEn] = EvalEntropyMetrics(rr, t_rr, m, r, HRVparams, tWin, sqi)
 
-% [SampEn, ApEn] = EvalEntropyMetrics(data, m, r)
+% [SampEn, ApEn] = EvalEntropyMetrics(rr, t_rr, m, r, HRVparams, tWin, sqi)
 %
 % Overview
 %	Calculates Sample Entropy and Approximate Entropy values of input data.
 %
 % Input
-%   rr          - rr intervals
-%   rri         - index of rr intervals
+%   rr          - (seconds) rr intervals
+%   t_rr        - (seconds) time of the rr intervals
 %   m           - pattern length
 %   r           - radius of similarity 
 %   HRVparams   - struct of settings for hrv_toolbox analysis
 %   sqi         - Signal Quality Index; Requires a matrix with at least two 
 %                 columns. Column 1 should be timestamps of each sqi
 %                 measure, and Column 2 should be SQI on a scale from 0 to 1
-%   WinStarIdxs - Starting index of each windows to analyze 
+%   tWin        - vector containing the starting time of each
+%                                windows (in seconds) 
 % Output
 %   SampEn      - 
 %   ApEn        -
@@ -42,28 +43,28 @@ else
     SQI_th = HRVparams.sqi.LowQualityThreshold;        % SQI threshold
     WinQuality_th = HRVparams.RejectionThreshold;  % Low quality windows threshold
 end
-if nargin<5 || isempty(WinStarIdxs)
-    WinStarIdxs = 0;
+if nargin<5 || isempty(tWin)
+    tWin = 0;
 end
 if nargin <6 || isempty(sqi)
-    sqi(:,1) = rri;
-    sqi(:,2) = ones(length(rri),1);
+    sqi(:,1) = t_rr;
+    sqi(:,2) = ones(length(t_rr),1);
 end
 
 % Preallocation (all NaN)
-SampEn = nan(length(WinStarIdxs),1);
-ApEn = nan(length(WinStarIdxs),1);
+SampEn = nan(length(tWin),1);
+ApEn = nan(length(tWin),1);
 
 % What Sample Entropy function?
 SampEnType = 'Maxim'; % Initialize default SampEn method 
 if windowlength < 34000; SampEnType = 'Fast'; end     
  
 % Loop through each window of RR data
-for iWin = 1:length(WinStarIdxs)
-    if ~isnan(WinStarIdxs(iWin))
+for iWin = 1:length(tWin)
+    if ~isnan(tWin(iWin))
         % Isolate data in this window
-        sqi_win = sqi( sqi(:,1) >= WinStarIdxs(iWin) & sqi(:,1) < WinStarIdxs(iWin) + windowlength,:);
-        nn_win = rr( rri >= WinStarIdxs(iWin) & rri < WinStarIdxs(iWin) + windowlength );
+        sqi_win = sqi( sqi(:,1) >= tWin(iWin) & sqi(:,1) < tWin(iWin) + windowlength,:);
+        nn_win = rr( t_rr >= tWin(iWin) & t_rr < tWin(iWin) + windowlength );
         lowqual_idx = find(sqi_win(:,2) < SQI_th);  % Analysis of SQI for the window
         % If enough data has an adequate SQI, perform the calculations
         if numel(lowqual_idx)/length(sqi_win(:,2)) < WinQuality_th

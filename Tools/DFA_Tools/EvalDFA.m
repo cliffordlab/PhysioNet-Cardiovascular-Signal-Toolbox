@@ -1,6 +1,6 @@
-function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,tWin)
 
-% [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
+% [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,tWin)
 %
 %   OVERVIEW:   This function returns DFA scaling coefficients calculated on
 %               input NN intervals for each window.
@@ -8,14 +8,14 @@ function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 %   INPUT:      MANDATORY:
 %               NN             : a single row of NN (normal normal) interval 
 %                                data in seconds
-%               tNN            : the time indices of the rr interval data 
+%               tNN            : the time of the rr interval data 
 %                                (seconds)
 %               sqi            : (Optional )Signal Quality Index; Requires 
 %                                a matrix with at least two columns. Column 
 %                                1 should be timestamps of each sqi measure, 
 %                                and Column 2 should be SQI on a scale from 0 to 1.
 %               HRVparams      : struct of settings for hrv_toolbox analysis
-%               windows_all    : vector containing the starting time of each
+%               tWin           : vector containing the starting time of each
 %                                windows (in seconds) 
 %                
 %   OUTPUT:     
@@ -39,8 +39,8 @@ function [alpha1, alpha2] = EvalDFA(NN,tNN,sqi,HRVparams,windows_all)
 if nargin < 4
     error('Wrong number of input parameters');
 end
-if nargin < 5 || isempty(windows_all)
-    windows_all = 0;   
+if nargin < 5 || isempty(tWin)
+    tWin = 0;   
 end
 if isempty(sqi) 
      sqi(:,1) = tNN;
@@ -63,18 +63,18 @@ maxBox = HRVparams.DFA.maxBoxSize;
 midBox = HRVparams.DFA.midBoxSize;
 
 % Preallocate arrays (all NaN) before entering the loop
-alpha1 = nan(length(windows_all),1);
-alpha2 = nan(length(windows_all),1);
+alpha1 = nan(length(tWin),1);
+alpha2 = nan(length(tWin),1);
 
 %Analyze by Window
 
 % Loop through each window of RR data
-for idxWin = 1:length(windows_all)
+for idxWin = 1:length(tWin)
     % Check window for sufficient data
-    if ~isnan(windows_all(idxWin))
+    if ~isnan(tWin(idxWin))
         % Isolate data in this window
-        idx_NN_in_win = find(tNN >= windows_all(idxWin) & tNN < windows_all(idxWin) + windowlength);
-        idx_sqi_win = find(sqi(:,1) >= windows_all(idxWin) & sqi(:,1) < windows_all(idxWin) + windowlength);
+        idx_NN_in_win = find(tNN >= tWin(idxWin) & tNN < tWin(idxWin) + windowlength);
+        idx_sqi_win = find(sqi(:,1) >= tWin(idxWin) & sqi(:,1) < tWin(idxWin) + windowlength);
         
         sqi_win = sqi(idx_sqi_win,:);
         nn_win = NN(idx_NN_in_win);

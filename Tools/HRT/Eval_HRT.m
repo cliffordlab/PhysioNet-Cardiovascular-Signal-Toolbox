@@ -1,6 +1,6 @@
-function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, WindIdxs)
+function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, tWin)
 
-%   [TO, TSn, PVCs] = Eval_HRT(RRInts,Labels, HRVparams, WindIdxs)
+%   [TO, TSn, PVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, tWin)
 %   OVERVIEW:
 %       This function return TO and TS, i.e., the basic parameters of 
 %       heart rate turbulence (HRT) used to quantify the return to 
@@ -9,13 +9,17 @@ function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, Wind
 %
 %   INPUTS:
 %       RRInts          : Vector containing RR intervals data (in seconds)
-%       tRRInts         : 
+%       tRRInts         : Vector containing time stamp of RR intervals (in seconds)
 %       Labels          : Vector containing annotations of the RR data at 
 %                         each point indicating the type of the beat (see 
 %                         https://www.physionet.org/physiobank/annotations.shtml)
-%       sqi             :
-%       HRVparams       :
-%       WindIdxs        :
+%       sqi             : (Optional )Signal Quality Index; Requires 
+%                                a matrix with at least two columns. Column 
+%                                1 should be timestamps of each sqi measure, 
+%                                and Column 2 should be SQI on a scale from 0 to 1.
+%       HRVparams       : struct of settings for hrv_toolbox analysis
+%       tWin            : vector containing the starting time of each
+%                                windows (in seconds) 
 %
 %   OUTPUTS:
 %       TO         : average turbulence onset (TO) 
@@ -44,8 +48,8 @@ function [TO, TS,nPVCs] = Eval_HRT(RRInts, tRRInts, Labels, sqi, HRVparams, Wind
   
 
 % Verify input arguments
-if isempty(WindIdxs)
-    WindIdxs = 0;   
+if isempty(tWin)
+    tWin = 0;   
 end
 if isempty(sqi) 
      sqi(:,1) = tRRInts;
@@ -53,9 +57,9 @@ if isempty(sqi)
 end
 
 % Preallocate arrays (all NaN) before entering the loop
-TO = nan(length(WindIdxs),1);
-TS = nan(length(WindIdxs),1);
-nPVCs = nan(length(WindIdxs),1);
+TO = nan(length(tWin),1);
+TS = nan(length(tWin),1);
+nPVCs = nan(length(tWin),1);
 
 BeatsBefore = HRVparams.HRT.BeatsBefore;
 BeatsAfter = HRVparams.HRT.BeatsAfter;
@@ -68,13 +72,13 @@ filterMethod = HRVparams.HRT.filterMethod;
 %Analyze by Window
 
 % Loop through each window of RR data
-for iWin = 1:length(WindIdxs)
+for iWin = 1:length(tWin)
     % Check window for sufficient data
-    if ~isnan(WindIdxs(iWin))
+    if ~isnan(tWin(iWin))
         % Isolate data in this window
-        idxRRinWin = find(tRRInts >= WindIdxs(iWin) & tRRInts < WindIdxs(iWin) + windowlength);
+        idxRRinWin = find(tRRInts >= tWin(iWin) & tRRInts < tWin(iWin) + windowlength);
         
-        SQIinWin = sqi(sqi(:,1) >= WindIdxs(iWin) & sqi(:,1) < WindIdxs(iWin) + windowlength,:);
+        SQIinWin = sqi(sqi(:,1) >= tWin(iWin) & sqi(:,1) < tWin(iWin) + windowlength,:);
         RRinWin = RRInts(idxRRinWin);
         LabelsinWin = Labels(idxRRinWin);
 

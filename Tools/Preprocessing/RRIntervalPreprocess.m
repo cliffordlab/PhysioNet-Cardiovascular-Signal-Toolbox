@@ -1,4 +1,4 @@
-function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annotations,HRVparams)
+function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,t_rr,annotations,HRVparams)
 %
 %   [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr, time, annotations, HRVparams)
 %
@@ -8,14 +8,14 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 %               interpolated data using a interpolation method of choice.
 %
 %   INPUT:      rr          - a single row of rr interval data in seconds
-%               time        - the time indices of the rr interval data 
+%               t_rr        - time of the rr interval data 
 %                             (seconds)
 %               annotations - (optional) annotations of the RR data at each
 %                              point indicating the quality of the beat
 %               HRVparams   - struct of settings for hrv_toolbox analysis
 %
 %   OUTPUT:     cleanNN       - normal normal interval data
-%               cleantNN      - time indices of NN data
+%               cleantNN      - time of NN interval
 %               flagged_beats - percent of original data removed
 %   REFERENCE: 
 %       Clifford, G. (2002). "Characterizing Artefact in the Normal 
@@ -52,8 +52,8 @@ function [cleanNN, cleantNN, flagged_beats] = RRIntervalPreprocess(rr,time,annot
 % don't put phantom beats in for the lomb
 
 % check input
-if isempty(time)
-    time = cumsum(rr);
+if isempty(t_rr)
+    t_rr = cumsum(rr);
 end
 
 if isempty(annotations)
@@ -68,11 +68,11 @@ figures = HRVparams.gen_figs;
 
 % 1. Identify data that is too close together and Remove
 % These are not counted towards the total signal removed
-idx_remove = find(diff(time) < 1/HRVparams.Fs); 
+idx_remove = find(diff(t_rr) < 1/HRVparams.Fs); 
 % could make this the refractory period - and have the variable in the settings
 % document
 rr(idx_remove+1) = [];
-time(idx_remove) = [];
+t_rr(idx_remove) = [];
 annotations(idx_remove) = [];
 clear idx_remove;
 
@@ -81,12 +81,12 @@ clear idx_remove;
 idx_remove = strcmp('|', annotations); % find artifacts
 rr(idx_remove) = [];
 annotations(idx_remove) = [];
-time(idx_remove) = [];
+t_rr(idx_remove) = [];
 
 idx_remove2 = strcmp('~', annotations); % find artifacts
 rr(idx_remove2) = [];
 annotations(idx_remove2) = [];
-time(idx_remove2) = [];
+t_rr(idx_remove2) = [];
 clear idx_remove idx_remove2
 
 % 3. Remove Large Gaps in Data At Beginning of Dataset
@@ -98,7 +98,7 @@ clear idx_remove idx_remove2
 % These are not counted towards the total signal removed
 idx_remove = find(rr >= HRVparams.preprocess.gaplimit);
 rr(idx_remove) = [];
-time(idx_remove) = [];
+t_rr(idx_remove) = [];
 annotations(idx_remove) = [];
 clear idx_remove;
 
@@ -177,29 +177,29 @@ rr(idx_outliers) = NaN;
 
 switch HRVparams.preprocess.method_outliers
     case 'cub'
-        NN_Outliers = interp1(time,rr,time,'spline','extrap');
-        t_Outliers = time;
+        NN_Outliers = interp1(t_rr,rr,t_rr,'spline','extrap');
+        t_Outliers = t_rr;
     case 'pchip'
-        NN_Outliers = interp1(time,rr,time,'pchip');
-        t_Outliers = time;
+        NN_Outliers = interp1(t_rr,rr,t_rr,'pchip');
+        t_Outliers = t_rr;
     case 'lin'
-        NN_Outliers = interp1(time,rr,time,'linear','extrap'); 
-        t_Outliers = time;
+        NN_Outliers = interp1(t_rr,rr,t_rr,'linear','extrap'); 
+        t_Outliers = t_rr;
     case 'rem'
         NN_Outliers = rr;
         NN_Outliers(idx_outliers) = [];
-        t_Outliers = time;
+        t_Outliers = t_rr;
         t_Outliers(idx_outliers) = []; 
     otherwise % By default remove outliers
         NN_Outliers = rr;
         NN_Outliers(idx_outliers) = [];
-        t_Outliers = time;
+        t_Outliers = t_rr;
         t_Outliers(idx_outliers) = [];
 end
 
 if figures
     figure;
-    plot(time,rr_original,t_Outliers,NN_Outliers);
+    plot(t_rr,rr_original,t_Outliers,NN_Outliers);
     legend('raw','interp1(after outliers removed)')
 end
 

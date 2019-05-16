@@ -1,4 +1,4 @@
-function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
+function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,tWin)
 
 % [NNmean,NNmedian,NNmode,NNvariance,NNskew,NNkurt,SDNN,NNiqr,RMSSD, pnn50
 % btsdet,avgsqi] = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
@@ -9,14 +9,14 @@ function out = EvalTimeDomainHRVstats(NN,tNN,sqi,HRVparams,windows_all)
 %   INPUT:      MANDATORY:
 %               NN             : a single row of NN (normal normal) interval 
 %                                data in seconds
-%               tNN            : the time indices of the rr interval data 
+%               tNN            : the time of the rr interval data 
 %                                (seconds)
 %               sqi            : (Optional )Signal Quality Index; Requires 
 %                                a matrix with at least two columns. Column 
 %                                1 should be timestamps of each sqi measure, 
 %                                and Column 2 should be SQI on a scale from 0 to 1.
 %               HRVparams      : struct of settings for hrv_toolbox analysis
-%               windows_all    : vector containing the starting time of each
+%               tWin           : vector containing the starting time of each
 %                                windows (in seconds) 
 %                
 %   OUTPUT:     
@@ -72,29 +72,29 @@ threshold2 = HRVparams.RejectionThreshold;
 
 
 % Preallocate arrays (all NaN) before entering the loop
-out.NNmean     = nan(1,length(windows_all));
-out.NNmedian   = nan(1,length(windows_all));
-out.NNmode     = nan(1,length(windows_all));
-out.NNvariance = nan(1,length(windows_all));
-out.NNskew     = nan(1,length(windows_all));
-out.NNkurt     = nan(1,length(windows_all));
-out.NNiqr      = nan(1,length(windows_all));
-out.SDNN       = nan(1,length(windows_all));
-out.RMSSD      = nan(1,length(windows_all));
-out.pnn50      = nan(1,length(windows_all));
-out.btsdet     = nan(1,length(windows_all));
-out.avgsqi     = nan(1,length(windows_all));
-out.tdflag     = nan(1,length(windows_all));
+out.NNmean     = nan(1,length(tWin));
+out.NNmedian   = nan(1,length(tWin));
+out.NNmode     = nan(1,length(tWin));
+out.NNvariance = nan(1,length(tWin));
+out.NNskew     = nan(1,length(tWin));
+out.NNkurt     = nan(1,length(tWin));
+out.NNiqr      = nan(1,length(tWin));
+out.SDNN       = nan(1,length(tWin));
+out.RMSSD      = nan(1,length(tWin));
+out.pnn50      = nan(1,length(tWin));
+out.btsdet     = nan(1,length(tWin));
+out.avgsqi     = nan(1,length(tWin));
+out.tdflag     = nan(1,length(tWin));
 
 %Analyze by Window
 
 % Loop through each window of RR data
-for i_win = 1:length(windows_all)
+for i_win = 1:length(tWin)
     % Check window for sufficient data
-    if ~isnan(windows_all(i_win))
+    if ~isnan(tWin(i_win))
         % Isolate data in this window
-        idx_NN_in_win = find(tNN >= windows_all(i_win) & tNN < windows_all(i_win) + windowlength);
-        idx_sqi_win = find(sqi(:,1) >= windows_all(i_win) & sqi(:,1) < windows_all(i_win) + windowlength);
+        idx_NN_in_win = find(tNN >= tWin(i_win) & tNN < tWin(i_win) + windowlength);
+        idx_sqi_win = find(sqi(:,1) >= tWin(i_win) & sqi(:,1) < tWin(i_win) + windowlength);
         
         sqi_win = sqi(idx_sqi_win,:);
         t_win = tNN(idx_NN_in_win);

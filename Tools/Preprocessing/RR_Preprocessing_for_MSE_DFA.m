@@ -1,4 +1,4 @@
-function [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, t )
+function [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, tt_rr )
 %
 %    [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, t )
 %
@@ -7,8 +7,8 @@ function [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, t )
 %               
 %               
 %   INPUT:      rr            - a single row of rr interval data in seconds
-%               t             - the time indices of the rr interval data 
-%                                 (seconds)
+%               t             - the time of the rr interval data 
+%                               (seconds)
 %   OUTPUT:     RR_gapFilled   - RR intervals with gaps filled with median
 %                                values
 %               t_gapFilled    - time indices of RR_gapFilled
@@ -34,7 +34,7 @@ function [ RR_gapFilled, t_gapFilled] = RR_Preprocessing_for_MSE_DFA(rr, t )
 %       more information
 %
 
-t_gapFilled = t;
+t_gapFilled = tt_rr;
 RR_gapFilled = rr;
 
 % NOTE: 26 April 2018 This function is under development and will be released soon

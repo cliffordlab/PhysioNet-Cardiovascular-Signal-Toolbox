@@ -60,7 +60,7 @@ jqrs_ann = run_qrsdet_by_seg(ECG_RawData,HRVparams);
 sqrs_ann = run_sqrs(ECG_RawData*GainQrsDetect,HRVparams,0);
 
 % QRS Detection 3 - wqrs
-wqrs_ann = wqrsm(ECG_RawData*GainQrsDetect,HRVparams.Fs);
+wqrs_ann = wqrsm_fast(ECG_RawData*GainQrsDetect,HRVparams.Fs);
 
 % QRS SQI analysis
 [SQIjs, StartSQIwindows_js] = bsqi(jqrs_ann(:),sqrs_ann(:),HRVparams);

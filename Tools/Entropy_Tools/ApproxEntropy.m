@@ -10,6 +10,7 @@ function ApEn = ApproxEntropy( data, m, r)
 %   ApEn : approximate entropy value
 %
 % Written by Giulia Da Poian <giulia.dap@gmail.com>
+%       Last modified by Camilo Valderrama -- 7/16/2019
 %	REPO:       
 %       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %	COPYRIGHT (C) 2016 
@@ -34,16 +35,23 @@ for j = 1:2
     
     % counting similar patterns using distance calculation
     for i = 1:N-m+1
-        tempMat = abs(dataMat - repmat(dataMat(:,i),1,N-m+1));
-        boolMat = any( (tempMat > r),1);
-        phi(i) = sum(~boolMat)/(N-m+1);
+        
+        if sum( isnan( dataMat(:,i) ) ) == 0
+        
+            tempMat = abs(dataMat - repmat(dataMat(:,i),1,N-m+1));
+            boolMat = any( (tempMat > r),1);
+            phi(i) = sum(~boolMat)/(N-m+1);
+        else
+	    %discarding blocks with nan values
+            phi(i) = nan;
+    
+        end
     end
     
     % summing over the counts
-    result(j) = sum(log(phi))/(N-m+1);
+    result(j) = log( nanmean( phi) );    
 end
 
-ApEn = result(1)-result(2);
+ApEn = result(1) - result(2) ;
 
 end
-

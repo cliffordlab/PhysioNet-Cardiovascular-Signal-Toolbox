@@ -1,25 +1,25 @@
 function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 % 
-% idxRRtoBeRemoved = FidnSpikesInRR(RR, th)
+% idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 %
 % OVERVIEW : Code used to clean RR intervals that change more than a given 
 % threshold (eg., th = 0.2 = 20%) with respect to the median value of the 
-% pervious 5 and next 5 RR intervals (using a forward-backward approach).
+% previous 5 and next 5 RR intervals (using a forward-backward approach).
 %
 % INPUTS:
-%        RR : a single row of rr interval data in seconds
-%        th : threshold percent limit of change from one interval to the next
+%       RR : a single row of rr interval data in seconds
+%       th : threshold percent limit of change from one interval to the next
 % OUTPUTS:
-%        idxRRtoBeRemoved : a single vector of indexes related to RR
-%                           intervals corresponding to a change > th
+%       idxRRtoBeRemoved : a single vector of indexes related to RR
+%                          intervals corresponding to a change > th
 %
 %   DEPENDENCIES & LIBRARIES:
 %       PhysioNet Cardiovascular Signal Toolbox
 %       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %
 %   REFERENCE: 
-%   Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
-%   Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
+%       Vest et al. "An Open Source Benchmarked HRV Toolbox for Cardiovascular 
+%       Waveform and Interval Analysis" Physiological Measurement (In Press), 2018. 
 %
 %	REPO:       
 %       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox

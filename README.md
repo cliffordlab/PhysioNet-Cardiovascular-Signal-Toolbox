@@ -1,11 +1,18 @@
 # PhysioNet Cardiovascular Signal Toolbox
-      
+
+1. [Introduction](intro)
+2. [Full Instructions](fullinst)
+3. [Guide to Output](output) 
+4. [Contributing to this project](cont)
+5. [FAQ](faq)
+
 If you are using this software, please cite:
 ```
  Vest A, Da Poian G, Li Q, Liu C, Nemati S, Shah A, Clifford GD, 
  "An Open Source Benchmarked Toolbox for Cardiovascular Waveform and Interval Analysis", 
   Physiological measurement 39, no. 10 (2018): 105004. DOI:10.5281/zenodo.1243111; 2018. 
-```        
+```       
+<a name="intro"></a>
 ## Introduction
 The **PhysioNet Cardiovascular Signal Toolbox** is a a cardiovascular dynamics analysis package, designed 
 to meet the need in the clinical and scientific community for a validated, 
@@ -24,6 +31,7 @@ of the art peak detectors, signal quality processing units, and beat/rhythm
 phenotyping. The package can also analyze the interactions between 
 multiple physiological signals.
 
+<a name="fullinst"></a>
 ## Full Instructions: 
 
 ### I. Getting Started
@@ -64,6 +72,7 @@ System requirements:
 3)  Results will be stored in folder called as indicated in the [InitializeHRVparams.m](https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/blob/master/InitializeHRVparams.m)
     If the folder does not exist, it will be created.
 
+<a name="output"></a>
 ## III. Guide to Output:
 The following metrics are output from the HRV Toolbox:
 
@@ -182,8 +191,7 @@ read *.ppgsqi files as follows
     [ppgAnn, ppgSQI, ppgSQInum] = read_ann('fileName', 'sqippg')
   
 
-## IV. FAQ
-
+<a name="cont"></a>
 ## V. Contributing to this project
 
 We are more than happy to accept contributions! If you like the project and find it useful, you can also start to improve the code or add new features yourself, it would be a great contribution to the community!
@@ -221,3 +229,7 @@ project.
 6. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.
+
+
+<a name="faq"></a>
+## IV. FAQ

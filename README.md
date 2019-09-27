@@ -183,3 +183,41 @@ read *.ppgsqi files as follows
   
 
 ## IV. FAQ
+
+## V. Contributing to this project
+
+We are more than happy to accept contributions! If you like the project and find it useful, you can also start to improve the code or add new features yourself, it would be a great contribution to the community!
+
+### Using the issue tracker
+
+The issue tracker is the preferred channel for [bug reports](#bugs) but please **do not** use the issue tracker for personal support requests.
+
+
+<a name="bugs"></a>
+### Bug reports
+
+A bug is a _demonstrable problem_ that is caused by the code in the repository. A good bug report is extremely important to solve the problem! Please, **check if the issue has already been reported** before opening a new issues. 
+
+Please try to be as detailed as possible in your report. **Use the provided template!** and answer the necessary points: what is your environment? What steps will reproduce the issue? What Matlab verison and OS experience the problem? What would you expect to be the outcome? All these details will help people to fix any potential bugs.
+
+
+<a name="pull-requests"></a>
+### Pull requests
+
+
+Follow this process if you'd like your work  - patches, improvements, new features - considered for inclusion in the
+project.  
+
+1. [Fork](http://help.github.com/fork-a-repo/) the project, clone your fork, and configure the remotes.
+
+2. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix.
+
+3. Commit your changes in logical chunks. 
+
+4. Locally merge (or rebase) the upstream development branch into your topic branch.
+
+5. Push your topic branch up to your fork.
+
+6. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
+
+**IMPORTANT**: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.

@@ -1,3 +1,5 @@
+![alt text](https://zenodo.org/badge/DOI/10.5281/zenodo.1243112.svg)
+
 # PhysioNet Cardiovascular Signal Toolbox
 
 1. [Introduction](intro)

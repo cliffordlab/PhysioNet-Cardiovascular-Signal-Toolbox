@@ -1,0 +1,24 @@
+How to use the MVtoolbox.
+
+Dependencies.
+
+The mvtoolbox has the following dependencies,
+
+the peakdetect_sqi package available at, https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/tree/master/Tools/ECG_Analysis_Tools/PeakDetection_SQI, as part of the open source Physionet-Cardiovascular-Signal-Toolbox.
+
+the pvc_detect package available at, https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/tree/master/Tools/ECG_Analysis_Tools/PVCdetection, as part of the open source Physionet-Cardiovascular-Signal-Toolbox.
+
+
+Executing the demo.
+
+The Main_mvm_demo file is located in the MVtoolbox folder.
+
+1. Download the Physionet-Cardiovascular-Signal-Toolbox from the cliffordlab github, as it contains all dependencies.
+2. The dependencies have been added to the code through relative paths.
+3. Execute the Main_mvm_demo script.
+4. The output stored in each of the variables is as follows,
+
+	energyinband_array: [8.6362e-08,	NaN,	1.1978e-07]
+	sqi_array	  : [0.9988,		NaN,	1]
+	heart_rate_est    : [80,		NaN,	79.8935]
+

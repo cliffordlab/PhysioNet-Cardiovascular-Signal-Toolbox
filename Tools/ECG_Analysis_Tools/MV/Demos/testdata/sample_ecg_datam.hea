@@ -1,0 +1,4 @@
+sample_ecg_datam 1 1000 660000
+sample_ecg_datam.mat 16+192 200/mV 16 0 10 -2783 0 col 0
+#Creator: wfdb2mat
+#Source: record sample_ecg_data

@@ -1,1 +1,0 @@
-The code for Morphological Variability will be available in a future release

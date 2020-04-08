@@ -1,0 +1,4 @@
+sample_ecg_twam 1 1000 297979
+sample_ecg_twam.mat 16+192 200/mV 16 0 6 1964 8 col 0
+#Creator: wfdb2mat
+#Source: record sample_ecg_twa

@@ -1,0 +1,55 @@
+How to use the MVtoolbox.
+
+--Dependencies.
+
+The mvtoolbox has the following dependencies,
+
+The peakdetect_sqi package available at, https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/tree/master/Tools/ECG_Analysis_Tools/PeakDetection_SQI, as part of the open source Physionet-Cardiovascular-Signal-Toolbox.
+
+The pvc_detect package available at, https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox/tree/master/Tools/ECG_Analysis_Tools/PVCdetection, as part of the open source Physionet-Cardiovascular-Signal-Toolbox.
+
+
+--Executing the demo.
+
+The Main_mv_demo file is located in the MVtoolbox folder.
+
+1. Download the Physionet-Cardiovascular-Signal-Toolbox from the cliffordlab github, as it contains all dependencies.
+2. The dependencies have been added to the code through relative paths.
+3. Execute the Main_mvm_demo script.
+4. The output for the MVM analysis is stored in the MVMResult structure. The results for the TWA analysis are stored in the TWAResult structure. The structures have the following fields     with expected output values listed.
+
+	Structure.Field                 Expected value
+   	MVMResult.energyinband_array    6.60e-07
+   	MVMResult.sqi_array             0.9975
+   	MVMResult.heart_rate_est_arr    80.11
+
+   	TWAResult.HR            [80.32,80.21,79.79,80.65,80.65,80.43,80,80,80.21,80.32,80,79.47]
+   	TWAResult.VAlt          [39.84,40.10,37.81,37.38,37.70,38.14,39.32,39.74,38.31,40.39,39.07,42.20]
+   	TWAResult.VAlt_Sig      [39.84,40.10,37.81,37.38,37.70,38.14,39.32,39.74,38.31,40.39,39.07,42.20]
+   	TWAResult.Noise_Median  [4.28,3.92,4.40,3.75,3.68,4.14,3.00,3.21,4.15,3.95,3.78,7.20]
+   	TWAResult.Noise_95      [11.19,10.75,9.61,12.67,11.69,9.72,9.15,9.84,10.29,11.03,9.89,19.40]
+   	TWAResult.VAltPt        [132,116,115,125,116,122,130,117,91,111,101,159]
+   	TWAResult.successful    1
+
+5. Individual example scripts for performing MVM analysis, mvm_demo.m, and TWA analysis, twa_demo.m, are provided in the Demos folder.
+
+--Using the artificial TWA ECG generator.
+
+The demo_gen_twa_ecg file located in the Demos folder may be used to generate synthetic ECG with the following parameters,
+
+   Input parameter	(variable name) = value
+   Duration 		(duration) 	= 5 (minutes),
+   Sampling frequency 	(fs) 		= 1000 (Hz),
+   Heart rate 		(hr) 		= 80 beats per minute (bpm), 
+   Respiration rate 	(rr) 		= 0 respirations per minute (rpm), respiration rate of 0 means no respiratory effects have been added to the ECG.
+   TWA amplitude 	(twa_amp) 	= 16 (uV) and
+   Signal to noise ratio (SNR) 		= 30 (dB).
+
+The expected output is contained in the following variables,
+
+   Output Variable, 	Description
+   twa_ecg_n, 		Single channel of ECG with specifications listed above.
+   twa_ecg, 		Single channel ecg with the specifications listed above except no noise is added.
+
+The twa_ecg variable can be plotted to observe the ECG has TWA amplitude of 16 uV and verify the demo_gen_twa_ecg script executed correctly. 
+

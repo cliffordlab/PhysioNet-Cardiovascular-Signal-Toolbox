@@ -30,7 +30,7 @@
 %       the Documents folder of the Physionet-Cardiovascular-Signal-Toolbox.  
 
 % Add path to the readheader function
-addpath(genpath('/home/epere25/Desktop/Desktop/Extra_code_N_toolboxes/PhysioNet-Cardiovascular-Signal-Toolbox-master'))
+addpath(genpath('../../PhysioNet-Cardiovascular-Signal-Toolbox-master/'))
 % Load data
 sig = load('../Tools/ECG_Analysis_Tools/MV/Demos/testdata/twa/sample_ecg_twam');
 siginfo = readheader('../Tools/ECG_Analysis_Tools/MV/Demos/testdata/twa/sample_ecg_twam.hea');

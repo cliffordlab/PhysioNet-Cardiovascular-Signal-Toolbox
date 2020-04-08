@@ -33,7 +33,7 @@
 
 % add dependencies within cardiovascular toolbox
 addpath(genpath('../Tools/'));
-addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox/'));
+addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox-master/'));
 % load data and annotations
 sig = load('./testdata/twa/sample_ecg_twam');
 siginfo = readheader('./testdata/twa/sample_ecg_twam.hea');

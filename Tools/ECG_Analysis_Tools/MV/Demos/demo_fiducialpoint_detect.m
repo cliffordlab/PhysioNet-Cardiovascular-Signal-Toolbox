@@ -59,7 +59,7 @@
 %
 
 % add toolbox dependencies
-addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox/'));
+addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox-master/'));
 addpath('../Tools/Annotation_generator/');
 % load ecg data
 sig = load('./testdata/mvm/sample_ecg_datam');

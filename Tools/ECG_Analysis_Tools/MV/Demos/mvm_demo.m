@@ -37,7 +37,7 @@
 %       the Documents folder of the Physionet-Cardiovascular-Signal-Toolbox.  
 
 % Load test ecg data
-addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox/')); % add all dependencies from cardiovascular signal toolbox
+addpath(genpath('../../../../../PhysioNet-Cardiovascular-Signal-Toolbox-master/')); % add all dependencies from cardiovascular signal toolbox
 sig = load('./testdata/mvm/sample_ecg_datam');
 siginfo = readheader('./testdata/mvm/sample_ecg_datam.hea');
 Fs = siginfo.freq;

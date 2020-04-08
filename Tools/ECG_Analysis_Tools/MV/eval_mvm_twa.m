@@ -74,7 +74,7 @@ end
 if (fs == 1000)
     
     % Add dependencies
-    addpath(genpath('/home/epere25/Desktop/Desktop/Extra_code_N_toolboxes/PhysioNet-Cardiovascular-Signal-Toolbox-master')); % Cardio vascular toolbox
+    addpath(genpath('../../../../PhysioNet-Cardiovascular-Signal-Toolbox-master')); % Cardio vascular toolbox
     addpath(genpath('./Tools/')); % Helper functions for mvtoolbox
     
     % check if ann provided as input

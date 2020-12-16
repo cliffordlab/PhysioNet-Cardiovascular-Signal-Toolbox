@@ -1,7 +1,7 @@
 function varargout = ECGBeatFitter(varargin)
 %
 % ECGBeatFitter(ECG,Phase,ExpParamName),
-% Graphical user interface for ECG approximation with Gaussian kernels.
+% Overview: Graphical user interface for ECG approximation with Gaussian kernels.
 %
 % inputs:
 % ECG: a single ECG waveform used for model training
@@ -10,6 +10,8 @@ function varargout = ECGBeatFitter(varargin)
 % ExpParamName (optional): The name of the vector containing the exported parameter (default:OptimumParams)
 % Title (optional): The title of the plot
 %
+% outputs:
+% OptimizedParameters
 %
 % Open Source ECG Toolbox, version 2.0, April 2008
 % Released under the GNU General Public License
@@ -24,7 +26,9 @@ function varargout = ECGBeatFitter(varargin)
 % This program is distributed in the hope that it will be useful, but
 % WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% Public License for more details.
+% Public License for more details. You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
 % ECGBEATFITTER M-file for ECGBeatFitter.fig
 %      ECGBEATFITTER, by itself, creates a new ECGBEATFITTER or raises the existing

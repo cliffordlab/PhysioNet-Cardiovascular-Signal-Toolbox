@@ -1,11 +1,11 @@
 function peaks = PeakDetection(x,ff,varargin)
 %
 % peaks = PeakDetection(x,f,flag),
-% R-peak detector based on max search
+% Overview: R-peak detector based on max search
 %
 % inputs:
 % x: vector of input data
-% f: approximate ECG beat-rate in Hertz, normalized by the sampling frequency
+% ff: approximate ECG beat-rate in Hertz, normalized by the sampling frequency
 % flag: search for positive (flag=1) or negative (flag=0) peaks. By default
 % the maximum absolute value of the signal, determines the peak sign.
 %
@@ -33,7 +33,9 @@ function peaks = PeakDetection(x,ff,varargin)
 % This program is distributed in the hope that it will be useful, but
 % WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% Public License for more details.
+% Public License for more details. You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 N = length(x);
 peaks = zeros(1,N);

@@ -1,12 +1,25 @@
 function Z = ECGModel(X,Phasemn)
+% Z = ECGModel(X,Phaemn)
+% Overview: Generate Synthetic ECG beat using parameters defined in X over phase
+% defined in the Phasemn variable.
 %
-% Synthetic ECG
+% Inputs:
+%           X - contains the amplitude (alphai), standard deviation (bi) and phase (tetai) for
+%           each Gaussian function used for generating the synthetic ECG beat.
+%           
+%           Phasemn - array contains the phase points over which synthetic
+%           ECG beat is generated.
+%
+% Outputs:
+%           Z - synthetic ECG beat generated using Gaussian parameter estimates.
 %
 % Open Source ECG Toolbox, version 1.0, November 2006
 % Released under the GNU General Public License
 % Copyright (C) 2006  Reza Sameni
 % Sharif University of Technology, Tehran, Iran -- LIS-INPG, Grenoble, France
 % reza.sameni@gmail.com
+% Last modified:
+% on 11/30/2020 by Ismail Sadiq
 %
 % TODO: Return the analytic Jacobians to accelerate the convergence of the
 % nonlinear least squares solver. Added on Feb. 2019
@@ -18,7 +31,9 @@ function Z = ECGModel(X,Phasemn)
 % This program is distributed in the hope that it will be useful, but
 % WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% Public License for more details.
+% Public License for more details. You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 L = (length(X)/3);
 

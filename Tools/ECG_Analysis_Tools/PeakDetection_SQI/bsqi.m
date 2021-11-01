@@ -10,7 +10,7 @@ function [F1, StartIdxSQIwindows] = bsqi(ann1,ann2,HRVparams)
 %       output = sqi of each window
 %   DEPENDENCIES & LIBRARIES:
 %       run_sqi.m
-%       HRV_toolbox https://github.com/cliffordlab/hrv_toolbox
+%       HRV_toolbox https://github.com/cliffordlab/Tools/ECG_Analysis_Tools/PeakDetection_SQI/run_sqi.m
 %   REFERENCE: 
 %	REPO:       
 %       https://github.com/cliffordlab/Physionet-HRV-toolbox-for-MATLAB/tree/master/Tools

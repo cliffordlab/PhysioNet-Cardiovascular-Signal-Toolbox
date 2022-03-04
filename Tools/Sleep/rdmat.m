@@ -54,7 +54,7 @@ function varargout=rdmat(varargin)
 % %Example:
 % wfdb2mat('mitdb/200')
 %tic;[tm,signal,Fs,siginfo]=rdmat('200m');toc
-%tic;[tm2,signal2]=rdsamp('200m');toc
+%tic;[signal2]=rdsamp('200m');toc
 % sum(abs(signal-signal2))
 %
 %
@@ -65,7 +65,6 @@ function varargout=rdmat(varargin)
 %Set default pararameter values
 inputs={'recordName'};
 defGain=200; %Default value for missing gains
-wfdbNaN=-32768; %This should be the case for all WFDB signal format types currently supported by RDMAT
 
 for n=1:nargin
     if(~isempty(varargin{n}))
@@ -90,15 +89,16 @@ while(strcmp(str(1),'#'))
 end
 
 %Process Record Line Info
-info=textscan(str,'%s %u %f %u %s %s');
+info=textscan(str,'%s %d %f %d %s %s');
 M=info{2}; %Number of signals present
 Fs=info{3};
 
 %Process Signal Specification lines. Assumes no comments between lines.
-siginfo=[];
+siginfo(M)=struct();
 for m = 1:M
     str=fgetl(fid);
-    info=textscan(str,'%s %s %s %u %u %f %u %u %s');
+    info=textscan(str,'%s %s %s %d %d %f %d %d %s');
+    fmt=info{2}{:};
     gain=info{3}{:};
     
     %Get Signal Units if present
@@ -123,7 +123,7 @@ for m = 1:M
             error('Could not obtain signal baseline');
         end
     end
-    
+
     %Get Signal Gain
     gain=str2num(gain);
     if(gain==0)
@@ -132,16 +132,31 @@ for m = 1:M
     end
     siginfo(m).Gain=double(gain);
     
-    
     %Get Signal Descriptor
     siginfo(m).Description=info{9}{:};
+    
+    % Store format for later
+    siginfo(m).fmt=fmt(1:strfind(fmt,'+')-1);
     
 end
 fclose(fid);
 
 load([recordName '.mat']);
-val(val==wfdbNaN)= NaN;
+
 for m = 1:M
+    % Interpreting digital values of byte offset format 80
+    if strcmp(siginfo(m).fmt, '80') 
+        val(m,:)=val(m,:)-128;
+        wfdbNaN=-128;
+    elseif strcmp(siginfo(m).fmt, '16')
+        wfdbNaN=-32768;
+    else
+        wfdbNaN=-2147483648;
+    end
+    
+    % Fill in NaNs before subtracting and dividing. 
+    val(m, val(m,:)==wfdbNaN)=nan;
+    
     %Convert from digital units to physical units.
     % Mapping should be similar to that of rdsamp.c:
     % http://www.physionet.org/physiotools/wfdb/app/rdsamp.c

@@ -216,7 +216,7 @@ function features = ECG_sleep_staging_features_extraction(ECGdata,fs)
     if size(sqi_rr,1)<size(sqi_rr,2)
         sqi_rr=sqi_rr';
     end
-    [HRVout] = Main_HRV_Analysis_without_savefiles(rr,t_rr,'RRIntervals',HRVparams,' ',[],sqi_rr);
+    [HRVout] = Main_HRV_Analysis(rr,t_rr,'RRIntervals',HRVparams,' ',[],sqi_rr);
 
     
     for seg_select=6:length(stage_n)-5

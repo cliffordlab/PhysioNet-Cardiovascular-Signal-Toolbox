@@ -89,9 +89,9 @@ write_ann(AnnFile, HRVparams,'jqrs',jqrs_ann);
 write_ann(AnnFile, HRVparams,'sqrs',sqrs_ann);
 write_ann(AnnFile, HRVparams,'wqrs',wqrs_ann);
 fakeAnnType = repmat('S',[length(SQIjs), 1]);
-write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
+write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js.*HRVparams.Fs, fakeAnnType ,round(SQIjs*100));%write_ann(AnnFile, HRVparams,'sqijs', StartSQIwindows_js, fakeAnnType ,round(SQIjs*100)); 
 fakeAnnType = repmat('S',[length(SQIjw), 1]);
-write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
+write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw.*HRVparams.Fs,fakeAnnType ,round(SQIjw*100));%write_ann(AnnFile, HRVparams,'sqijw', StartSQIwindows_jw,fakeAnnType ,round(SQIjw*100)); 
 
 
 

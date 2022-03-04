@@ -91,7 +91,7 @@ for i = 1:NmbOfSigs
             end
             % Write ABP annotations
             write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'abpm',ABPann);
-            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqiabp',BeatQ(:,1));
+            write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqiabp',ABPann,'N',int8(BeatQ(:,1)));%write_ann(strcat(AnnotationFolder, subjectID),HRVparams,'sqiabp',BeatQ(:,1));
                       
     end
 end

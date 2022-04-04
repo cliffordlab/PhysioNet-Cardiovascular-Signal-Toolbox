@@ -3,7 +3,7 @@ function imdb = CRC_features_calculation(ECG,OP)
 imdb=[];
 imdb.images.data=[];
 imdb.mata.feature=[];
-try
+% try
     NFFT=2000;
     imdb_n=0;
     Fs=OP.fs;
@@ -132,7 +132,7 @@ try
     
     for j=1:n_seg
         % image data number
-        try
+%         try
             imdb_n=imdb_n+1;
             
             x_seg=RR_e_resamp((j-1)*sliding_win_len*Fs_resamp+1:min(((j-1)*sliding_win_len+seg_length)*Fs_resamp,length(RR_e_resamp)));
@@ -167,6 +167,7 @@ try
             HRVparams.plot_results=0;
             HRVparams.prsa.scale=2;
             HRVparams.prsa.plot_results=0;
+            HRVparams.prsa.min_anch = 20;
             HRVparams.windowlength=300;
             HRVparams.sqi.LowQualityThreshold=0.8;
             HRVparams.RejectionThreshold=0.2;
@@ -297,12 +298,12 @@ try
             imdb.meta.features(imdb_n,12)=area_ratio_v_h;
             imdb.meta.features(imdb_n,13)=area_ratio_l_h;
             imdb.meta.rr{imdb_n}=rr;
-        catch
-            continue;
-        end
+%         catch
+%             continue;
+%         end
     end
-catch
-end
+% catch
+% end
 imdb.images.data=single(imdb.images.data);
 
 end

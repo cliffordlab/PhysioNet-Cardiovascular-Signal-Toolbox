@@ -1,5 +1,17 @@
 # ECG_Sleep_Staging_Prediction
 
+If you are using this software, please cite:
+```
+Li Q, Li Q, Liu C, Shashikumar SP, Nemati S, Clifford GD. 
+"Deep learning in the cross-time-frequency domain for sleep staging from a single lead electrocardiogram". 
+Physiol. Meas. 2018 Dec 21;39(12):124005
+
+Li Q, Li Q, Cakmak AS, Da Poian G, Bliwise DL, Vaccarino V, Shah AJ, Clifford GD. 
+Transfer learning from ECG to PPG for improved sleep staging from wrist-worn wearables. 
+Physiol Meas. 2021 May 13;42(4):10.1088/1361-6579/abf1b0.
+```     
+
+
 ## Dependencies
 - Physionet Cardiovascular Signal Toolbox (NOTE, an initialization struct with the patameters used for the specific project is provided. If not the same the default parameters 
 have been used and can be generated using InitializeHRVparams([]) )

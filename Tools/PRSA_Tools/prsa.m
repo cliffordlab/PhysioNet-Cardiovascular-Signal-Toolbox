@@ -2,7 +2,7 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, t_rr, HRVparams, 
 %   [ac_results, dc_results] = prsa(rr, t_rr, HRVparams, swi, tWin )
 %
 %   OVERVIEW:
-%       Calculates acceleration and deceleration capacity values  
+%       Calculates acceleration and deceleration capacity values
 %   INPUT
 %       rr           - (seconds) rr intervals
 %       t_rr         - (seconds) time of the rr intervals
@@ -11,7 +11,7 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, t_rr, HRVparams, 
 %                      at least two columns. Column 1 should be
 %                      timestamps of each sqi measure, and Column 2
 %                      should be SQI on a scale from 0 to 1.
-%       tWin         - Starting time of each windows to analyze 
+%       tWin         - Starting time of each windows to analyze
 %
 %   OUTPUT
 %       ac_results   - Acceleration Capacity value
@@ -22,10 +22,10 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, t_rr, HRVparams, 
 %   AUTHORS
 %       L. Campana
 %       G. Clifford
-%   REFERENCE   
+%   REFERENCE
 %       http://adsabs.harvard.edu/abs/2007Chaos..17a5112K
 %       http://h-r-t.org/prsa/en/
-%	REPO:       
+%	REPO:
 %       https://github.com/cliffordlab/PhysioNet-Cardiovascular-Signal-Toolbox
 %   DEPENDENCIES & LIBRARIES
 %	COPYRIGHT (C) 2016 AUTHORS (see above)
@@ -38,10 +38,10 @@ function [ac_results, dc_results, prsa_ac, prsa_dc] = prsa(rr, t_rr, HRVparams, 
 % inclusion of windowing options.
 % Oct 13, 2017
 % Code altered by Giulia Da Poian to compute AC and DC value at different
-% scale s 
+% scale s
 %
 % These default parameters were a part of the original PRSA code developed
-% by the authors above. 
+% by the authors above.
 % tp = 20; thresh_per
 % wl = 30; prsa_win_length
 % fsd = 512; fs
@@ -59,10 +59,10 @@ end
 
 prsaWinLength = HRVparams.prsa.win_length;
 s = HRVparams.prsa.scale;
-PRSA_th = HRVparams.prsa.thresh_per; 
+PRSA_th = HRVparams.prsa.thresh_per;
 plot_results = HRVparams.prsa.plot_results;
 windowlength = HRVparams.windowlength;
-SQI_th = HRVparams.sqi.LowQualityThreshold;        % SQI threshold
+SQI_th = HRVparams.sqi.LowQualityThreshold;   % SQI threshold
 WinQuality_th = HRVparams.RejectionThreshold; % Low quality windows threshold
 
 Anchor_Low_th = 1-PRSA_th/100-.0001; % The lower limit for the AC anchor selection
@@ -85,8 +85,10 @@ for i_win = 1:length(tWin)
     if ~isnan(tWin(i_win))
         % Isolate data in this window
         sqi_win = sqi( sqi(:,1) >= tWin(i_win) & sqi(:,1) < tWin(i_win) + windowlength,:);
-        nn_win = rr( t_rr >= tWin(i_win) & t_rr < tWin(i_win) + windowlength );
-         
+        rr_idx_in_win = find( t_rr >= tWin(i_win) & t_rr  < tWin(i_win) + windowlength );
+        nn_win   =   rr( rr_idx_in_win );
+        t_rr_win = t_rr( rr_idx_in_win );
+
         % Analysis of SQI for the window
         lowqual_idx = find(sqi_win(:,2) < SQI_th);
 
@@ -112,14 +114,14 @@ for i_win = 1:length(tWin)
             for i = 1:length(dc_ind)
                 dcm(i,:) = 1000*nn_win(dc_ind(i)-prsaWinLength:dc_ind(i)+prsaWinLength-1); % convert from sec to msec
             end
-            
+
             for i = 1:length(ac_ind)
                 acm(i,:) = 1000*nn_win(ac_ind(i)-prsaWinLength:ac_ind(i)+prsaWinLength-1); % convert from sec to msec
             end
 
             prsa_ac = mean(acm,1);
             prsa_dc = mean(dcm,1);
-            
+
             % Edited by Adriana Vest: Added the following if statements to
             % deal with scenarios when ac or dc is not computable for a
             % particular window. An example scenario is when the RR
@@ -134,46 +136,74 @@ for i_win = 1:length(tWin)
             end
 
             % Load custom colors
-            custom_colors.red = [72 11 11] / 100;
+            custom_colors.red   = [72 11 11] / 100;
             custom_colors.green = [30 69 31] / 100;
+            custom_colors.black = [40 40 40] / 100; % for less solid lines
 
             % Plot results
             if plot_results == 1
+
+                Relative_RRI_indices=-prsaWinLength:prsaWinLength-1;
+
                 figure(1);
-                plot(t_rr,nn_win,'k+');
+                plot(t_rr_win, nn_win, '-', 'Color', custom_colors.black, 'Marker','o', 'MarkerFaceColor', 'k');
+                xlabel('Time, s');
+                ylabel('R-R interval, s');
                 hold on;
 
                 figure(2)
-                subplot(2,1,2)
-                plot(dcm,'k--');
-                legend('Deceleration');
+                plot(t_rr_win, nn_win,'-', 'Color', custom_colors.black, 'Marker','.', 'MarkerFaceColor', 'k');
                 hold on;
-
-                figure(2)
-                subplot(2,1,1)
-                plot(acm,'k--');
-                legend('Acceleration');    
-                hold on;
+                plot(t_rr_win(dc_ind),nn_win(dc_ind), 'Color', custom_colors.black, 'LineStyle','none', 'Marker', '^', 'MarkerFaceColor', custom_colors.green);
+                plot(t_rr_win(ac_ind),nn_win(ac_ind), 'Color', custom_colors.black, 'LineStyle','none', 'Marker', 'v', 'MarkerFaceColor', custom_colors.red);
+                legend('non-anchor','DC anchor','AC anchor');
+                title('RR anchors');
+                ylabel('R-R interval, s');
+                xlabel('Time, s');
+                %hold off; % don't draw on top, if multiple windows are analysed
 
                 figure(3)
-                plot(t_rr,nn_win,'k-+');
-                hold on;
-                plot(t_rr(ac_ind),nn_win(ac_ind), 'color', custom_colors.green, 'marker', '+');
-                plot(t_rr(dc_ind),nn_win(dc_ind), 'color', custom_colors.red, 'marker', '+');
-                legend('non-anchor','ac anchor','dc anchor');
-                title('RR anchors');
+                subplot(2,1,1)
+                acx=cell2mat(arrayfun(@(i)t_rr_win(i+Relative_RRI_indices)-t_rr_win(i),ac_ind,'UniformOutput',0))';
+                plot(acx, acm','--');
+                hold on
+                plot(mean(acx,2),prsa_ac,'k','LineWidth',3);
+                hold off; % don't draw on top, if multiple windows are analysed
+                title('Acceleration');
+                ylabel('R-R interval, ms');
+                subplot(2,1,2)
+                dcx=cell2mat(arrayfun(@(i)t_rr_win(i+Relative_RRI_indices)-t_rr_win(i),dc_ind,'UniformOutput',0))';
+                plot(dcx,dcm','--');
+                hold on
+                plot(mean(dcx,2),prsa_dc,'k','LineWidth',3);
+                hold off;
+                title('Deceleration')
+                ylabel('R-R interval, ms');
+                xlabel('Time, s');
 
                 figure(4);
                 subplot(2,1,1)
-                plot([-2:2*prsaWinLength-2],dcm,'k--')
-                title('dc matrix')
+                plot(Relative_RRI_indices, acm', '--')
                 hold on
-                plot([-2:2*prsaWinLength-2],prsa_dc,'r');
+                plot(Relative_RRI_indices, prsa_ac, 'k','LineWidth',3);
+		if prsaWinLength <= 5
+                   xticks(Relative_RRI_indices);
+		end
+                hold off;
+                title('AC matrix')
+                ylabel('R-R interval, ms');
                 subplot(2,1,2)
-                plot([-2:2*prsaWinLength-2],acm,'k--')
+                plot(Relative_RRI_indices, dcm', '--')
                 hold on
-                plot([-2:2*prsaWinLength-2],prsa_ac,'r');
-                title('ac matrix')
+                plot(Relative_RRI_indices, prsa_dc, 'k','LineWidth',3);
+		if prsaWinLength <= 5
+                   xticks(Relative_RRI_indices);
+		end
+                title('DC matrix')
+                ylabel('R-R interval, ms');
+                xlabel('Index');
+                hold off;
+
             end % end of plotting condition
         else % else, if SQI is not adequate
         end % end of conditional statements run when SQI is adequate

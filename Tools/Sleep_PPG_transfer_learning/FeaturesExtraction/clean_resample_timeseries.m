@@ -1,4 +1,4 @@
-function [NN_resamp,RIAV_resamp,sqi_resamp] = clean_resample_timeseries(onsets,RIAV,sqi,Fs,Fs_resamp)
+function [NN_resamp,RIAV_resamp,sqi_resamp,t1] = clean_resample_timeseries(onsets,RIAV,sqi,Fs,Fs_resamp)
 
 % Use time-series of peaks and onsets to derive a new time-series which 
 % represents information related to respiration, in particular respiratory 

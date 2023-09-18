@@ -50,6 +50,10 @@ ecgType = HRVparams.PeakDetect.ecgType;
 % == general
 segsizeSamp = window*fs; % convert window into nb of samples
 NbSeg = floor(length(ecg)/segsizeSamp); % nb of segments
+% process remainder data at the end
+if length(ecg)-NbSeg*segsizeSamp>fs
+    NbSeg=NbSeg+1;
+end
 QRS = [];
 start = 1;
 stop  = segsizeSamp;
@@ -85,11 +89,11 @@ try
         if strcmp(ecgType,'FECG')
             thresTrans = thres;
             while length(QRStemp)<20 && thresTrans>0.1
-                [QRStemp,signForce] = jqrs(ecg(start-dTminus:stop+dTplus),HRVparams);
+                [QRStemp,signForce] = jqrs(ecg(start-dTminus:min(stop+dTplus,length(ecg))),HRVparams);
                 thresTrans = thresTrans-0.1;
             end
         else
-            [QRStemp,signForce] = jqrs(ecg(start-dTminus:stop+dTplus),HRVparams);
+            [QRStemp,signForce] = jqrs(ecg(start-dTminus:min(stop+dTplus,length(ecg))),HRVparams);
         end
 
         NewQRS = (start-1)-dTminus+QRStemp;

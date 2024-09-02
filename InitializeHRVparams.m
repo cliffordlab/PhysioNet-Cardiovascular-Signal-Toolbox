@@ -62,6 +62,14 @@ end
 % Set up input options for a specific project
 switch project_name   
     % Define new project name and parameters
+    case 'Hypoxia_Detection'                   % Update with your project name
+        HRVparams.Fs = 400;                % Spacify sampling frequency
+        HRVparams.PeakDetect.SIGN_FORCE = -1;           % Only find the negative peak
+        HRVparams.readdata = strcat('TestData', filesep, 'Weitao_issue_data');           % (Optional) Specify name for data input folder
+        HRVparams.writedata = strcat('OutputData', filesep, 'ResultsHD');          % (Optional) Specify name for data output folder
+        HRVparams.datatype = '';           % (Optional) Spacify Data type of input
+        HRVparams.ext = 'mat';                % (Optional) Spacify file extension of input (e.g., 'mat','qrs')
+    % Define new project name and parameters
     case 'MyProjectName'                   % Update with your project name
         HRVparams.Fs = NaN;                % Spacify sampling frequency
         HRVparams.readdata = '';           % (Optional) Specify name for data input folder

@@ -1,0 +1,100 @@
+Tab1,Tab2
+Fs,NaN
+writedata,HRV Output
+data confidence level,1
+windowlength,300
+increment,30
+numsegs,5
+RejectionThreshold,0.2
+MissingDataThreshold,0.15
+rawsig,0
+debug,0
+sqi LowQualityThreshold,0.9
+sqi windowlength,10
+sqi increment,1
+sqi TimeThreshold,0.1
+sqi margin,2
+preprocess figures,0
+preprocess gaplimit,2
+preprocess per limit,0.2
+preprocess forward gap,3
+preprocess method outliers,rem
+preprocess lowerphysiolim,0.375
+preprocess upperphysiolim,2
+preprocess method unphysio,rem
+preprocess threshold1,0.9
+preprocess minlength,30
+af on,1
+af windowlength,30
+af increment,30
+PVC qrsth,0.1
+timedomain on,1
+timedomain dataoutput,0
+timedomain alpha,50
+timedomain win tol,0.15
+ulf,     0-0.0033
+vlf,0.0033-  0.04
+lf,  0.04-  0.15
+hf,  0.15-   0.4
+freq on,1
+freq limits,[]
+freq zero mean,1
+freq method,lomb
+freq plot on,0
+freq debug sine,0
+freq debug freq,0.15
+freq debug weight,0.03
+freq normalize lomb,0
+freq burg poles,15
+freq resampling freq,7
+freq resample interp method,cub
+freq resampled burg poles,100
+sd on,1
+sd segmentlength,300
+prsa on,1
+prsa win length,30
+prsa thresh per,20
+prsa plot results,0
+prsa scale,2
+prsa min anch,20
+PeakDetect REF PERIOD,0.25
+PeakDetect THRES,0.6
+PeakDetect fid vec,[]
+PeakDetect SIGN FORCE,[]
+PeakDetect debug,0
+PeakDetect ecgType,MECG
+PeakDetect windows,15
+MSE on,1
+MSE windowlength,[]
+MSE increment,[]
+MSE RadiusOfSimilarity,0.15
+MSE patternLength,2
+MSE maxCoarseGrainings,20
+MSE method,fir
+MSE moment,mean
+MSE constant r,1
+Entropy on,1
+Entropy RadiusOfSimilarity,0.15
+Entropy patternLength,2
+DFA on,1
+DFA windowlength,[]
+DFA increment,[]
+DFA minBoxSize,4
+DFA maxBoxSize,[]
+DFA midBoxSize,16
+poincare on,1
+HRT on,1
+HRT BeatsBefore,2
+HRT BeatsAfter,16
+HRT GraphOn,0
+HRT windowlength,24
+HRT increment,24
+HRT filterMethod,mean5before
+gen figs,0
+save figs,0
+output format,csv
+output separate,1
+output num win,[]
+output ann format,binary
+time,20240902
+filename,20240902 Hypoxia Detection
